@@ -1,0 +1,12 @@
+**/.metadata/
+**/bin/
+**/tmp/
+**/.settings/
+**/*.log
+**/*.class
+**/*.jar
+**/*.war
+**/*.ear
+**/*.swp
+**/*.bak
+**/*.tmp
