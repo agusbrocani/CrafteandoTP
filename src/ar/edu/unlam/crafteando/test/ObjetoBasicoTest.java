@@ -41,5 +41,5 @@ class ObjetoBasicoTest {
 
         assertEquals(a, b);
         assertEquals(a.hashCode(), b.hashCode());
-    }
+    } 
 }

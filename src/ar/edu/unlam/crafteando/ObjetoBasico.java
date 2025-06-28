@@ -17,7 +17,8 @@ public class ObjetoBasico extends ObjetoComponente {
         resultado.put(this, getCantidad());
         return Collections.unmodifiableMap(resultado);
     }
-
+    
+    /*
     @Override
     public boolean equals(Object o) {
         if (this == o) 
@@ -32,5 +33,5 @@ public class ObjetoBasico extends ObjetoComponente {
     @Override
     public int hashCode() {
         return Objects.hash(getNombre());
-    }
+    }*/
 }
