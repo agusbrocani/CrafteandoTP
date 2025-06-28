@@ -2,72 +2,122 @@ package ar.edu.unlam.crafteando.test;
 import ar.edu.unlam.crafteando.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ObjetoCompuestoTest {
 
-    @Test
-    void queAgregueObjetoBasicoCorrectamente() throws Exception {
-        ObjetoBasico madera = new ObjetoBasico("madera", 3);
-        ObjetoCompuesto antorcha = new ObjetoCompuesto("antorcha", 1);
+	@Test
+    void agregarUnObjetoBasico() throws Exception {
+        ObjetoCompuesto pico = new ObjetoCompuesto("Pico", 1);
+        ObjetoBasico hierro = new ObjetoBasico("Hierro", 3);
+        pico.agregar(hierro);
 
-        antorcha.agregar(madera);
-
-        Map<ObjetoComponente, Integer> resultado = antorcha.obtener();
-        assertEquals(1, resultado.size());
-        assertEquals(3, resultado.get(madera));
+        Map<ObjetoComponente, Integer> componentes = pico.obtener();
+        assertEquals(1, componentes.size());
+        assertEquals(3, componentes.get(hierro));
     }
 
     @Test
-    void queSumeCantidadSiSeAgregaElMismoObjeto() throws Exception {
-        ObjetoBasico carbon = new ObjetoBasico("carbon", 2);
-        ObjetoCompuesto fogata = new ObjetoCompuesto("fogata", 1);
+    void agregarDosVecesElMismoObjetoSumaCantidades() throws Exception {
+        ObjetoCompuesto espada = new ObjetoCompuesto("Espada", 1);
+        ObjetoBasico hierro = new ObjetoBasico("Hierro", 2);
+        espada.agregar(hierro);
+        espada.agregar(new ObjetoBasico("Hierro", 3)); // mismo nombre
 
-        fogata.agregar(carbon);
-        fogata.agregar(new ObjetoBasico("carbon", 1)); // mismo nombre
-
-        Map<ObjetoComponente, Integer> resultado = fogata.obtener();
-        assertEquals(3, resultado.get(carbon));
+        assertEquals(1, espada.obtener().size());
+        assertEquals(5, espada.obtener().get(hierro));
     }
 
     @Test
-    void queRemuevaComponenteAlLlegarACero() throws Exception {
-        ObjetoBasico palo = new ObjetoBasico("palo", 2);
-        ObjetoCompuesto arma = new ObjetoCompuesto("arma", 1);
+    void removerDisminuyeCantidadYEliminaSiEsCero() throws Exception {
+        ObjetoCompuesto hacha = new ObjetoCompuesto("Hacha", 1);
+        ObjetoBasico madera = new ObjetoBasico("Madera", 4);
+        hacha.agregar(madera);
+        hacha.remover(new ObjetoBasico("Madera", 4));
 
-        arma.agregar(palo);
-        arma.remover(new ObjetoBasico("palo", 2));
-
-        Map<ObjetoComponente, Integer> resultado = arma.obtener();
-        assertFalse(resultado.containsKey(palo));
+        assertTrue(hacha.obtener().isEmpty());
     }
 
     @Test
-    void queDisminuyaLaCantidadSinEliminarlo() throws Exception {
-        ObjetoBasico cuerda = new ObjetoBasico("cuerda", 5);
-        ObjetoCompuesto trampa = new ObjetoCompuesto("trampa", 1);
-
-        trampa.agregar(cuerda);
-        trampa.remover(new ObjetoBasico("cuerda", 2));
-
-        assertEquals(3, trampa.obtener().get(cuerda));
-    }
-
-    @Test
-    void queNoPermitaAgregarNull() throws Exception {
-        ObjetoCompuesto receta = new ObjetoCompuesto("receta", 1);
-
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> receta.agregar(null));
+    void agregarObjetoNuloLanzaExcepcion() throws Exception {
+        ObjetoCompuesto armadura = new ObjetoCompuesto("Armadura", 1);
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> {
+            armadura.agregar(null);
+        });
         assertEquals(Constant.EXCEPCION_AGREGAR_COMPONENTE_NULO, ex.getMessage());
     }
 
     @Test
-    void queNoPermitaRemoverNull() throws Exception {
-        ObjetoCompuesto receta = new ObjetoCompuesto("receta", 1);
-
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> receta.remover(null));
+    void removerObjetoNuloLanzaExcepcion() throws Exception {
+        ObjetoCompuesto escudo = new ObjetoCompuesto("Escudo", 1);
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> {
+            escudo.remover(null);
+        });
         assertEquals(Constant.EXCEPCION_ELIMINAR_COMPONENTE_NULO, ex.getMessage());
+    }
+    
+    @Test
+    void constructorVacioDeObjetoCompuestoDebeCrearObjetoValido() throws Exception {
+        ObjetoCompuesto objeto = new ObjetoCompuesto();
+
+        assertEquals("", objeto.getNombre());
+        assertEquals(0, objeto.getCantidad());
+
+        Map<ObjetoComponente, Integer> componentes = objeto.obtener();
+        assertNotNull(componentes);
+        assertTrue(componentes.isEmpty()); // mapa vacío
+    }
+    
+    @Test
+    void objetoCompuestoIgualAMismoContenidoYNombre() throws Exception {
+        ObjetoBasico madera = new ObjetoBasico("Madera", 3);
+
+        ObjetoCompuesto uno = new ObjetoCompuesto("Arco", 1);
+        uno.agregar(madera);
+
+        ObjetoCompuesto dos = new ObjetoCompuesto("Arco", 1);
+        dos.agregar(new ObjetoBasico("Madera", 3)); // mismo nombre y cantidad
+
+        assertEquals(uno, dos);
+        assertEquals(uno.hashCode(), dos.hashCode());
+    }
+
+    @Test
+    void objetoCompuestoConDiferenteNombreNoSonIguales() throws Exception {
+        ObjetoBasico madera = new ObjetoBasico("Madera", 3);
+
+        ObjetoCompuesto uno = new ObjetoCompuesto("Arco", 1);
+        uno.agregar(madera);
+
+        ObjetoCompuesto dos = new ObjetoCompuesto("Espada", 1);
+        dos.agregar(new ObjetoBasico("Madera", 3));
+
+        assertNotEquals(uno, dos);
+    }
+
+    @Test
+    void objetoCompuestoConDiferenteComponentesNoSonIguales() throws Exception {
+        ObjetoCompuesto uno = new ObjetoCompuesto("Arco", 1);
+        uno.agregar(new ObjetoBasico("Madera", 3));
+
+        ObjetoCompuesto dos = new ObjetoCompuesto("Arco", 1);
+        dos.agregar(new ObjetoBasico("Hierro", 3)); // distinta clave
+
+        assertNotEquals(uno, dos);
+    }
+
+    @Test
+    void objetoCompuestoEqualsMismoObjeto() throws Exception {
+        ObjetoCompuesto uno = new ObjetoCompuesto("Escudo", 1);
+        assertEquals(uno, uno);
+    }
+
+    @Test
+    void objetoCompuestoEqualsConNull() throws Exception {
+        ObjetoCompuesto uno = new ObjetoCompuesto("Escudo", 1);
+        assertNotEquals(uno, null);
     }
 }
