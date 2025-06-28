@@ -3,6 +3,8 @@ import org.jpl7.*;
 
 public class CrafteandoTP {
     public static void main(String[] args) {
+    	
+    	//System.out.println("hola mundo");
     	String ruta = "prolog/datos.pl";
     	Query cargar = new Query("consult", new Term[]{new Atom(ruta)});
     	// 1- Internamente se hace un -> consult('datos.pl'). => CARGA EL ARCHIVO
