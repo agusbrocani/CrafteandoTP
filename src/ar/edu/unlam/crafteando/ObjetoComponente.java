@@ -11,7 +11,7 @@ public abstract class ObjetoComponente {
 	
 	public ObjetoComponente(String nombre) {
 		this.nombre = nombre;
-		this.cantidad = 0;
+		this.cantidad = 1;
 	}
 	
 	public ObjetoComponente(String  nombre, Integer cantidad) throws Exception {
