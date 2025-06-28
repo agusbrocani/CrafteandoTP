@@ -36,6 +36,9 @@ public class ObjetoCompuesto extends ObjetoComponente {
         }
 
         objetos.computeIfPresent(o, (clave, cantidad) -> {
+        	if (o.getCantidad() > cantidad) {
+                throw new IllegalArgumentException(Constant.EXCEPCION_CANTIDAD_INSUFICIENTE);
+            }
             int nuevaCantidad = cantidad - o.getCantidad();
             return (nuevaCantidad > 0) ? nuevaCantidad : null;
         });

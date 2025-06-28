@@ -2,7 +2,6 @@ package ar.edu.unlam.crafteando.test;
 import ar.edu.unlam.crafteando.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,6 +56,21 @@ class ObjetoCompuestoTest {
             escudo.remover(null);
         });
         assertEquals(Constant.EXCEPCION_ELIMINAR_COMPONENTE_NULO, ex.getMessage());
+    }
+    
+    @Test
+    void removerMasCantidadDeLaExistenteDebeLanzarExcepcion() throws Exception {
+        ObjetoCompuesto compuesto = new ObjetoCompuesto("Espada", 1);
+        ObjetoBasico hierroExistente = new ObjetoBasico("Hierro", 2);
+        ObjetoBasico hierroRemover = new ObjetoBasico("Hierro", 3); // mayor cantidad
+
+        compuesto.agregar(hierroExistente);
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            compuesto.remover(hierroRemover);
+        });
+
+        assertEquals(Constant.EXCEPCION_CANTIDAD_INSUFICIENTE, ex.getMessage());
     }
     
     @Test
