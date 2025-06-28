@@ -9,37 +9,50 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ObjetoBasicoTest {
 
-    @Test
-    void queSeCreeConNombreYCantidadCorrecta() throws Exception {
-        ObjetoBasico piedra = new ObjetoBasico("piedra", 5);
-
-        assertEquals("piedra", piedra.getNombre());
-        assertEquals(5, piedra.getCantidad());
+	@Test
+    void crearObjetoBasicoConCantidadValida() throws Exception {
+        ObjetoBasico piedra = new ObjetoBasico("Piedra", 3);
+        assertEquals("Piedra", piedra.getNombre());
+        assertEquals(3, piedra.getCantidad());
     }
 
     @Test
-    void queObtengaUnMapaConSiMismo() throws Exception {
-        ObjetoBasico hierro = new ObjetoBasico("hierro", 10);
+    void obtenerDebeDevolverMapaConElMismoObjeto() throws Exception {
+        ObjetoBasico madera = new ObjetoBasico("Madera", 5);
+        Map<ObjetoComponente, Integer> componentes = madera.obtener();
 
-        Map<ObjetoComponente, Integer> resultado = hierro.obtener();
-
-        assertEquals(1, resultado.size());
-        assertEquals(10, resultado.get(hierro));
-        assertTrue(resultado.containsKey(hierro));
+        assertEquals(1, componentes.size());
+        assertTrue(componentes.containsKey(madera));
+        assertEquals(5, componentes.get(madera));
     }
 
     @Test
-    void queNoPermitaCantidadNegativa() {
-        Exception ex = assertThrows(Exception.class, () -> new ObjetoBasico("error", -3));
+    void cantidadNegativaLanzaExcepcion() {
+        Exception ex = assertThrows(Exception.class, () -> {
+            new ObjetoBasico("Arena", -1);
+        });
         assertEquals(Constant.EXCEPCION_CANTIDAD_NEGATIVA, ex.getMessage());
     }
-
+    
     @Test
-    void queDosObjetosBasicosConMismoNombreSeanIguales() throws Exception {
-        ObjetoBasico a = new ObjetoBasico("agua", 5);
-        ObjetoBasico b = new ObjetoBasico("agua", 10);
-
-        assertEquals(a, b);
-        assertEquals(a.hashCode(), b.hashCode());
-    } 
+    void compararDosObjetosBasicosDistintos() throws Exception {
+    	ObjetoBasico madera = new ObjetoBasico("Madera", 5);
+    	ObjetoBasico piedra = new ObjetoBasico("Piedra", 5);
+    	
+    	assertFalse(madera.equals(piedra));
+    }
+    
+    @Test
+    void compararDosObjetosBasicosIguales() throws Exception {
+    	ObjetoBasico madera = new ObjetoBasico("Madera", 5);
+    	
+    	assertTrue(madera.equals(madera));
+    }
+    
+    @Test
+    void compararContraObjetoNull() throws Exception {
+    	ObjetoBasico madera = new ObjetoBasico("Madera", 5);
+    	
+    	assertFalse(madera.equals(null));
+    }
 }
