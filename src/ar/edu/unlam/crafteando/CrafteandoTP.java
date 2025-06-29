@@ -1,5 +1,9 @@
 package ar.edu.unlam.crafteando;
 
+import org.jpl7.Atom;
+import org.jpl7.Query;
+import org.jpl7.Term;
+
 public class CrafteandoTP {
     public static void main(String[] args) {
     	String ruta = "prolog/datos.pl";

@@ -73,6 +73,7 @@ class ObjetoCompuestoTest {
         assertEquals(Constant.EXCEPCION_CANTIDAD_INSUFICIENTE, ex.getMessage());
     }
     
+    
     @Test
     void constructorVacioDeObjetoCompuestoDebeCrearObjetoValido() throws Exception {
         ObjetoCompuesto objeto = new ObjetoCompuesto();

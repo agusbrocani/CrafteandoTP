@@ -1,7 +1,8 @@
 package ar.edu.unlam.crafteando;
 
-public class MesaCarpinteria {
-	public MesaCarpinteria() {
+public class MesaCarpinteria extends MesaCrafteo {
+
+    public MesaCarpinteria() throws Exception {
         super("Mesa de Carpintería");
     }
 }
