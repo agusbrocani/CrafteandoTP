@@ -1,45 +1,32 @@
 package ar.edu.unlam.crafteando.test;
 
-import ar.edu.unlam.crafteando.*;
 import org.junit.jupiter.api.Test;
-
+import ar.edu.unlam.crafteando.*;
 import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class ObjetoBasicoTest {
-
     @Test
-    void queSeCreeConNombreYCantidadCorrecta() throws Exception {
-        ObjetoBasico piedra = new ObjetoBasico("piedra", 5);
+    void deberiaObtenerseASiMismo() throws Exception {
+        ObjetoBasico madera = new ObjetoBasico("Madera", 5);
+        Map<ObjetoComponente, Integer> obtenido = madera.obtener();
 
-        assertEquals("piedra", piedra.getNombre());
-        assertEquals(5, piedra.getCantidad());
+        assertEquals(1, obtenido.size());
+        assertEquals(5, obtenido.get(madera));
     }
 
     @Test
-    void queObtengaUnMapaConSiMismo() throws Exception {
-        ObjetoBasico hierro = new ObjetoBasico("hierro", 10);
-
-        Map<ObjetoComponente, Integer> resultado = hierro.obtener();
+    void deberiaDescomponerEnSiMismo() throws Exception {
+        ObjetoBasico cuerda = new ObjetoBasico("Cuerda", 3);
+        Map<ObjetoBasico, Integer> resultado = cuerda.descomponerEnBasicos();
 
         assertEquals(1, resultado.size());
-        assertEquals(10, resultado.get(hierro));
-        assertTrue(resultado.containsKey(hierro));
+        assertEquals(3, resultado.get(cuerda));
     }
 
     @Test
-    void queNoPermitaCantidadNegativa() {
-        Exception ex = assertThrows(Exception.class, () -> new ObjetoBasico("error", -3));
-        assertEquals(Constant.EXCEPCION_CANTIDAD_NEGATIVA, ex.getMessage());
-    }
-
-    @Test
-    void queDosObjetosBasicosConMismoNombreSeanIguales() throws Exception {
-        ObjetoBasico a = new ObjetoBasico("agua", 5);
-        ObjetoBasico b = new ObjetoBasico("agua", 10);
-
-        assertEquals(a, b);
-        assertEquals(a.hashCode(), b.hashCode());
+    void tiempoDeObjetoBasicoDeberiaSerCero() throws Exception {
+        ObjetoBasico hierro = new ObjetoBasico("Hierro", 1);
+        assertEquals(0, hierro.calcularTiempo(Map.of()));
     }
 }

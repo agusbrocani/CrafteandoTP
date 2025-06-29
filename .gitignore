@@ -10,3 +10,5 @@
 **/*.swp
 **/*.bak
 **/*.tmp
+**/.classpath
+.classpath

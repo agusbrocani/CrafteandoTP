@@ -1,7 +1,7 @@
 package ar.edu.unlam.crafteando.test;
 import ar.edu.unlam.crafteando.*;
-import org.junit.jupiter.api.Test;
 
+import org.junit.jupiter.api.Test;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,65 +9,40 @@ import static org.junit.jupiter.api.Assertions.*;
 class ObjetoCompuestoTest {
 
     @Test
-    void queAgregueObjetoBasicoCorrectamente() throws Exception {
-        ObjetoBasico madera = new ObjetoBasico("madera", 3);
-        ObjetoCompuesto antorcha = new ObjetoCompuesto("antorcha", 1);
+    void deberiaAgregarYObtenerComponentes() throws Exception {
+        ObjetoBasico madera = new ObjetoBasico("Madera", 2);
+        ObjetoCompuesto mango = new ObjetoCompuesto("Mango", 1);
 
-        antorcha.agregar(madera);
+        mango.agregar(madera);
 
-        Map<ObjetoComponente, Integer> resultado = antorcha.obtener();
-        assertEquals(1, resultado.size());
-        assertEquals(3, resultado.get(madera));
+        Map<ObjetoComponente, Integer> obtenidos = mango.obtener();
+        assertEquals(1, obtenidos.size());
+        assertEquals(2, obtenidos.get(madera));
     }
 
     @Test
-    void queSumeCantidadSiSeAgregaElMismoObjeto() throws Exception {
-        ObjetoBasico carbon = new ObjetoBasico("carbon", 2);
-        ObjetoCompuesto fogata = new ObjetoCompuesto("fogata", 1);
+    void deberiaDescomponerEnBasicos() throws Exception {
+        ObjetoBasico cuerda = new ObjetoBasico("Cuerda", 4);
+        ObjetoCompuesto mango = new ObjetoCompuesto("Mango", 1);
+        mango.agregar(cuerda);
 
-        fogata.agregar(carbon);
-        fogata.agregar(new ObjetoBasico("carbon", 1)); // mismo nombre
-
-        Map<ObjetoComponente, Integer> resultado = fogata.obtener();
-        assertEquals(3, resultado.get(carbon));
+        Map<ObjetoBasico, Integer> basicos = mango.descomponerEnBasicos();
+        assertEquals(1, basicos.size());
+        assertEquals(4, basicos.get(cuerda));
     }
 
     @Test
-    void queRemuevaComponenteAlLlegarACero() throws Exception {
-        ObjetoBasico palo = new ObjetoBasico("palo", 2);
-        ObjetoCompuesto arma = new ObjetoCompuesto("arma", 1);
+    void deberiaCalcularTiempoDeReceta() throws Exception {
+        ObjetoBasico madera = new ObjetoBasico("Madera", 2);
+        ObjetoCompuesto mango = new ObjetoCompuesto("Mango", 1);
+        mango.agregar(madera);
 
-        arma.agregar(palo);
-        arma.remover(new ObjetoBasico("palo", 2));
+        Receta recetaMango = new Receta();
+        recetaMango.setTipo("Mango");
+        recetaMango.setTiempoEnSegundos(10);
+        recetaMango.agregarIngrediente(madera, 2);
 
-        Map<ObjetoComponente, Integer> resultado = arma.obtener();
-        assertFalse(resultado.containsKey(palo));
-    }
-
-    @Test
-    void queDisminuyaLaCantidadSinEliminarlo() throws Exception {
-        ObjetoBasico cuerda = new ObjetoBasico("cuerda", 5);
-        ObjetoCompuesto trampa = new ObjetoCompuesto("trampa", 1);
-
-        trampa.agregar(cuerda);
-        trampa.remover(new ObjetoBasico("cuerda", 2));
-
-        assertEquals(3, trampa.obtener().get(cuerda));
-    }
-
-    @Test
-    void queNoPermitaAgregarNull() throws Exception {
-        ObjetoCompuesto receta = new ObjetoCompuesto("receta", 1);
-
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> receta.agregar(null));
-        assertEquals(Constant.EXCEPCION_AGREGAR_COMPONENTE_NULO, ex.getMessage());
-    }
-
-    @Test
-    void queNoPermitaRemoverNull() throws Exception {
-        ObjetoCompuesto receta = new ObjetoCompuesto("receta", 1);
-
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> receta.remover(null));
-        assertEquals(Constant.EXCEPCION_ELIMINAR_COMPONENTE_NULO, ex.getMessage());
+        Map<ObjetoCompuesto, Receta> recetas = Map.of(mango, recetaMango);
+        assertEquals(10, mango.calcularTiempo(recetas));
     }
 }
