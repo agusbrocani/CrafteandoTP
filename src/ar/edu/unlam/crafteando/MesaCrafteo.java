@@ -8,28 +8,12 @@ public class MesaCrafteo extends ObjetoCompuesto{
     private final List<Receta> recetas;
 
     public MesaCrafteo(String nombre) throws Exception {
+    	super(nombre, 1);
         this.nombre = nombre;
         this.recetas = new ArrayList<>();
     }
 
-    public List<Receta> obtenerRecetasDisponibles() {
-        return new ArrayList<>(recetas);
+    public void agregarRecetasDisponibles(Recetario recetario) {
+    	
     }
-    
-    /*
-    public void agregarReceta(Receta receta) {
-        this.recetas.add(receta);
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    protected void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    protected List<Receta> getRecetas() {
-        return recetas;
-    }*/
 }
