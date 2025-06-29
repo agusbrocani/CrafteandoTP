@@ -1,9 +1,7 @@
 package ar.edu.unlam.crafteando;
-import org.jpl7.*;
 
 public class CrafteandoTP {
     public static void main(String[] args) {
-    	
     	String ruta = "prolog/datos.pl";
     	Query cargar = new Query("consult", new Term[]{new Atom(ruta)});
     	// 1- Internamente se hace un -> consult('datos.pl'). => CARGA EL ARCHIVO
@@ -26,6 +24,5 @@ public class CrafteandoTP {
     	// Eliminar todos los es_padre
     	Query limpiar = new Query("retractall(es_padre(_, _))");
     	limpiar.hasSolution();
-    	
     }
 }
