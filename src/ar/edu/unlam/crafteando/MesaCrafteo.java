@@ -13,9 +13,10 @@ public class MesaCrafteo extends ObjetoCompuesto{
     }
 
     public List<Receta> obtenerRecetasDisponibles() {
-        return new ArrayList<>(recetas); // copia defensiva
+        return new ArrayList<>(recetas);
     }
-
+    
+    /*
     public void agregarReceta(Receta receta) {
         this.recetas.add(receta);
     }
@@ -30,5 +31,5 @@ public class MesaCrafteo extends ObjetoCompuesto{
 
     protected List<Receta> getRecetas() {
         return recetas;
-    }
+    }*/
 }
