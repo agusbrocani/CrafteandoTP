@@ -1,7 +1,7 @@
 package ar.edu.unlam.crafteando.test;
 import ar.edu.unlam.crafteando.*;
-import org.junit.jupiter.api.Test;
 
+import org.junit.jupiter.api.Test;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
