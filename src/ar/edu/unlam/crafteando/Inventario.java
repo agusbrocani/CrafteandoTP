@@ -1,7 +1,6 @@
 package ar.edu.unlam.crafteando;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Inventario {
 
@@ -65,10 +64,12 @@ public class Inventario {
 	}
 	
 	public void guardarComoJson(String rutaArchivo) {
-		
-		GestorJson.guardar(objetos, rutaArchivo);
+	    List<EntradaInventario> lista = objetos.entrySet().stream()
+	        .map(entry -> new EntradaInventario(entry.getKey().getNombre(), entry.getValue()))
+	        .toList();
+
+	    GestorJson.guardar(lista, rutaArchivo);
 	}
-	
 	
 
 }
