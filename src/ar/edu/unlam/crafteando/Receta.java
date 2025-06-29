@@ -6,15 +6,16 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Receta {
+	private String nombre;
+	private String tipo;
     private final Map<ObjetoComponente, Integer> ingredientes;
-    private String tipo;
     private Integer tiempoEnSegundos;
 
     public Receta() {
         ingredientes = new HashMap<>();
     }
 
-    public Receta(String tipo, Integer tiempoEnSegundos) {
+    public Receta(String nombre, String tipo, Integer tiempoEnSegundos) {
         if (tipo == null || tipo.isBlank()) {
             throw new IllegalArgumentException(Constant.EXCEPCION_TIPO_VACIO);
         }
@@ -24,10 +25,15 @@ public class Receta {
         this.tipo = tipo;
         this.tiempoEnSegundos = tiempoEnSegundos;
         this.ingredientes = new HashMap<>();
+        this.nombre = nombre;
     }
 
     public String getTipo() {
         return tipo;
+    }
+    
+    public String getNombre() {
+    	return nombre;
     }
 
     public Integer getTiempoEnSegundos() {
