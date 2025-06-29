@@ -30,6 +30,18 @@ public class Jugador {
             throw new RuntimeException("No se pudo cargar la base Prolog en: " + rutaBaseProlog);
         }
     }
+    
+    public void recolectar(ObjetoComponente o) {
+    	inventario.agregar(o);
+    }
+    
+    public void soltar(ObjetoComponente o) {
+    	inventario.quitar(o);
+    }
+    
+    public void consultarInventario() {
+    	//FALTA METODO PARA MOSTRAR
+    }
 
     public List<String> /*List<ObjetoCompuesto>*/ consultarObjetosCrafteables() {
     	
