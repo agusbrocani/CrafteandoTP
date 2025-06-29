@@ -3,10 +3,14 @@ package ar.edu.unlam.crafteando.test;
 import static org.junit.Assert.*;
 import org.junit.jupiter.api.*;
 import ar.edu.unlam.crafteando.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 public class InventarioTest {
     private Inventario inventario;
     private ObjetoCompuesto baston;
+    private final String RUTA_JSON = "C:\\Users\\lulis\\eclipse-workspace\\CrafteandoTP\\archivos\\Inventario-out-test.json";
 	
     @BeforeEach
     public void setUp() throws Exception {
@@ -74,6 +78,23 @@ public class InventarioTest {
     	
     	System.out.println("\nInventario modificado:");
     	inventario.ver();
+    }
+    
+    @Test
+    public void testGuardarComoJson() throws IOException {
+        Inventario inventario = new Inventario();
+
+        ObjetoBasico madera = new ObjetoBasico("Madera", 3);
+        ObjetoBasico hierro = new ObjetoBasico("Hierro", 5);
+
+        inventario.agregar(madera);
+        inventario.agregar(hierro);
+
+        inventario.guardarComoJson(RUTA_JSON);
+        
+        
+
+        	
     }
 
 }
