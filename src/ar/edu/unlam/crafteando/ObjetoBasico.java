@@ -42,4 +42,9 @@ public class ObjetoBasico extends ObjetoComponente {
     public int hashCode() {
         return Objects.hash(getNombre());
     }
+    
+    @Override
+    public String toString() {
+        return "Nombre: " + this.getNombre() + ", Cantidad: " + this.getCantidad();
+    }
 }
