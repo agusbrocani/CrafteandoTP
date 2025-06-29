@@ -19,7 +19,7 @@ public class Jugador {
 
     private MotorLogicoProlog motor;
 
-    public Jugador(String nombre, Inventario inventario, Recetario recetario, Historial historial, String rutaBaseProlog) {
+    public Jugador(String nombre, Inventario inventario, Recetario recetario, /*Historial historial,*/ String rutaBaseProlog) {
         this.nombre     = nombre;
         this.inventario = inventario;
         this.recetario  = recetario;
@@ -50,8 +50,8 @@ public class Jugador {
         if (!q.hasSolution()) {
             return Collections.emptyList();
         }
-
-        // CHEQUEAR ESTOS:
+        
+        // CHEQUEAR ESTOS DOS:
         // 4 - obtener y parseo la lista que me devuelve Prolog
         Term lista = q.oneSolution().get("L");
         Term[] elems = ((ASTList) lista).toTermArray();
