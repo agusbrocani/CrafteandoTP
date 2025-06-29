@@ -35,6 +35,8 @@ public class ObjetoBasico extends ObjetoComponente {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         ObjetoBasico that = (ObjetoBasico) o;
         return Objects.equals(getNombre(), that.getNombre());
     }
@@ -44,3 +46,4 @@ public class ObjetoBasico extends ObjetoComponente {
         return Objects.hash(getNombre());
     }
 }
+
