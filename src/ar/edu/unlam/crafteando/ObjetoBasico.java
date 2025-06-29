@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class ObjetoBasico extends ObjetoComponente {
 
-    public ObjetoBasico(String nombre, Integer cantidad) throws Exception {
+    public ObjetoBasico(String nombre, Integer cantidad) {
         super(nombre, cantidad);
     }
 
@@ -44,6 +44,11 @@ public class ObjetoBasico extends ObjetoComponente {
     @Override
     public int hashCode() {
         return Objects.hash(getNombre());
+    }
+    
+    @Override
+    public String toString() {
+        return "Nombre: " + this.getNombre() + ", Cantidad: " + this.getCantidad();
     }
 }
 
