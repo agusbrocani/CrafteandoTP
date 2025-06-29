@@ -1,5 +1,6 @@
 package ar.edu.unlam.crafteando;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -13,6 +14,18 @@ public class Receta {
         ingredientes = new HashMap<>();
     }
 
+    public Receta(String tipo, Integer tiempoEnSegundos) {
+        if (tipo == null || tipo.isBlank()) {
+            throw new IllegalArgumentException(Constant.EXCEPCION_TIPO_VACIO);
+        }
+        if (tiempoEnSegundos == null || tiempoEnSegundos < 0) {
+            throw new IllegalArgumentException(Constant.EXCEPCION_TIEMPO_INVALIDO);
+        }
+        this.tipo = tipo;
+        this.tiempoEnSegundos = tiempoEnSegundos;
+        this.ingredientes = new HashMap<>();
+    }
+
     public String getTipo() {
         return tipo;
     }
@@ -22,18 +35,30 @@ public class Receta {
     }
 
     public void setTipo(String tipo) {
+        if (tipo == null || tipo.isBlank()) {
+            throw new IllegalArgumentException(Constant.EXCEPCION_TIPO_VACIO);
+        }
         this.tipo = tipo;
     }
 
     public void setTiempoEnSegundos(Integer tiempoEnSegundos) {
+        if (tiempoEnSegundos == null || tiempoEnSegundos < 0) {
+            throw new IllegalArgumentException(Constant.EXCEPCION_TIEMPO_INVALIDO);
+        }
         this.tiempoEnSegundos = tiempoEnSegundos;
     }
 
     public Map<ObjetoComponente, Integer> getIngredientes() {
-        return ingredientes;
+        return Collections.unmodifiableMap(ingredientes);
     }
 
     public void agregarIngrediente(ObjetoComponente componente, int cantidad) {
+        if (componente == null) {
+            throw new IllegalArgumentException(Constant.EXCEPCION_COMPONENTE_NULO);
+        }
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException(Constant.EXCEPCION_CANTIDAD_INVALIDA);
+        }
         ingredientes.put(componente, cantidad);
     }
 
@@ -66,6 +91,18 @@ public class Receta {
         }
 
         return tiempo;
+    }
+
+    public void validar() {
+        if (tipo == null || tipo.isBlank()) {
+            throw new IllegalStateException(Constant.EXCEPCION_TIPO_VACIO);
+        }
+        if (tiempoEnSegundos == null || tiempoEnSegundos < 0) {
+            throw new IllegalStateException(Constant.EXCEPCION_TIEMPO_INVALIDO);
+        }
+        if (ingredientes.isEmpty()) {
+            throw new IllegalStateException(Constant.EXCEPCION_RECETA_SIN_INGREDIENTES);
+        }
     }
 
     @Override
