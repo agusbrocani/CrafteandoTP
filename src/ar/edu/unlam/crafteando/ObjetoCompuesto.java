@@ -70,4 +70,9 @@ public class ObjetoCompuesto extends ObjetoComponente {
     public int hashCode() {
         return Objects.hash(getNombre());
     }
+    
+    @Override
+    public String toString() {
+    	return "Nombre: " + this.getNombre() + "\n" + "Cantidad: " + this.getCantidad();
+    }
 }
