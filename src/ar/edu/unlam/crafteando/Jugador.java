@@ -1,26 +1,26 @@
 package ar.edu.unlam.crafteando;
 
-/*
+import java.util.*;
+//import org.jpl7.*;
+
 import org.jpl7.Query;
 import org.jpl7.Term;
-import org.jpl7.ASTList;
-*/
-import org.jpl7.*;
 
-import java.util.*;
+
+
 import java.util.stream.Collectors;
 
 public class Jugador {
     
     private String nombre;
     private Inventario inventario;
-    private Recetario recetario; // CARGAR EN PROLOG COMO BASE DE CONOCIMIENTOS EN ingrediente(Objeto, Ing, CantReq);
+    private Recetario recetario;
     //private Historial historial;
 
     private MotorLogicoProlog motor;
 
     public Jugador(String nombre, Inventario inventario, Recetario recetario, /*Historial historial,*/ String rutaBaseProlog) {
-        this.nombre     = nombre;
+        this.nombre = nombre;
         this.inventario = inventario;
         this.recetario  = recetario;
         //this.historial  = historial;
@@ -31,37 +31,63 @@ public class Jugador {
         }
     }
 
-    public List<ObjetoCompuesto> consultarObjetosCrafteables() {
+    public List<String> /*List<ObjetoCompuesto>*/ consultarObjetosCrafteables() {
     	
-        // 1 - limpiar todos los hechos antiguos tengo(_,_)
-        motor.eliminarTodos("tengo(_,_)");
+    	// ACTUALIZAR INVENTARIO EN PROLOG
+        // limpiar todos los hechos antiguos tengo(_,_)
+        motor.eliminarTodos("tengo(_,_)"); // probar con el punto "tengo(_,_)."
 
-        // 2 - cargar el inventario actual en la base en los tengo(_,_)
-        for (Map.Entry<ObjetoComponente, Integer> entry : inventario.getItems().entrySet()) {
+        // cargar el inventario actual en la base en los tengo(_,_)
+        for (Map.Entry<ObjetoComponente, Integer> entry : inventario.getObjetos().entrySet()) {
             String atomo = entry.getKey().getNombre();
             int cantidad = entry.getValue();
             motor.agregarHecho(
                 String.format("tengo(%s,%d)", atomo, cantidad)
             );
         }
+        
+        // ACTUALIZAR RECETARIO EN PROLOG
+        // limpiar todos los hechos antiguos ingrediente(_,_,_)
+        motor.eliminarTodos("ingrediente(_,_,_)");
+        
+        // para cada receta de mi recetario la desmenuzo en sus ingredientes
+	     for (Receta receta : recetario.getRecetas()) {
 
-        // 3 - mandar la consulta a Prolog
+	    	 String objeto = receta.getNombre();
+	    			 
+	         for (Map.Entry<ObjetoComponente, Integer> e : receta.getIngredientes().entrySet()) {
+	             String ing = e.getKey().getNombre();
+	             int cantReq = e.getValue();
+
+	             motor.agregarHecho(
+	                 String.format("ingrediente(%s,%s,%d)", ing, objeto, cantReq)
+	             );
+	         }
+	     }
+	     
+        // mandar la consulta a Prolog
         Query q = new Query("objetos_crafteables(L)");
         if (!q.hasSolution()) {
             return Collections.emptyList();
         }
         
         // CHEQUEAR ESTOS DOS:
-        // 4 - obtener y parseo la lista que me devuelve Prolog
+        // obtener y parseo la lista que me devuelve Prolog
         Term lista = q.oneSolution().get("L");
-        Term[] elems = ((ASTList) lista).toTermArray();
+        Term[] elems = lista.listToTermArray();
+        
         List<String> nombres = Arrays.stream(elems)
                                      .map(Term::name)
                                      .collect(Collectors.toList());
 
-        // 5 - convertir cada átomo Prolog a ObjetoCompuesto Java
-        return nombres.stream()
+        return nombres;
+        // convertir cada átomo Prolog a ObjetoCompuesto Java
+        // o sea, por cada atom hace un new ObjetoCompuesto
+        // devuelve un List<ObjetoCompuesto>
+        // requiere agregar un contructor a ObjetoCompuesto que solo setee el nombre.
+        /* return nombres.stream()
                       .map(ObjetoCompuesto::new)
                       .collect(Collectors.toList());
+        */
     }
 }
