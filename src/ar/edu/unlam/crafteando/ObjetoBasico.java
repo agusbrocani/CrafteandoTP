@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class ObjetoBasico extends ObjetoComponente {
 
-    public ObjetoBasico(String nombre, Integer cantidad) throws Exception {
+    public ObjetoBasico(String nombre, Integer cantidad) {
         super(nombre, cantidad);
     }
 

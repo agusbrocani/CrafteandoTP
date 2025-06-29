@@ -8,12 +8,7 @@ import java.util.Objects;
 public class ObjetoCompuesto extends ObjetoComponente {
     private final Map<ObjetoComponente, Integer> objetos;
 
-    public ObjetoCompuesto() throws Exception {
-        super("", 0);
-        this.objetos = new HashMap<>();
-    }
-
-    public ObjetoCompuesto(String nombre, int cantidad) throws Exception {
+    public ObjetoCompuesto(String nombre, Integer cantidad) {
         super(nombre, cantidad);
         this.objetos = new HashMap<>();
     }
@@ -68,12 +63,11 @@ public class ObjetoCompuesto extends ObjetoComponente {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ObjetoCompuesto that = (ObjetoCompuesto) o;
-        return Objects.equals(getNombre(), that.getNombre()) &&
-               Objects.equals(objetos, that.objetos);
+        return Objects.equals(getNombre(), that.getNombre());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getNombre(), objetos);
+        return Objects.hash(getNombre());
     }
 }
