@@ -13,64 +13,52 @@ public class Recetario {
         if (receta == null) throw new IllegalArgumentException("Receta nula");
         recetas.add(receta);
     }
-    
-    /// PRIMER NIVEL //////////////////////////////////////
 
-    public Map<ObjetoComponente, Integer> verIngredientesPrimerNivel(String nombreObjetoCompuesto) {
-        Receta receta = recetas.stream()
-            .filter(r -> r.getTipo().equalsIgnoreCase(nombreObjetoCompuesto))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("No se encontró receta para: " + nombreObjetoCompuesto));
+    // ==== MÉTODO PRIVADO PARA REUTILIZAR ====
 
-        // Suponemos que el tipo representa el nombre del objeto compuesto
-        return receta.getIngredientes();
+    private Receta buscarRecetaPorNombre(String nombreObjetoCompuesto) {
+        return recetas.stream()
+                .filter(r -> r.getTipo().equalsIgnoreCase(nombreObjetoCompuesto))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("No se encontró receta para: " + nombreObjetoCompuesto));
     }
-    
+
+    // ==== RECETA DE PRIMER NIVEL ====
+
+    private Map<ObjetoComponente, Integer> obtenerRecetaPrimerNivel(String nombreObjetoCompuesto) {
+        return buscarRecetaPorNombre(nombreObjetoCompuesto).getIngredientes();
+    }
+
     public void mostrarReceta(String nombreObjetoCompuesto) {
-        Map<ObjetoComponente, Integer> ingredientes = verIngredientesPrimerNivel(nombreObjetoCompuesto);
-
+        Map<ObjetoComponente, Integer> ingredientes = obtenerRecetaPrimerNivel(nombreObjetoCompuesto);
         System.out.println("Receta para: " + nombreObjetoCompuesto);
-        ingredientes.forEach((componente, cantidad) ->
-            System.out.println("- " + componente.getNombre() + " x" + cantidad)
-        );
-    }
-    
-    // DESDE CERO ////////////////////////////////////////
-    public Map<ObjetoBasico, Integer> verIngredientesDesdeCero(String nombreObjetoCompuesto) {
-        Receta receta = recetas.stream()
-            .filter(r -> r.getTipo().equalsIgnoreCase(nombreObjetoCompuesto))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("No se encontró receta para: " + nombreObjetoCompuesto));
-
-        Map<ObjetoBasico, Integer> resultado = new HashMap<>();
-
-        for (Map.Entry<ObjetoComponente, Integer> entry : receta.getIngredientes().entrySet()) {
-            Map<ObjetoBasico, Integer> basicos = entry.getKey().descomponerEnBasicos();
-            int cantidad = entry.getValue();
-
-            for (Map.Entry<ObjetoBasico, Integer> basico : basicos.entrySet()) {
-                resultado.merge(basico.getKey(), basico.getValue() * cantidad, Integer::sum);
-            }
-        }
-
-        return resultado;
-    }
-    
-    
-    public void mostrarRecetaDesdeCero(String nombreObjetoCompuesto) {
-        Map<ObjetoBasico, Integer> basicos = verIngredientesDesdeCero(nombreObjetoCompuesto);
-
-        System.out.println("Receta completa (desde cero) para: " + nombreObjetoCompuesto);
-        basicos.forEach((objeto, cantidad) ->
+        ingredientes.forEach((objeto, cantidad) ->
             System.out.println("- " + objeto.getNombre() + " x" + cantidad)
         );
     }
-    
-    // OTROS /////////////////////////////////////////////
-    
+
+    // ==== RECETA DESDE CERO ====
+
+    public Map<ObjetoBasico, Integer> obtenerRecetaDesdeCero(String nombreObjetoCompuesto) {
+        Receta receta = buscarRecetaPorNombre(nombreObjetoCompuesto);
+
+        ObjetoCompuesto objeto = new ObjetoCompuesto(nombreObjetoCompuesto, 1);
+        receta.getIngredientes().forEach((componente, cantidad) ->
+            objeto.agregar(componente.clonarConCantidad(cantidad))
+        );
+        return receta.listarIngredientesDesdeCero(objeto);
+    }
+
+    public void mostrarRecetaDesdeCero(String nombreObjetoCompuesto) {
+        Map<ObjetoBasico, Integer> ingredientes = obtenerRecetaDesdeCero(nombreObjetoCompuesto);
+        System.out.println("Receta completa (desde cero) para: " + nombreObjetoCompuesto);
+        ingredientes.forEach((objeto, cantidad) ->
+                System.out.println("- " + objeto.getNombre() + " x" + cantidad)
+        );
+    }
+
     public List<Receta> getRecetas() {
         return Collections.unmodifiableList(recetas);
     }
-	
 	
 }

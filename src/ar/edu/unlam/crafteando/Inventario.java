@@ -2,10 +2,6 @@ package ar.edu.unlam.crafteando;
 
 import java.util.HashMap;
 import java.util.Map;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class Inventario {
 
