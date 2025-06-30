@@ -16,7 +16,6 @@ objeto_compuesto(pico).
 tengo(hierro, 6).
 tengo(madera, 5).
 tengo(carbon, 2).
-tengo(hierro, 1).
 
 
 % Para ver si puedo craftear un Objeto tengo que tener todos los ingredientes en cantidad suficiente

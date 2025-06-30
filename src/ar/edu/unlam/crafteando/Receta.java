@@ -87,17 +87,17 @@ public class Receta {
         return o.obtener();
     }
 
-    public int calcularTiempoTotal(Map<ObjetoCompuesto, Receta> recetas) {
-        int tiempo = this.tiempoEnSegundos != null ? this.tiempoEnSegundos : 0;
-
-        for (Map.Entry<ObjetoComponente, Integer> entry : ingredientes.entrySet()) {
-            ObjetoComponente componente = entry.getKey();
-            int cantidad = entry.getValue();
-            tiempo += componente.calcularTiempo(recetas) * cantidad;
-        }
-
-        return tiempo;
-    }
+//    public int calcularTiempoTotal(Map<ObjetoCompuesto, Receta> recetas) {
+//        int tiempo = this.tiempoEnSegundos != null ? this.tiempoEnSegundos : 0;
+//
+//        for (Map.Entry<ObjetoComponente, Integer> entry : ingredientes.entrySet()) {
+//            ObjetoComponente componente = entry.getKey();
+//            int cantidad = entry.getValue();
+//            tiempo += componente.calcularTiempo(recetas) * cantidad;
+//        }
+//
+//        return tiempo;
+//    }
 
     public void validar() {
         if (tipo == null || tipo.isBlank()) {

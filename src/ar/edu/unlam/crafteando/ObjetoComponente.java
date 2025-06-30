@@ -26,7 +26,6 @@ public abstract class ObjetoComponente {
     }
 
     public abstract Map<ObjetoComponente, Integer> obtener();
-    public abstract int calcularTiempo(Map<ObjetoCompuesto, Receta> recetas);
     public abstract Map<ObjetoBasico, Integer> descomponerEnBasicos();
     
     public abstract boolean estaVacio();

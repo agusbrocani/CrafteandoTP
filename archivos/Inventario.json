@@ -1,0 +1,38 @@
+[
+  {
+    "nombre": "Madera",
+    "cantidad": 70
+  },
+  {
+    "nombre": "Hierro",
+    "cantidad": 40
+  },
+  {
+    "nombre": "Carbón",
+    "cantidad": 60
+  },
+  {
+    "nombre": "Piedra",
+    "cantidad": 80
+  },
+  {
+    "nombre": "Lana",
+    "cantidad": 20
+  },
+  {
+    "nombre": "Arena",
+    "cantidad": 20
+  },
+  {
+    "nombre": "Diamante",
+    "cantidad": 10
+  },
+  {
+    "nombre": "Huevo",
+    "cantidad": 20
+  },
+  {
+    "nombre": "Trigo",
+    "cantidad": 50
+  }
+]

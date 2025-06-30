@@ -19,11 +19,6 @@ public class ObjetoBasico extends ObjetoComponente {
     }
 
     @Override
-    public int calcularTiempo(Map<ObjetoCompuesto, Receta> recetas) {
-        return 0;
-    }
-
-    @Override
     public Map<ObjetoBasico, Integer> descomponerEnBasicos() {
         Map<ObjetoBasico, Integer> resultado = new HashMap<>();
         resultado.put(this, getCantidad());
