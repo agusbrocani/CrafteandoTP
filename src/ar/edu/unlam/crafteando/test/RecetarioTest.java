@@ -126,7 +126,7 @@ public class RecetarioTest {
         }
         
         @Test
-        @DisplayName("Mostrar receta desde cero")
+        @DisplayName("Mostrar receta desde cero para Antorcha")
         void mostrarRecetaDesdeCero() {
             recetario.mostrarRecetaDesdeCero("Antorcha");
         }

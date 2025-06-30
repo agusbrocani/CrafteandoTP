@@ -101,7 +101,7 @@ public class Recetario {
         }
 
         Map<String, Receta> recetasPorNombre = recetas.stream()
-            .collect(Collectors.toMap(Receta::getNombre, Function.identity(), (r1, r2) -> r1));
+            .collect(Collectors.toMap(Receta::getNombre, Function.identity(), (r1, _) -> r1));
 
         for (int i = 0; i < variantes.size(); i++) {
             Receta receta = variantes.get(i);
@@ -119,42 +119,6 @@ public class Recetario {
             int tiempo = receta.calcularTiempoTotal(recetasPorNombre);
             System.out.println("Tiempo total de crafteo: " + tiempo + " segundos");
         }
-    }
-
-
-    // ==== MOSTRAR CONSTRUCCIÓN JERÁRQUICA ====
-
-    public void mostrarConstruccion(String nombreObjetoCompuesto, boolean soloPrimerNivel) {
-        List<Receta> recetasDisponibles = buscarRecetasPorNombre(nombreObjetoCompuesto);
-        
-        Receta recetaSeleccionada = recetasDisponibles.getFirst();
-        
-        // Creamos un objeto temporal con los ingredientes de la receta
-        ObjetoCompuesto objetoParaMostrar = new ObjetoCompuesto(nombreObjetoCompuesto);
-        
-        recetaSeleccionada.getIngredientes().forEach((componente, cantidad) -> {
-            for (int i = 0; i < cantidad; i++) {
-                objetoParaMostrar.agregar(componente);
-            }
-        });
-        
-        System.out.println("Construcción para " + nombreObjetoCompuesto + ":");
-        // Aprovechamos el polimorfismo: mostrarConstruccion() funciona recursivamente
-        objetoParaMostrar.mostrarConstruccion(soloPrimerNivel);
-    }
-
-    // ==== UTILIDADES ====
-    
-    public int contarRecetasPara(String nombreObjetoCompuesto) {
-        return buscarRecetasPorNombre(nombreObjetoCompuesto).size();
-    }
-
-    public List<String> getNombresObjetosConRecetas() {
-        return recetas.stream()
-                .map(Receta::getNombre)
-                .distinct()
-                .sorted()
-                .collect(Collectors.toList());
     }
 
     // ==== GETTERS ====
