@@ -6,15 +6,16 @@ import java.util.Map;
 import java.util.Objects;
 
 public class Receta {
+	private String nombre;
+	private String tipo;
     private final Map<ObjetoComponente, Integer> ingredientes;
-    private String tipo;
     private Integer tiempoEnSegundos;
 
     public Receta() {
         ingredientes = new HashMap<>();
     }
 
-    public Receta(String tipo, Integer tiempoEnSegundos) {
+    public Receta(String nombre, String tipo, Integer tiempoEnSegundos) {
         if (tipo == null || tipo.isBlank()) {
             throw new IllegalArgumentException(Constant.EXCEPCION_TIPO_VACIO);
         }
@@ -24,10 +25,15 @@ public class Receta {
         this.tipo = tipo;
         this.tiempoEnSegundos = tiempoEnSegundos;
         this.ingredientes = new HashMap<>();
+        this.nombre = nombre;
     }
 
     public String getTipo() {
         return tipo;
+    }
+    
+    public String getNombre() {
+    	return nombre;
     }
 
     public Integer getTiempoEnSegundos() {
@@ -81,16 +87,23 @@ public class Receta {
         return o.obtener();
     }
 
-    public int calcularTiempoTotal(Map<ObjetoCompuesto, Receta> recetas) {
-        int tiempo = this.tiempoEnSegundos != null ? this.tiempoEnSegundos : 0;
+    public int calcularTiempoTotal(Map<String, Receta> recetasPorNombre) {
+        int total = this.tiempoEnSegundos != null ? this.tiempoEnSegundos : 0;
 
-        for (Map.Entry<ObjetoComponente, Integer> entry : ingredientes.entrySet()) {
-            ObjetoComponente componente = entry.getKey();
+        for (Map.Entry<ObjetoComponente, Integer> entry : this.ingredientes.entrySet()) {
+            String nombreIngrediente = entry.getKey().getNombre();
             int cantidad = entry.getValue();
-            tiempo += componente.calcularTiempo(recetas) * cantidad;
+
+            Receta recetaDelIngrediente = recetasPorNombre.get(nombreIngrediente);
+
+            if (recetaDelIngrediente != null) {
+                // Es un compuesto con receta → calcular su tiempo total recursivo
+                total += recetaDelIngrediente.calcularTiempoTotal(recetasPorNombre) * cantidad;
+            }
+            // Si no hay receta, es un ObjetoBasico → no suma tiempo
         }
 
-        return tiempo;
+        return total;
     }
 
     public void validar() {
