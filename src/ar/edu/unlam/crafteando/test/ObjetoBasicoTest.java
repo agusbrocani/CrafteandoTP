@@ -28,5 +28,29 @@ class ObjetoBasicoTest {
         }
     }
     
+	@Test
+	void deberiaDescomponerseEnSiMismo() {
+	    ObjetoBasico madera = new ObjetoBasico("Madera");
+	    Map<ObjetoBasico, Integer> resultado = madera.descomponerEnBasicos();
+
+	    assertEquals(1, resultado.size());
+	    assertTrue(resultado.containsKey(madera));
+	    assertEquals(1, resultado.get(madera));
+	}
 	
+	@Test
+	void objetosConMismoNombreSonIguales() {
+	    ObjetoBasico a = new ObjetoBasico("Piedra");
+	    ObjetoBasico b = new ObjetoBasico("Piedra");
+
+	    assertEquals(a, b);
+	    assertEquals(a.hashCode(), b.hashCode());
+	}
+	
+	@Test
+	void toStringDeberiaMostrarNombreYCantidad() {
+	    ObjetoBasico sal = new ObjetoBasico("Sal");
+	    String esperado = "Nombre: Sal, Cantidad: 1";
+	    assertEquals(esperado, sal.toString());
+	}
 }

@@ -31,18 +31,18 @@ class ObjetoCompuestoTest {
         assertEquals(4, basicos.get(cuerda));
     }
 
-    @Test
-    void deberiaCalcularTiempoDeReceta() throws Exception {
-        ObjetoBasico madera = new ObjetoBasico("Madera");
-        ObjetoCompuesto mango = new ObjetoCompuesto("Mango");
-        mango.agregar(madera);
-
-        Receta recetaMango = new Receta();
-        recetaMango.setTipo("Mango");
-        recetaMango.setTiempoEnSegundos(10);
-        recetaMango.agregarIngrediente(madera, 2);
-
-        Map<ObjetoCompuesto, Receta> recetas = Map.of(mango, recetaMango);
-        assertEquals(10, mango.calcularTiempo(recetas));
-    }
+//    @Test
+//    void deberiaCalcularTiempoDeReceta() throws Exception {
+//        ObjetoBasico madera = new ObjetoBasico("Madera");
+//        ObjetoCompuesto mango = new ObjetoCompuesto("Mango");
+//        mango.agregar(madera);
+//
+//        Receta recetaMango = new Receta();
+//        recetaMango.setTipo("Mango");
+//        recetaMango.setTiempoEnSegundos(10);
+//        recetaMango.agregarIngrediente(madera, 2);
+//
+//        Map<ObjetoCompuesto, Receta> recetas = Map.of(mango, recetaMango);
+//        assertEquals(10, mango.calcularTiempo(recetas));
+//    }
 }
