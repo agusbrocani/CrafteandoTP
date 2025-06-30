@@ -1,22 +1,45 @@
 package ar.edu.unlam.crafteando;
+
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.LinkedList;
 
-public class MesaCrafteo extends ObjetoCompuesto{
+public class MesaCrafteo extends ObjetoCompuesto {
+
 	private String nombre;
-	private final List <Receta> recetas;
-	
-	public MesaCrafteo(String nombre, String nombreObjetoACraftear, Integer cantidad) {
-		super(nombreObjetoACraftear);
-		this.nombre = nombre;
-		recetas = new LinkedList<Receta>();
-	}
+    private final List<Receta> recetas;
 
-    public String getNombre() {
-        return nombre;
+    public MesaCrafteo(String nombre) {
+        super(nombre);
+        this.nombre = nombre;
+        this.recetas = new ArrayList<>();
+    }
+
+    public void agregarReceta(Receta receta) {
+        recetas.add(receta);
     }
     
-    public List<Receta> obtenerRecetasDisponibles() {
-        return new LinkedList<>(recetas);
-    }   
+    public void agregarVariasRecetas(List<Receta> nuevasRecetas) {
+        if (nuevasRecetas == null) {
+            throw new IllegalArgumentException("La lista de recetas no puede ser nula.");
+        }
+
+        for (Receta receta : nuevasRecetas) {
+            if (receta == null) {
+                throw new IllegalArgumentException("No se puede agregar una receta nula.");
+            }
+            recetas.add(receta);
+        }
+    }
+
+    public List<Receta> obtenerRecetas() {
+        return Collections.unmodifiableList(recetas);
+    }
+
+    
+    public void desbloquearRecetasEn(Recetario recetario) {
+        for (Receta receta : recetas) {
+            recetario.agregarReceta(receta);
+        }
+    }
 }
