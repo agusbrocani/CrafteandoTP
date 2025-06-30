@@ -25,7 +25,7 @@ public class Recetario {
 
     // ==== RECETA DE PRIMER NIVEL ====
 
-    private Map<ObjetoComponente, Integer> obtenerRecetaPrimerNivel(String nombreObjetoCompuesto) {
+    public Map<ObjetoComponente, Integer> obtenerRecetaPrimerNivel(String nombreObjetoCompuesto) {
         return buscarRecetaPorNombre(nombreObjetoCompuesto).getIngredientes();
     }
 
