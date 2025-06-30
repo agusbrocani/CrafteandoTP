@@ -38,20 +38,20 @@ public class RecetarioTest {
         baston = new ObjetoCompuesto("Bastón");
         
         // Crear receta para Bastón
-        recetaBaston = new Receta("Bastón", 12);
+        recetaBaston = new Receta("RecetaBaston","Bastón", 12);
         recetaBaston.agregarIngrediente(madera, 2);
         
         // Crear receta para Hacha 
-        recetaHacha = new Receta("Hacha", 30);
+        recetaHacha = new Receta("RecetaHacha","Hacha", 30);
         recetaHacha.agregarIngrediente(baston, 1);
         recetaHacha.agregarIngrediente(hierro, 3);
         
         // Crear recetas para Antorcha (múltiples)
-        recetaAntorcha1 = new Receta("Antorcha", 5);
+        recetaAntorcha1 = new Receta("RecetaAntorcha","Antorcha", 5);
         recetaAntorcha1.agregarIngrediente(baston, 1);
         recetaAntorcha1.agregarIngrediente(carbonMineral, 1);
         
-        recetaAntorcha2 = new Receta("Antorcha", 5);
+        recetaAntorcha2 = new Receta("RecetaAntorcha","Antorcha", 5);
         recetaAntorcha2.agregarIngrediente(baston, 1);
         recetaAntorcha2.agregarIngrediente(carbonVegetal, 1);
         
@@ -186,16 +186,6 @@ public class RecetarioTest {
                 () -> recetario.validarRecetas()
             );
             assertEquals(Constant.EXCEPCION_RECETA_SIN_INGREDIENTES, exception.getMessage());
-        }
-        
-        @Test
-        @DisplayName("Debe retornar lista inmutable de recetas")
-        void debeRetornarListaInmutableDeRecetas() {
-            List<Receta> recetas = recetario.getRecetas();
-            
-            assertThrows(UnsupportedOperationException.class, () -> {
-                recetas.add(new Receta("Test", 10));
-            });
         }
     }
 

@@ -1,80 +1,81 @@
 package ar.edu.unlam.crafteando;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Inventario {
+    private final Map<String, Integer> objetos;
 
-	private final Map<ObjetoComponente, Integer> objetos;
-	
-	//Constructor
-	public Inventario() {
-		
-		objetos = new HashMap<ObjetoComponente, Integer>();
-	}
-	
-	public void ver() {
-	    for (Map.Entry<ObjetoComponente, Integer> entry : objetos.entrySet()) {
-	        ObjetoComponente objeto = entry.getKey();
-	        Integer cantidad = entry.getValue();
-	        System.out.println("[" + objeto.getNombre() + " - " + cantidad + "]");
-	    }
-	}
-	
-	public Map<ObjetoComponente, Integer> getObjetos() {
-        return Collections.unmodifiableMap(objetos);
+    public Inventario() {
+        objetos = new HashMap<>();
     }
-	
-	//quitar un objeto del inventario
-	public void quitar(ObjetoComponente o)
-	{
-	    if (!contiene(o)) {
-	        throw new IllegalArgumentException("El objeto no está en el inventario.");
-	    }
-	    
-    	int cantidadActual = objetos.get(o);
-    	
-	    if (o.getCantidad() > cantidadActual) {
-	        throw new IllegalArgumentException("Cantidad insuficiente. Actual: " + cantidadActual + 
-	        		", Solicitada: " + o.getCantidad());
-	    }
-    	
-	    int nuevaCantidad = cantidadActual - o.getCantidad();
-	    
-    	if(nuevaCantidad == 0)
-    		objetos.remove(o);
-    	else
-    		objetos.put(o, nuevaCantidad);
 
-}
-	
-	//agregar un objeto al inventario
-	public void agregar(ObjetoComponente o) 
-	{
-	    if (contiene(o)) {
-	        int cantidadActual = obtenerCantidad(o);
-	        objetos.put(o, cantidadActual + o.getCantidad());
-	    } else {
-	        objetos.put(o, o.getCantidad());
-	    }
-	}
-	
-	public Integer obtenerCantidad(ObjetoComponente o) {
-		return objetos.get(o);
-	}
-	
-	public boolean contiene(ObjetoComponente o)
-	{
-		return objetos.containsKey(o);
-	}
-	
-	public void guardarComoJson(String rutaArchivo) {
-	    List<EntradaInventario> lista = objetos.entrySet().stream()
-	        .map(entry -> new EntradaInventario(entry.getKey().getNombre(), entry.getValue()))
-	        .toList();
+    public void ver() {
+        objetos.forEach((nombre, cantidad) ->
+            System.out.println("[" + nombre + " - " + cantidad + "]")
+        );
+    }
 
-	    GestorJson.guardar(lista, rutaArchivo);
-	}
-	
+    public Map<ObjetoComponente, Integer> getObjetos() {
+        // Devolvemos un map simulado (nombre -> cantidad) usando objetos básicos dummy
+        return objetos.entrySet().stream()
+            .collect(Collectors.toMap(
+                e -> new ObjetoBasico(e.getKey()), // todos como ObjetoBasico genérico
+                Map.Entry::getValue
+            ));
+    }
 
+    public void quitar(String nombre, int cantidad) {
+        if (nombre == null || nombre.isBlank()) {
+            throw new IllegalArgumentException("Nombre inválido.");
+        }
+        
+        if (!objetos.containsKey(nombre)) {
+            throw new IllegalArgumentException("El objeto no está en el inventario.");
+        }
+
+        int cantidadActual = objetos.get(nombre);
+        if (cantidad > cantidadActual) {
+            throw new IllegalArgumentException("Cantidad insuficiente. Actual: " + cantidadActual +
+                    ", Solicitada: " + cantidad);
+        }
+
+        int nuevaCantidad = cantidadActual - cantidad;
+        if (nuevaCantidad == 0) {
+            objetos.remove(nombre);
+        } else {
+            objetos.put(nombre, nuevaCantidad);
+        }
+    }
+
+    public void agregar(String nombre, int cantidad) {
+        if (nombre == null || nombre.isBlank()) {
+            throw new IllegalArgumentException("Nombre de objeto inválido.");
+        }
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("Cantidad debe ser mayor a cero.");
+        }
+
+        objetos.merge(nombre, cantidad, Integer::sum);
+    }
+
+    public Integer obtenerCantidad(String nombre) {
+        if (!objetos.containsKey(nombre)) {
+            throw new IllegalArgumentException("El objeto no está en el inventario.");
+        }
+        else
+        return objetos.get(nombre);
+    }
+
+    public boolean contiene(String nombre) {
+        return objetos.containsKey(nombre);
+    }
+
+    public void guardarComoJson(String rutaArchivo) {
+        List<EntradaInventario> lista = objetos.entrySet().stream()
+                .map(entry -> new EntradaInventario(entry.getKey(), entry.getValue()))
+                .toList();
+        GestorJson.guardar(lista, rutaArchivo);
+    }
 }
 
