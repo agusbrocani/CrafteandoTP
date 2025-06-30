@@ -1,6 +1,7 @@
 package ar.edu.unlam.crafteando;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Recetario {
@@ -20,62 +21,46 @@ public class Recetario {
     // ==== MÉTODOS PRIVADOS PARA REUTILIZAR ====
 
     private List<Receta> buscarRecetasPorNombre(String nombreObjetoCompuesto) {
-        List<Receta> recetasEncontradas = recetas.stream()
-                .filter(r -> r.getTipo().equalsIgnoreCase(nombreObjetoCompuesto))
-                .collect(Collectors.toList());
-        
-        if (recetasEncontradas.isEmpty()) {
-            throw new IllegalArgumentException("No se encontró receta para: " + nombreObjetoCompuesto);
-        }
-        return recetasEncontradas;
-    }
-
-    private Receta seleccionarPrimeraReceta(String nombreObjetoCompuesto) {
-        return buscarRecetasPorNombre(nombreObjetoCompuesto).get(0);
+        return recetas.stream()
+            .filter(r -> r.getNombre().equalsIgnoreCase(nombreObjetoCompuesto))
+            .collect(Collectors.toList());
     }
     
-    private ObjetoComponente construirObjetoDesdeReceta(String nombre) {
-        Receta receta = seleccionarPrimeraReceta(nombre);
+    private  ObjetoComponente construirObjetoDesdeReceta(Receta receta) {
+        String nombre = receta.getNombre();
         ObjetoCompuesto compuesto = new ObjetoCompuesto(nombre);
 
-        receta.getIngredientes().forEach((componente, cantidad) -> {
-            ObjetoComponente ingrediente;
-            if (componente instanceof ObjetoBasico) {
-                ingrediente = componente;
+        receta.getIngredientes().forEach((ingrediente, cantidad) -> {
+            ObjetoComponente subobjeto;
+
+            List<Receta> subRecetas = buscarRecetasPorNombre(ingrediente.getNombre());
+            if (!subRecetas.isEmpty()) {
+                // Usar recursión con la primera receta disponible
+                subobjeto = construirObjetoDesdeReceta(subRecetas.get(0));
             } else {
-                ingrediente = construirObjetoDesdeReceta(componente.getNombre()); // 👈 recursivo
+                // No tiene receta → básico
+                subobjeto = new ObjetoBasico(ingrediente.getNombre());
             }
 
             for (int i = 0; i < cantidad; i++) {
-                compuesto.agregar(ingrediente);
+                compuesto.agregar(subobjeto);
             }
         });
 
         return compuesto;
     }
-   
+
     // ==== RECETAS DE PRIMER NIVEL ====
 
-    public List<Map<ObjetoComponente, Integer>> obtenerTodasLasRecetas(String nombreObjetoCompuesto) {
+    public List<Map<ObjetoComponente, Integer>> obtenerReceta(String nombreObjetoCompuesto) {
         return buscarRecetasPorNombre(nombreObjetoCompuesto).stream()
                 .map(Receta::getIngredientes)
                 .collect(Collectors.toList());
     }
 
-    public Map<ObjetoComponente, Integer> obtenerRecetaPrimerNivel(String nombreObjetoCompuesto) {
-        return seleccionarPrimeraReceta(nombreObjetoCompuesto).getIngredientes();
-    }
-
     public void mostrarReceta(String nombreObjetoCompuesto) {
-        Map<ObjetoComponente, Integer> ingredientes = obtenerRecetaPrimerNivel(nombreObjetoCompuesto);
-        System.out.println("Receta para: " + nombreObjetoCompuesto);
-        ingredientes.forEach((objeto, cantidad) ->
-            System.out.println("- " + objeto.getNombre() + " x" + cantidad)
-        );
-    }
-
-    public void mostrarTodasLasRecetas(String nombreObjetoCompuesto) {
         List<Receta> todasLasRecetas = buscarRecetasPorNombre(nombreObjetoCompuesto);
+        System.out.println("\n---------------------------------------------------");
         System.out.println("Todas las recetas para: " + nombreObjetoCompuesto);
         
         for (int i = 0; i < todasLasRecetas.size(); i++) {
@@ -89,20 +74,53 @@ public class Recetario {
     }
 
     // ==== RECETA DESDE CERO ====
+   
+    public List<Map<ObjetoBasico, Integer>> obtenerRecetaDesdeCero(String nombreObjetoCompuesto) {
+        List<Receta> variantes = buscarRecetasPorNombre(nombreObjetoCompuesto);
 
+        if (variantes.isEmpty()) {
+            throw new IllegalArgumentException("No hay recetas para: " + nombreObjetoCompuesto);
+        }
 
-    public Map<ObjetoBasico, Integer> obtenerRecetaDesdeCero(String nombreObjetoCompuesto) {
-        ObjetoComponente objetoConstruido = construirObjetoDesdeReceta(nombreObjetoCompuesto);
-        return objetoConstruido.descomponerEnBasicos();
+        List<Map<ObjetoBasico, Integer>> resultados = new ArrayList<>();
+
+        for (Receta receta : variantes) {
+            ObjetoComponente objetoConstruido = construirObjetoDesdeReceta(receta);
+            resultados.add(objetoConstruido.descomponerEnBasicos());
+        }
+
+        return resultados;
     }
 
     public void mostrarRecetaDesdeCero(String nombreObjetoCompuesto) {
-        Map<ObjetoBasico, Integer> ingredientes = obtenerRecetaDesdeCero(nombreObjetoCompuesto);
-        System.out.println("Receta completa (desde cero) para: " + nombreObjetoCompuesto);
-        ingredientes.forEach((objeto, cantidad) ->
+        List<Receta> variantes = buscarRecetasPorNombre(nombreObjetoCompuesto);
+
+        if (variantes.isEmpty()) {
+            System.out.println("No hay recetas para: " + nombreObjetoCompuesto);
+            return;
+        }
+
+        Map<String, Receta> recetasPorNombre = recetas.stream()
+            .collect(Collectors.toMap(Receta::getNombre, Function.identity(), (r1, r2) -> r1));
+
+        for (int i = 0; i < variantes.size(); i++) {
+            Receta receta = variantes.get(i);
+            System.out.println("\n=== Opción " + (i + 1) + " ===");
+
+            ObjetoComponente objetoConstruido = construirObjetoDesdeReceta(receta); // ← receta específica
+
+            Map<ObjetoBasico, Integer> ingredientesBasicos = objetoConstruido.descomponerEnBasicos();
+
+            System.out.println("Ingredientes básicos:");
+            ingredientesBasicos.forEach((objeto, cantidad) ->
                 System.out.println("- " + objeto.getNombre() + " x" + cantidad)
-        );
+            );
+
+            int tiempo = receta.calcularTiempoTotal(recetasPorNombre);
+            System.out.println("Tiempo total de crafteo: " + tiempo + " segundos");
+        }
     }
+
 
     // ==== MOSTRAR CONSTRUCCIÓN JERÁRQUICA ====
 
@@ -133,7 +151,7 @@ public class Recetario {
 
     public List<String> getNombresObjetosConRecetas() {
         return recetas.stream()
-                .map(Receta::getTipo)
+                .map(Receta::getNombre)
                 .distinct()
                 .sorted()
                 .collect(Collectors.toList());
