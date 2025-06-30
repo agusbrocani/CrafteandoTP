@@ -1,11 +1,6 @@
 package ar.edu.unlam.crafteando;
 
-import java.util.HashMap;
-import java.util.Map;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.*;
 
 public class Inventario {
 
@@ -24,6 +19,10 @@ public class Inventario {
 	        System.out.println("[" + objeto.getNombre() + " - " + cantidad + "]");
 	    }
 	}
+	
+	public Map<ObjetoComponente, Integer> getObjetos() {
+        return Collections.unmodifiableMap(objetos);
+    }
 	
 	//quitar un objeto del inventario
 	public void quitar(ObjetoComponente o)
@@ -69,10 +68,12 @@ public class Inventario {
 	}
 	
 	public void guardarComoJson(String rutaArchivo) {
-		
-		GestorJson.guardar(objetos, rutaArchivo);
+	    List<EntradaInventario> lista = objetos.entrySet().stream()
+	        .map(entry -> new EntradaInventario(entry.getKey().getNombre(), entry.getValue()))
+	        .toList();
+
+	    GestorJson.guardar(lista, rutaArchivo);
 	}
-	
 	
 
 }
