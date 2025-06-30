@@ -1,0 +1,116 @@
+[
+  {
+    "nombreObjeto": "Antorcha",
+    "tipo": "Básico",
+    "tiempoEnSegundos": 5,
+    "ingredientes": [
+      { "nombre": "Carbón", "cantidad": 1 },
+      { "nombre": "Madera", "cantidad": 1 }
+    ]
+  },
+  {
+    "nombreObjeto": "Bastón",
+    "tipo": "Básico",
+    "tiempoEnSegundos": 2,
+    "ingredientes": [
+      { "nombre": "Madera", "cantidad": 2 }
+    ]
+  }
+  {
+    "nombreObjeto": "Espada de Hierro",
+    "tipo": "Herrería",
+    "tiempoEnSegundos": 15,
+    "ingredientes": [
+      { "nombre": "Hierro", "cantidad": 2 },
+      { "nombre": "Bastón", "cantidad": 1 }
+    ]
+  },
+  {
+    "nombreObjeto": "Pico de Madera",
+    "tipo": "Carpintería",
+    "tiempoEnSegundos": 10,
+    "ingredientes": [
+      { "nombre": "Madera", "cantidad": 3 },
+      { "nombre": "Bastón", "cantidad": 2 }
+    ]
+  },
+  {
+    "nombreObjeto": "Pico de Piedra",
+    "tipo": "Carpintería",
+    "tiempoEnSegundos": 12,
+    "ingredientes": [
+      { "nombre": "Piedra", "cantidad": 3 },
+      { "nombre": "Bastón", "cantidad": 2 }
+    ]
+  },
+  {
+    "nombreObjeto": "Pala de Hierro",
+    "tipo": "Herrería",
+    "tiempoEnSegundos": 10,
+    "ingredientes": [
+      { "nombre": "Hierro", "cantidad": 1 },
+      { "nombre": "Bastón", "cantidad": 2 }
+    ]
+  },
+  {
+    "nombreObjeto": "Hacha de Hierro",
+    "tipo": "Herrería",
+    "tiempoEnSegundos": 15,
+    "ingredientes": [
+      { "nombre": "Hierro", "cantidad": 3 },
+      { "nombre": "Bastón", "cantidad": 2 }
+    ]
+  },
+  {
+    "nombreObjeto": "Horno",
+    "tipo": "Carpintería",
+    "tiempoEnSegundos": 12,
+    "ingredientes": [
+      { "nombre": "Piedra", "cantidad": 8 }
+    ]
+  },
+  {
+    "nombreObjeto": "Puerta de Madera",
+    "tipo": "Carpintería",
+    "tiempoEnSegundos": 10,
+    "ingredientes": [
+      { "nombre": "Madera", "cantidad": 6 }
+    ]
+  },
+  {
+    "nombreObjeto": "Cama",
+    "tipo": "Carpintería",
+    "tiempoEnSegundos": 20,
+    "ingredientes": [
+      { "nombre": "Madera", "cantidad": 3 },
+      { "nombre": "Lana", "cantidad": 3 }
+    ]
+  },
+  {
+    "nombreObjeto": "Fogata",
+    "tipo": "Basico",
+    "tiempoEnSegundos": 10,
+    "ingredientes": [
+      { "nombre": "Madera", "cantidad": 4 },
+      { "nombre": "Antorcha", "cantidad": 1 }
+    ]
+  },
+  {
+    "nombreObjeto": "Mesa de Carpintería",
+    "tipo": "Básico",
+    "tiempoEnSegundos": 15,
+    "ingredientes": [
+      { "nombre": "Madera", "cantidad": 6 },
+      { "nombre": "Piedra", "cantidad": 2 }
+    ]
+  },
+  {
+    "nombreObjeto": "Mesa de Herrería",
+    "tipo": "Básico",
+    "tiempoEnSegundos": 20,
+    "ingredientes": [
+      { "nombre": "Hierro", "cantidad": 4 },
+      { "nombre": "Madera", "cantidad": 2 }
+    ]
+  }
+]
