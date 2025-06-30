@@ -24,7 +24,7 @@ public class Recetario {
 
     // ==== MÉTODOS PRIVADOS PARA REUTILIZAR ====
 
-    private List<Receta> buscarRecetasPorNombre(String nombreObjetoCompuesto) {
+    public List<Receta> buscarRecetasPorNombre(String nombreObjetoCompuesto) {
         return recetas.stream()
             .filter(r -> r.getNombre().equalsIgnoreCase(nombreObjetoCompuesto))
             .collect(Collectors.toList());
@@ -120,7 +120,7 @@ public class Recetario {
 
         // Mapa para cálculo de tiempos y posible recursividad
         Map<String, Receta> recetasPorNombre = recetas.stream()
-            .collect(Collectors.toMap(Receta::getNombre, Function.identity(), (r1, _) -> r1));
+            .collect(Collectors.toMap(Receta::getNombre, Function.identity(), (r1, r2) -> r1)); // (r1, _)
 
         for (int i = 0; i < variantes.size(); i++) {
             Receta receta = variantes.get(i);
@@ -134,7 +134,30 @@ public class Recetario {
             System.out.println("Tiempo total de crafteo: " + tiempo + " segundos");
         }
     }
+    
+    public void mostrarRecetaDesdeCero(String nombreObjetoCompuesto) {
+        List<Receta> variantes = buscarRecetasPorNombre(nombreObjetoCompuesto);
 
+        if (variantes.isEmpty()) {
+            System.out.println("No hay recetas para: " + nombreObjetoCompuesto);
+            return;
+        }
+
+        Map<String, Receta> recetasPorNombre = recetas.stream()
+            .collect(Collectors.toMap(Receta::getNombre, Function.identity(), (r1,r2) -> r1));
+
+        for (int i = 0; i < variantes.size(); i++) {
+            Receta receta = variantes.get(i);
+            System.out.println("\n=== Opción " + (i + 1) + " ===");
+
+            ObjetoComponente objetoConstruido = construirObjetoDesdeReceta(receta);
+
+            objetoConstruido.mostrarConstruccion(false); // false = mostrar todos los niveles
+
+            int tiempo = receta.calcularTiempoTotal(recetasPorNombre);
+            System.out.println("Tiempo total de crafteo: " + tiempo + " segundos");
+        }
+    }
 
 
     // ==== GETTERS ====
