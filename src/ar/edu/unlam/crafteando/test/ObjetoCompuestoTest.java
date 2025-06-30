@@ -19,7 +19,7 @@ class ObjetoCompuestoTest {
         assertEquals(1, obtenidos.size(), "Debe haber un solo tipo de componente");
         assertEquals(2, obtenidos.get(madera), "Debe tener cantidad acumulada de madera");
     }
-
+    
     @Test
     void deberiaDescomponerEnBasicos() {
         ObjetoBasico cuerda = new ObjetoBasico("Cuerda");
