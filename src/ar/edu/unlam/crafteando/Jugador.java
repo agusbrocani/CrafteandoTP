@@ -127,8 +127,54 @@ public class Jugador {
 
 	    return cantCrafteables;
 	}
+	
+	public void craftear(ObjetoCompuesto o) {
+		
+	    // me fijo si tengo la receta en el inventario
+	    Receta receta = null;
+	    for (Receta r : recetario.getRecetas()) {
+	        if (r.getNombre().equalsIgnoreCase(o.getNombre())) {
+	            receta = r;
+	            break;
+	        }
+	    }
+	    
+	    if (receta == null) {
+	        System.out.println("No sabes la receta de " + o.getNombre());
+	        return;
+	    }
+
+	    // me fijo si lo puedo craftear
+	    if (cuantoPuedoCraftear(o) < 1) {
+	        System.out.println("No tienes suficientes ingredientes para craftear " + o.getNombre() + ".");
+	        return;
+	    }
+
+	    // calculo y simulo el tiempo
+	    int tiempo = receta.getTiempoEnSegundos();
+	    System.out.println("Crafteando " + o.getNombre() +
+	                       "... (tiempo de crafteo: " + tiempo + "segundos)");
+
+	    try {
+	    	// agrego el objeto crafteado al inventario
+	        ObjetoCompuesto crafteado = new ObjetoCompuesto(o.getNombre(), 1);
+	        inventario.agregar(crafteado);
+	        System.out.println("¡Listo! Crafteaste " + o.getNombre() + "!");
+	        
+	        // comsumo los ingredientes de primer nivel
+		    for (Map.Entry<ObjetoComponente,Integer> entry : receta.getIngredientes().entrySet()) {
+		    	
+		        ObjetoComponente ingrediente = entry.getKey().clonarConCantidad(entry.getValue());
+		        inventario.quitar(ingrediente);
+		    }
+	    } catch (Exception ex) {
+	    	
+	        throw new RuntimeException("Error al creaftear el objeto.", ex);
+	    }
+	}
 
 	
+
 	
 	public List<String> /* List<ObjetoCompuesto> */ consultarObjetosCrafteables() {
 
