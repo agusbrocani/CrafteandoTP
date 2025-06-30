@@ -14,6 +14,10 @@ public class MesaCrafteo extends ObjetoCompuesto {
         this.nombre = nombre;
         this.recetas = new ArrayList<>();
     }
+    
+    public String getNombre() {
+    	return nombre;
+    }
 
     public void agregarReceta(Receta receta) {
         recetas.add(receta);
@@ -35,7 +39,6 @@ public class MesaCrafteo extends ObjetoCompuesto {
     public List<Receta> obtenerRecetas() {
         return Collections.unmodifiableList(recetas);
     }
-
     
     public void desbloquearRecetasEn(Recetario recetario) {
         for (Receta receta : recetas) {
