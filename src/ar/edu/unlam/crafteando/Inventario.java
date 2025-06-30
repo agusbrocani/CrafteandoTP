@@ -20,6 +20,10 @@ public class Inventario {
 	    }
 	}
 	
+	public Map<ObjetoComponente, Integer> getObjetos() {
+        return Collections.unmodifiableMap(objetos);
+    }
+	
 	//quitar un objeto del inventario
 	public void quitar(ObjetoComponente o)
 	{
