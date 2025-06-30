@@ -42,13 +42,13 @@ public class Jugador {
 		inventario.ver();
 	}
 
-	public void consultarRecetaDesdeCero(ObjetoCompuesto o) {
-		recetario.mostrarRecetaDesdeCero(o.getNombre());
-	}
-
-	public void consultarReceta(ObjetoCompuesto o) {
-		recetario.mostrarRecetaDesdeCero(o.getNombre());
-	}
+//	public void consultarRecetaDesdeCero(ObjetoCompuesto o) {
+//		recetario.mostrarRecetaDesdeCero(o.getNombre());
+//	}
+//
+//	public void consultarReceta(ObjetoCompuesto o) {
+//		recetario.mostrarRecetaDesdeCero(o.getNombre());
+//	}
 
 //	public Map<ObjetoComponente, Integer> consultarFaltantes(ObjetoCompuesto o) {
 //
