@@ -30,77 +30,77 @@ public class Jugador {
 		}
 	}
 
-	public void recolectar(ObjetoComponente o) {
-		inventario.agregar(o);
-	}
-
-	public void soltar(ObjetoComponente o) {
-		inventario.quitar(o);
-	}
+//	public void recolectar(ObjetoComponente o) {
+//		inventario.agregar(o);
+//	}
+//
+//	public void soltar(ObjetoComponente o) {
+//		inventario.quitar(o);
+//	}
 
 	public void consultarInventario() {
 		inventario.ver();
 	}
 
-	public void consultarRecetaDesdeCero(ObjetoCompuesto o) {
-		recetario.mostrarRecetaDesdeCero(o.getNombre());
-	}
+//	public void consultarRecetaDesdeCero(ObjetoCompuesto o) {
+//		recetario.mostrarRecetaDesdeCero(o.getNombre());
+//	}
+//
+//	public void consultarReceta(ObjetoCompuesto o) {
+//		recetario.mostrarRecetaDesdeCero(o.getNombre());
+//	}
 
-	public void consultarReceta(ObjetoCompuesto o) {
-		recetario.mostrarRecetaDesdeCero(o.getNombre());
-	}
+//	public Map<ObjetoComponente, Integer> consultarFaltantes(ObjetoCompuesto o) {
+//
+//		Map<ObjetoComponente, Integer> receta;
+//		Map<ObjetoComponente, Integer> faltantes = new HashMap<>();
+//
+//		receta = recetario.obtenerRecetaPrimerNivel(o.getNombre());
+//		
+//		if (receta.isEmpty()) {
+//	        return null;
+//	    }
+//
+//		for (Map.Entry<ObjetoComponente, Integer> entry : receta.entrySet()) {
+//
+//			ObjetoComponente ingrediente = entry.getKey();
+//
+//			int cantRequerida = entry.getValue();
+//
+//			int cantDisponible = inventario.contiene(ingrediente) ? inventario.obtenerCantidad(ingrediente) : 0;
+//
+//			if (cantDisponible < cantRequerida) {
+//				faltantes.put(ingrediente, cantRequerida - cantDisponible);
+//			}
+//		}
+//		return faltantes;
+//	}
 
-	public Map<ObjetoComponente, Integer> consultarFaltantes(ObjetoCompuesto o) {
-
-		Map<ObjetoComponente, Integer> receta;
-		Map<ObjetoComponente, Integer> faltantes = new HashMap<>();
-
-		receta = recetario.obtenerRecetaPrimerNivel(o.getNombre());
-		
-		if (receta.isEmpty()) {
-	        return null;
-	    }
-
-		for (Map.Entry<ObjetoComponente, Integer> entry : receta.entrySet()) {
-
-			ObjetoComponente ingrediente = entry.getKey();
-
-			int cantRequerida = entry.getValue();
-
-			int cantDisponible = inventario.contiene(ingrediente) ? inventario.obtenerCantidad(ingrediente) : 0;
-
-			if (cantDisponible < cantRequerida) {
-				faltantes.put(ingrediente, cantRequerida - cantDisponible);
-			}
-		}
-		return faltantes;
-	}
-
-	public Map<ObjetoBasico, Integer> consultarFaltantesBasicos(ObjetoCompuesto o) {
-
-		Map<ObjetoBasico, Integer> recetaBasicos;
-		Map<ObjetoBasico, Integer> faltantesBasicos = new HashMap<>();
-
-		recetaBasicos = recetario.obtenerRecetaDesdeCero(o.getNombre());
-		
-		if (recetaBasicos.isEmpty()) {
-	        return null;
-	    }
-
-		for (Map.Entry<ObjetoBasico, Integer> entry : recetaBasicos.entrySet()) {
-
-			ObjetoBasico ingredienteBasico = entry.getKey();
-
-			int cantRequerida = entry.getValue();
-
-			int cantDisponible = inventario.contiene(ingredienteBasico) ? inventario.obtenerCantidad(ingredienteBasico) : 0;
-
-			if (cantDisponible < cantRequerida) {
-				faltantesBasicos.put(ingredienteBasico, cantRequerida - cantDisponible);
-			}
-		}
-		return faltantesBasicos;
-	}
+//	public Map<ObjetoBasico, Integer> consultarFaltantesBasicos(ObjetoCompuesto o) {
+//
+//		Map<ObjetoBasico, Integer> recetaBasicos;
+//		Map<ObjetoBasico, Integer> faltantesBasicos = new HashMap<>();
+//
+//		recetaBasicos = recetario.obtenerRecetaDesdeCero(o.getNombre());
+//		
+//		if (recetaBasicos.isEmpty()) {
+//	        return null;
+//	    }
+//
+//		for (Map.Entry<ObjetoBasico, Integer> entry : recetaBasicos.entrySet()) {
+//
+//			ObjetoBasico ingredienteBasico = entry.getKey();
+//
+//			int cantRequerida = entry.getValue();
+//
+//			int cantDisponible = inventario.contiene(ingredienteBasico) ? inventario.obtenerCantidad(ingredienteBasico) : 0;
+//
+//			if (cantDisponible < cantRequerida) {
+//				faltantesBasicos.put(ingredienteBasico, cantRequerida - cantDisponible);
+//			}
+//		}
+//		return faltantesBasicos;
+//	}
 
 	
 	public Integer cuantoPuedoCraftear(ObjetoCompuesto o) {

@@ -7,55 +7,44 @@ import java.io.IOException;
 
 public class InventarioTest {
     private Inventario inventario;
-    private ObjetoCompuesto baston;
     private final String RUTA_JSON = "archivos/Inventario-out-test.json";
 	
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         inventario = new Inventario();
-        baston = new ObjetoCompuesto("Bastón", 10);
-    	
-        ObjetoBasico madera = new ObjetoBasico("Madera", 60);
-    	ObjetoBasico hierro = new ObjetoBasico("Hierro", 20);
-    	ObjetoBasico lana = new ObjetoBasico("Lana", 5);
-    	ObjetoBasico carbonMineral = new ObjetoBasico("Carbón Mineral", 17);
-        
-    	inventario.agregar(baston);
-        inventario.agregar(madera);
-        inventario.agregar(lana);
-        inventario.agregar(hierro);
-        inventario.agregar(carbonMineral);
+
+        inventario.agregar("Bastón", 10);
+        inventario.agregar("Madera", 60);
+        inventario.agregar("Hierro", 20);
+        inventario.agregar("Lana", 5);
+        inventario.agregar("Carbón Mineral", 17);
     }
     
     @Test
     public void eliminarCantidadValida_deberiaReducirCantidad() throws Exception {
-    	ObjetoCompuesto bastoncito = new ObjetoCompuesto("Bastón", 8);
-    	inventario.quitar(bastoncito);
+    	inventario.quitar("Bastón", 8);
         Integer res = 2;
-        assertEquals(res, inventario.obtenerCantidad(baston));
+        assertEquals(res, inventario.obtenerCantidad("Bastón"));
     }
 
     @Test
     public void eliminarCantidadExacta_deberiaEliminarDelMap() throws Exception {
-    	ObjetoCompuesto bastoncito = new ObjetoCompuesto("Bastón", 10);
-    	inventario.quitar(bastoncito);
-        assertFalse(inventario.contiene(baston));
+    	inventario.quitar("Bastón", 10);
+        assertFalse(inventario.contiene("Bastón"));
     }
 
     @Test
     public void eliminarCantidadMayor_lanzaExcepcion() throws Exception {
-    	ObjetoCompuesto bastoncito = new ObjetoCompuesto("Bastón", 11);
         Exception ex = assertThrows(IllegalArgumentException.class, () -> {
-            inventario.quitar(bastoncito);
+            inventario.quitar("Bastón", 11);
         });
         assertEquals("Cantidad insuficiente. Actual: 10, Solicitada: 11", ex.getMessage());
     }
 
     @Test
     public void eliminarObjetoInexistente_lanzaExcepcion() throws Exception {
-        ObjetoCompuesto cama = new ObjetoCompuesto("Cama", 5);
         Exception ex = assertThrows(IllegalArgumentException.class, () -> {
-            inventario.quitar(cama);
+            inventario.quitar("Cama",1);
         });
         assertEquals("El objeto no está en el inventario.", ex.getMessage());
     }
@@ -66,13 +55,9 @@ public class InventarioTest {
     	System.out.println("Inventario antes de modificar:");
     	inventario.ver();
     	
-    	baston = new ObjetoCompuesto("Bastón", 5);
-    	ObjetoBasico madera = new ObjetoBasico("Madera", 60);
-    	ObjetoBasico hierro = new ObjetoBasico("Hierro", 30);
-    	ObjetoCompuesto baston = new ObjetoCompuesto("Bastón", 5);
-    	inventario.quitar(baston);
-    	inventario.agregar(madera);
-    	inventario.agregar(hierro);
+    	inventario.quitar("Bastón",5); 
+    	inventario.agregar("Madera",10);
+    	inventario.agregar("Hierro",20);
     	
     	System.out.println("\nInventario modificado:");
     	inventario.ver();
@@ -82,11 +67,8 @@ public class InventarioTest {
     public void testGuardarComoJson() throws IOException {
         Inventario inventario = new Inventario();
 
-        ObjetoBasico madera = new ObjetoBasico("Madera", 3);
-        ObjetoBasico hierro = new ObjetoBasico("Hierro", 5);
-
-        inventario.agregar(madera);
-        inventario.agregar(hierro);
+        inventario.agregar("Madera", 10);
+        inventario.agregar("Hierro", 20);
 
         inventario.guardarComoJson(RUTA_JSON);
         
