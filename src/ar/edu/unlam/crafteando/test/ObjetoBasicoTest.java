@@ -6,27 +6,51 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ObjetoBasicoTest {
-    @Test
+	@Test
+    void constructor() {
+		String nombre = "Carbón Mineral";
+        ObjetoBasico carbonMineral = new ObjetoBasico(nombre);
+        assertEquals(nombre, carbonMineral.getNombre());
+    }
+	
+	@Test
     void deberiaObtenerseASiMismo() throws Exception {
-        ObjetoBasico madera = new ObjetoBasico("Madera", 5);
-        Map<ObjetoComponente, Integer> obtenido = madera.obtener();
+		String nombre = "Carbón Mineral";
+        ObjetoBasico carbonMineral = new ObjetoBasico(nombre);
+        Map<ObjetoComponente, Integer> obtenido = carbonMineral.obtener();
 
         assertEquals(1, obtenido.size());
-        assertEquals(5, obtenido.get(madera));
-    }
+        assertTrue(obtenido.containsKey(carbonMineral));
+        assertEquals(1, obtenido.get(carbonMineral));
 
-    @Test
-    void deberiaDescomponerEnSiMismo() throws Exception {
-        ObjetoBasico cuerda = new ObjetoBasico("Cuerda", 3);
-        Map<ObjetoBasico, Integer> resultado = cuerda.descomponerEnBasicos();
-
-        assertEquals(1, resultado.size());
-        assertEquals(3, resultado.get(cuerda));
+        for (ObjetoComponente clave : obtenido.keySet()) {
+            assertEquals(nombre, clave.getNombre());
+        }
     }
+    
+	@Test
+	void deberiaDescomponerseEnSiMismo() {
+	    ObjetoBasico madera = new ObjetoBasico("Madera");
+	    Map<ObjetoBasico, Integer> resultado = madera.descomponerEnBasicos();
 
-    @Test
-    void tiempoDeObjetoBasicoDeberiaSerCero() throws Exception {
-        ObjetoBasico hierro = new ObjetoBasico("Hierro", 1);
-        assertEquals(0, hierro.calcularTiempo(Map.of()));
-    }
+	    assertEquals(1, resultado.size());
+	    assertTrue(resultado.containsKey(madera));
+	    assertEquals(1, resultado.get(madera));
+	}
+	
+	@Test
+	void objetosConMismoNombreSonIguales() {
+	    ObjetoBasico a = new ObjetoBasico("Piedra");
+	    ObjetoBasico b = new ObjetoBasico("Piedra");
+
+	    assertEquals(a, b);
+	    assertEquals(a.hashCode(), b.hashCode());
+	}
+	
+	@Test
+	void toStringDeberiaMostrarNombreYCantidad() {
+	    ObjetoBasico sal = new ObjetoBasico("Sal");
+	    String esperado = "Nombre: Sal, Cantidad: 1";
+	    assertEquals(esperado, sal.toString());
+	}
 }
