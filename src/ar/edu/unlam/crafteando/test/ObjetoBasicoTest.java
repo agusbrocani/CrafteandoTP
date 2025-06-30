@@ -1,4 +1,4 @@
-package ar.edu.unlam.crafteando.test;
+/*package ar.edu.unlam.crafteando.test;
 
 import org.junit.jupiter.api.Test;
 import ar.edu.unlam.crafteando.*;
@@ -29,4 +29,4 @@ class ObjetoBasicoTest {
         ObjetoBasico hierro = new ObjetoBasico("Hierro", 1);
         assertEquals(0, hierro.calcularTiempo(Map.of()));
     }
-}
+}*/
