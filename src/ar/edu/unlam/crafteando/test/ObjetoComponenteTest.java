@@ -9,7 +9,7 @@ class ObjetoComponenteTest {
     @Test
     void noDeberiaPermitirCantidadNegativa() {
         Exception e = assertThrows(Exception.class, () -> {
-            new ObjetoBasico("Hierro", -1);
+            new ObjetoBasico("Hierro");
         });
         assertEquals("La cantidad es menor a cero.", e.getMessage());
     }

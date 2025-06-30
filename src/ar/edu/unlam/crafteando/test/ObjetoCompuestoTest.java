@@ -10,8 +10,8 @@ class ObjetoCompuestoTest {
 
     @Test
     void deberiaAgregarYObtenerComponentes() throws Exception {
-        ObjetoBasico madera = new ObjetoBasico("Madera", 2);
-        ObjetoCompuesto mango = new ObjetoCompuesto("Mango", 1);
+        ObjetoBasico madera = new ObjetoBasico("Madera");
+        ObjetoCompuesto mango = new ObjetoCompuesto("Mango");
 
         mango.agregar(madera);
 
@@ -22,8 +22,8 @@ class ObjetoCompuestoTest {
 
     @Test
     void deberiaDescomponerEnBasicos() throws Exception {
-        ObjetoBasico cuerda = new ObjetoBasico("Cuerda", 4);
-        ObjetoCompuesto mango = new ObjetoCompuesto("Mango", 1);
+        ObjetoBasico cuerda = new ObjetoBasico("Cuerda");
+        ObjetoCompuesto mango = new ObjetoCompuesto("Mango");
         mango.agregar(cuerda);
 
         Map<ObjetoBasico, Integer> basicos = mango.descomponerEnBasicos();
@@ -33,8 +33,8 @@ class ObjetoCompuestoTest {
 
     @Test
     void deberiaCalcularTiempoDeReceta() throws Exception {
-        ObjetoBasico madera = new ObjetoBasico("Madera", 2);
-        ObjetoCompuesto mango = new ObjetoCompuesto("Mango", 1);
+        ObjetoBasico madera = new ObjetoBasico("Madera");
+        ObjetoCompuesto mango = new ObjetoCompuesto("Mango");
         mango.agregar(madera);
 
         Receta recetaMango = new Receta();
