@@ -10,49 +10,52 @@ import ar.edu.unlam.crafteando.*;
 public class RecetarioTest {
     
     private Recetario recetario;
-    private ObjetoBasico madera;
-    private ObjetoBasico hierro;
     private ObjetoBasico carbonMineral;
     private ObjetoBasico carbonVegetal;
-    private ObjetoCompuesto hacha;
-    private ObjetoCompuesto antorcha;
-    private ObjetoCompuesto baston;
     private Receta recetaHacha;
     private Receta recetaAntorcha1;
     private Receta recetaAntorcha2;
     private Receta recetaBaston;
+    private Receta recetaPuerta;
+    private List<String> mesasDisponibles;
 
     @BeforeEach
     void setUp() {
         recetario = new Recetario();
+        mesasDisponibles = new ArrayList<String>();
+        mesasDisponibles.add("Carpintería");
 
         // Crear objetos básicos
-        madera = new ObjetoBasico("Madera");
-        hierro = new ObjetoBasico("Hierro");
+        ObjetoBasico madera = new ObjetoBasico("Madera");
+        ObjetoBasico hierro = new ObjetoBasico("Hierro");
         carbonMineral = new ObjetoBasico("Carbon Mineral");
         carbonVegetal = new ObjetoBasico("Carbon Vegetal");
 
         // Crear recetas
-        recetaBaston = new Receta("Bastón", "Básico", 12);
+        recetaBaston = new Receta("Bastón", "Básica", 12);
         recetaBaston.agregarIngrediente(madera, 2);
 
-        recetaHacha = new Receta("Hacha", "Básico", 30);
+        recetaHacha = new Receta("Hacha", "Básica", 30);
         recetaHacha.agregarIngrediente(new ObjetoCompuesto("Bastón"), 1);
         recetaHacha.agregarIngrediente(hierro, 3);
 
-        recetaAntorcha1 = new Receta("Antorcha", "Básico", 5);
+        recetaAntorcha1 = new Receta("Antorcha", "Básica", 5);
         recetaAntorcha1.agregarIngrediente(new ObjetoCompuesto("Bastón"), 1);
         recetaAntorcha1.agregarIngrediente(carbonMineral, 1);
 
-        recetaAntorcha2 = new Receta("Antorcha", "Básico", 5);
+        recetaAntorcha2 = new Receta("Antorcha", "Básica", 5);
         recetaAntorcha2.agregarIngrediente(new ObjetoCompuesto("Bastón"), 1);
         recetaAntorcha2.agregarIngrediente(carbonVegetal, 1);
-
+        
+        recetaPuerta = new Receta("Puerta", "Carpintería", 10);
+        recetaPuerta.agregarIngrediente(madera, 6);
+        
         // Agregar recetas al recetario
         recetario.agregarReceta(recetaBaston);
         recetario.agregarReceta(recetaHacha);
         recetario.agregarReceta(recetaAntorcha1);
         recetario.agregarReceta(recetaAntorcha2);
+        recetario.agregarReceta(recetaPuerta);
     }
     
     @Nested
@@ -69,11 +72,12 @@ public class RecetarioTest {
         @Test
         @DisplayName("Debe agregar recetas correctamente")
         void debeAgregarRecetasCorrectamente() {
-            assertEquals(4, recetario.getRecetas().size());
+            assertEquals(5, recetario.getRecetas().size());
             assertTrue(recetario.getRecetas().contains(recetaHacha));
             assertTrue(recetario.getRecetas().contains(recetaAntorcha1));
             assertTrue(recetario.getRecetas().contains(recetaAntorcha2));
             assertTrue(recetario.getRecetas().contains(recetaBaston));
+            assertTrue(recetario.getRecetas().contains(recetaPuerta));
         }
         
         @Test
@@ -121,14 +125,20 @@ public class RecetarioTest {
         
         @Test
         @DisplayName("Mostrar todas las recetas 1er Nivel para una Antorcha")
-        void mostrarTodasLasRecetasParaUnObjeto() {
-            recetario.mostrarReceta("Antorcha");
+        void mostrarTodasLasRecetasParaUnaAntorcha() {
+            recetario.mostrarReceta("Antorcha", mesasDisponibles);
         }
         
         @Test
-        @DisplayName("Mostrar receta desde cero")
+        @DisplayName("Mostrar todas las recetas 1er Nivel para una Puerta")
+        void mostrarTodasLasRecetasParaUnaPuerta() {
+            recetario.mostrarReceta("Puerta", mesasDisponibles);
+        }
+        
+        @Test
+        @DisplayName("Mostrar receta desde cero para Antorcha")
         void mostrarRecetaDesdeCero() {
-            recetario.mostrarRecetaDesdeCero("Antorcha");
+            recetario.mostrarRecetaDesdeCero("Antorcha", mesasDisponibles);
         }
    
    }
