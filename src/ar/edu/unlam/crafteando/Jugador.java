@@ -54,25 +54,32 @@ public class Jugador {
 	}
 	
 
-	/*
-	public List<Map<ObjetoComponente, Integer>> consultarFaltantes(ObjetoCompuesto o) {
+	/* REVISAR PORQUE HAY QUE DIFERENCIAR ENTRE OBTENER LOS FALTANTES DE PRIMER NIVEL PARA TODAS LAS RECETAS DE PRIMER NIVEL VS OBTENER LOS FALTANTES DESDE CERO
+	public List<Map<ObjetoComponente, Integer>> consultarFaltantesPrimerNivel(ObjetoCompuesto o) {
 
 		List<Receta> recetas;
-		Map<ObjetoComponente, Integer> faltantes = new HashMap<>();
+		Map<ObjetoComponente, Integer> faltantesReceta;// = new HashMap<ObjetoComponente, Integer>()
+		List<Map<ObjetoComponente, Integer>> faltantes = new LinkedList<Map<ObjetoComponente, Integer>>();
 		
-		recetas = buscarReceta(o.getNombre());
+		recetas = recetario.buscarRecetasPorNombre(o.getNombre());
 
 		if (recetas.isEmpty()) {
 	        return null;
 	    }
 
-		// for each receta de la lista consultarFaltantesReceta
+		for (Receta receta : recetas) {
+			
+			faltantesReceta = obtenerFaltantesPorReceta(o, receta);
+			
+			faltantes.add(faltantesReceta);						
+		}
 				
 		return faltantes;
 	}
 	*/
 	
-	public Map<ObjetoComponente, Integer> obtenerFaltantesPorReceta(ObjetoCompuesto o, Receta receta) {
+	
+	private Map<ObjetoComponente, Integer> obtenerFaltantesPorReceta(ObjetoCompuesto o, Receta receta) {
 		
 		Map<ObjetoComponente, Integer> faltantes = new HashMap<>();
 		
@@ -92,7 +99,7 @@ public class Jugador {
 		return faltantes;
 	}
 	
-	
+	/*
 	private List<Receta> buscarReceta(String nombreObjetoCompuesto) {
 		
 		List<Receta> recetas;
@@ -101,9 +108,9 @@ public class Jugador {
 		
 		return recetas;
 	}
-	
+	*/
 
-	/*
+	
 	public Map<ObjetoBasico, Integer> consultarFaltantesBasicos(ObjetoCompuesto o) {
 
 		Map<ObjetoBasico, Integer> recetaBasicos;
@@ -129,7 +136,8 @@ public class Jugador {
 		}
 		return faltantesBasicos;
 	}
-	*/
+	
+	
 	/*
 	public Integer cuantoPuedoCraftear(ObjetoCompuesto o) {
 		

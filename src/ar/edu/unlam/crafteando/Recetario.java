@@ -24,7 +24,7 @@ public class Recetario {
 
     // ==== MÉTODOS PRIVADOS PARA REUTILIZAR ====
 
-    public List<Receta> buscarRecetasPorNombre(String nombreObjetoCompuesto) {
+    private List<Receta> buscarRecetasPorNombre(String nombreObjetoCompuesto) {
         return recetas.stream()
             .filter(r -> r.getNombre().equalsIgnoreCase(nombreObjetoCompuesto))
             .collect(Collectors.toList());
