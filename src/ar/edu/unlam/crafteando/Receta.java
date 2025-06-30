@@ -87,17 +87,24 @@ public class Receta {
         return o.obtener();
     }
 
-//    public int calcularTiempoTotal(Map<ObjetoCompuesto, Receta> recetas) {
-//        int tiempo = this.tiempoEnSegundos != null ? this.tiempoEnSegundos : 0;
-//
-//        for (Map.Entry<ObjetoComponente, Integer> entry : ingredientes.entrySet()) {
-//            ObjetoComponente componente = entry.getKey();
-//            int cantidad = entry.getValue();
-//            tiempo += componente.calcularTiempo(recetas) * cantidad;
-//        }
-//
-//        return tiempo;
-//    }
+    public int calcularTiempoTotal(Map<String, Receta> recetasPorNombre) {
+        int total = this.tiempoEnSegundos != null ? this.tiempoEnSegundos : 0;
+
+        for (Map.Entry<ObjetoComponente, Integer> entry : this.ingredientes.entrySet()) {
+            String nombreIngrediente = entry.getKey().getNombre();
+            int cantidad = entry.getValue();
+
+            Receta recetaDelIngrediente = recetasPorNombre.get(nombreIngrediente);
+
+            if (recetaDelIngrediente != null) {
+                // Es un compuesto con receta → calcular su tiempo total recursivo
+                total += recetaDelIngrediente.calcularTiempoTotal(recetasPorNombre) * cantidad;
+            }
+            // Si no hay receta, es un ObjetoBasico → no suma tiempo
+        }
+
+        return total;
+    }
 
     public void validar() {
         if (tipo == null || tipo.isBlank()) {

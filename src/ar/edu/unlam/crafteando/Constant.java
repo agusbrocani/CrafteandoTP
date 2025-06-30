@@ -10,4 +10,5 @@ public class Constant {
     public static final String EXCEPCION_TIEMPO_INVALIDO = "El tiempo debe estar definido y ser no negativo.";
     public static final String EXCEPCION_RECETA_SIN_INGREDIENTES = "Debe tener al menos un ingrediente.";
     public static final String EXCEPCION_NOMBRE_INVALIDO = "El nombre no puede ser nulo ni vacío.";
+    public static final String EXCEPCION_CANTIDAD_INSUFICIENTE = "La cantidad a remover supera la cantidad disponible.";
 }

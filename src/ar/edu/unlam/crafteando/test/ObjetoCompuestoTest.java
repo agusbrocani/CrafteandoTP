@@ -1,8 +1,15 @@
 package ar.edu.unlam.crafteando.test;
 
-import ar.edu.unlam.crafteando.*;
 import org.junit.jupiter.api.Test;
+
+import ar.edu.unlam.crafteando.Constant;
+import ar.edu.unlam.crafteando.ObjetoBasico;
+import ar.edu.unlam.crafteando.ObjetoComponente;
+import ar.edu.unlam.crafteando.ObjetoCompuesto;
+
+import java.lang.reflect.Constructor;
 import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ObjetoCompuestoTest {
@@ -13,11 +20,11 @@ class ObjetoCompuestoTest {
         ObjetoCompuesto mango = new ObjetoCompuesto("Mango");
 
         mango.agregar(madera);
-        mango.agregar(madera); // se acumula
+        mango.agregar(madera);
 
         Map<ObjetoComponente, Integer> obtenidos = mango.obtener();
-        assertEquals(1, obtenidos.size(), "Debe haber un solo tipo de componente");
-        assertEquals(2, obtenidos.get(madera), "Debe tener cantidad acumulada de madera");
+        assertEquals(1, obtenidos.size());
+        assertEquals(2, obtenidos.get(madera));
     }
 
     @Test
@@ -26,11 +33,11 @@ class ObjetoCompuestoTest {
         ObjetoCompuesto mango = new ObjetoCompuesto("Mango");
 
         mango.agregar(cuerda);
-        mango.agregar(cuerda); // total 2
+        mango.agregar(cuerda);
 
         Map<ObjetoBasico, Integer> basicos = mango.descomponerEnBasicos();
-        assertEquals(1, basicos.size(), "Debe haber una sola entrada básica");
-        assertEquals(2, basicos.get(cuerda), "Debe reflejar la cantidad total del componente");
+        assertEquals(1, basicos.size());
+        assertEquals(2, basicos.get(cuerda));
     }
 
     @Test
@@ -38,13 +45,11 @@ class ObjetoCompuestoTest {
         ObjetoBasico metal = new ObjetoBasico("Metal");
         ObjetoCompuesto hoja = new ObjetoCompuesto("Hoja");
 
-        hoja.agregar(metal); // +1
-        hoja.agregar(metal); // +1 → total 2
+        hoja.agregar(metal);
+        hoja.agregar(metal);
+        hoja.remover(metal);
 
-        hoja.remover(metal); // -1 → queda 1
-
-        Map<ObjetoComponente, Integer> resultado = hoja.obtener();
-        assertEquals(1, resultado.get(metal));
+        assertEquals(1, hoja.obtener().get(metal));
     }
 
     @Test
@@ -52,12 +57,31 @@ class ObjetoCompuestoTest {
         ObjetoBasico piedra = new ObjetoBasico("Piedra");
         ObjetoCompuesto cabeza = new ObjetoCompuesto("Cabeza");
 
-        cabeza.agregar(piedra); // +1
-        cabeza.remover(piedra); // -1 → desaparece
+        cabeza.agregar(piedra);
+        cabeza.remover(piedra);
 
-        Map<ObjetoComponente, Integer> resultado = cabeza.obtener();
-        assertFalse(resultado.containsKey(piedra), "Debe eliminarse si su cantidad llega a cero");
-        assertTrue(cabeza.estaVacio(), "Debe estar vacío si no tiene componentes");
+        assertFalse(cabeza.obtener().containsKey(piedra));
+        assertTrue(cabeza.estaVacio());
+    }
+
+    @Test
+    void deberiaLanzarExcepcionAlAgregarNulo() {
+        ObjetoCompuesto objeto = new ObjetoCompuesto("Algun objeto");
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            objeto.agregar(null);
+        });
+        assertEquals(Constant.EXCEPCION_AGREGAR_COMPONENTE_NULO, ex.getMessage());
+    }
+
+    @Test
+    void deberiaLanzarExcepcionAlRemoverNulo() {
+        ObjetoCompuesto objeto = new ObjetoCompuesto("Otro objeto");
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> {
+            objeto.remover(null);
+        });
+        assertEquals(Constant.EXCEPCION_ELIMINAR_COMPONENTE_NULO, ex.getMessage());
     }
 
     @Test
@@ -66,7 +90,6 @@ class ObjetoCompuestoTest {
         ObjetoCompuesto cuerda = new ObjetoCompuesto("Cuerda");
 
         cuerda.agregar(hilo);
-
         assertDoesNotThrow(() -> cuerda.mostrarConstruccion(false));
     }
 
@@ -81,9 +104,18 @@ class ObjetoCompuestoTest {
 
     @Test
     void toStringDebeMostrarNombreYCantidad() {
-        ObjetoCompuesto arma = new ObjetoCompuesto("Arco");
-
+        ObjetoCompuesto arco = new ObjetoCompuesto("Arco");
         String esperado = "Nombre: Arco\nCantidad: 1";
-        assertEquals(esperado, arma.toString());
+
+        assertEquals(esperado, arco.toString());
+    }
+
+    @Test
+    void deberiaInvocarConstructorPrivadoPorReflexion() throws Exception {
+        Constructor<ObjetoCompuesto> ctor = ObjetoCompuesto.class.getDeclaredConstructor(String.class, Integer.class);
+        ctor.setAccessible(true);
+        ObjetoCompuesto raro = ctor.newInstance("Inaccesible", 5);
+        assertEquals("Inaccesible", raro.getNombre());
+        assertEquals(5, raro.getCantidad());
     }
 }
