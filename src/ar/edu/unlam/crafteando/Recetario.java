@@ -59,19 +59,22 @@ public class Recetario {
     }
 
     public void mostrarReceta(String nombreObjetoCompuesto) {
-        List<Receta> todasLasRecetas = buscarRecetasPorNombre(nombreObjetoCompuesto);
+        List<Receta> recetas = buscarRecetasPorNombre(nombreObjetoCompuesto);
+
         System.out.println("\n---------------------------------------------------");
         System.out.println("Todas las recetas para: " + nombreObjetoCompuesto);
-        
-        for (int i = 0; i < todasLasRecetas.size(); i++) {
+
+        for (int i = 0; i < recetas.size(); i++) {
             System.out.println("\n=== Opción " + (i + 1) + " ===");
-            Receta receta = todasLasRecetas.get(i);
-            receta.getIngredientes().forEach((objeto, cantidad) ->
-                System.out.println("- " + objeto.getNombre() + " x" + cantidad)
-            );
+
+            Receta receta = recetas.get(i);
+            ObjetoComponente construido = construirObjetoDesdeReceta(receta);
+
+            construido.mostrarConstruccion(true); // true = mostrar solo primer nivel
             System.out.println("Tiempo: " + receta.getTiempoEnSegundos() + " segundos");
         }
     }
+
 
     // ==== RECETA DESDE CERO ====
    
@@ -107,19 +110,15 @@ public class Recetario {
             Receta receta = variantes.get(i);
             System.out.println("\n=== Opción " + (i + 1) + " ===");
 
-            ObjetoComponente objetoConstruido = construirObjetoDesdeReceta(receta); // ← receta específica
+            ObjetoComponente objetoConstruido = construirObjetoDesdeReceta(receta);
 
-            Map<ObjetoBasico, Integer> ingredientesBasicos = objetoConstruido.descomponerEnBasicos();
-
-            System.out.println("Ingredientes básicos:");
-            ingredientesBasicos.forEach((objeto, cantidad) ->
-                System.out.println("- " + objeto.getNombre() + " x" + cantidad)
-            );
+            objetoConstruido.mostrarConstruccion(false); // false = mostrar todos los niveles
 
             int tiempo = receta.calcularTiempoTotal(recetasPorNombre);
             System.out.println("Tiempo total de crafteo: " + tiempo + " segundos");
         }
     }
+
 
     // ==== GETTERS ====
     

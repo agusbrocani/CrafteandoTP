@@ -10,13 +10,8 @@ import ar.edu.unlam.crafteando.*;
 public class RecetarioTest {
     
     private Recetario recetario;
-    private ObjetoBasico madera;
-    private ObjetoBasico hierro;
     private ObjetoBasico carbonMineral;
     private ObjetoBasico carbonVegetal;
-    private ObjetoCompuesto hacha;
-    private ObjetoCompuesto antorcha;
-    private ObjetoCompuesto baston;
     private Receta recetaHacha;
     private Receta recetaAntorcha1;
     private Receta recetaAntorcha2;
@@ -27,8 +22,8 @@ public class RecetarioTest {
         recetario = new Recetario();
 
         // Crear objetos básicos
-        madera = new ObjetoBasico("Madera");
-        hierro = new ObjetoBasico("Hierro");
+        ObjetoBasico madera = new ObjetoBasico("Madera");
+        ObjetoBasico hierro = new ObjetoBasico("Hierro");
         carbonMineral = new ObjetoBasico("Carbon Mineral");
         carbonVegetal = new ObjetoBasico("Carbon Vegetal");
 

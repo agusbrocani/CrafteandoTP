@@ -17,7 +17,7 @@ public class Inventario {
     }
 
     public Map<ObjetoComponente, Integer> getObjetos() {
-        // Devolvemos un map simulado (nombre -> cantidad) usando objetos básicos dummy
+        // Map simulado
         return objetos.entrySet().stream()
             .collect(Collectors.toMap(
                 e -> new ObjetoBasico(e.getKey()), // todos como ObjetoBasico genérico
