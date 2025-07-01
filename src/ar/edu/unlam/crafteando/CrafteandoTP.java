@@ -70,20 +70,19 @@ public class CrafteandoTP {
     }
 
     private static Recetario cargarRecetario(String path) {
-        List<RecetaDTO> recetasJson = Arrays.asList(
-            GestorJson.leer(path, RecetaDTO[].class)
-        );
-        Recetario recetario = new Recetario();
-        for (RecetaDTO rj : recetasJson) {
-            Receta receta = new Receta(rj.nombreObjeto, rj.tipo, rj.tiempoEnSegundos);
-            for (IngredienteDTO ing : rj.ingredientes) {
-                ObjetoComponente comp = crearComponente(ing.nombre);
-                receta.agregarIngrediente(comp, ing.cantidad);
-            }
-            recetario.agregarReceta(receta);
+    List<Receta> recetasJson = Arrays.asList(
+        GestorJson.leer(path, Receta[].class)
+    );
+    Recetario recetario = new Recetario();
+    for (Receta rj : recetasJson) {
+        for (Map.Entry<String, Integer> ing : rj.ingredientes.entrySet()) {
+            ObjetoComponente comp = crearComponente(ing.getKey());
+            rj.agregarIngrediente(comp, ing.getValue());
         }
-        return recetario;
+        recetario.agregarReceta(rj);
     }
+    return recetario;
+}
 
     private static void mostrarInventario(Inventario inventario) {
         for (Map.Entry<ObjetoComponente, Integer> entry : inventario.getContenido().entrySet()) {
