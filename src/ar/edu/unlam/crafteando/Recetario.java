@@ -120,7 +120,7 @@ public class Recetario {
 
         // Mapa para cálculo de tiempos y posible recursividad
         Map<String, Receta> recetasPorNombre = recetas.stream()
-            .collect(Collectors.toMap(Receta::getNombre, Function.identity(), (r1, _) -> r1));
+            .collect(Collectors.toMap(Receta::getNombre, Function.identity(), (r1, r2) -> r1));
 
         for (int i = 0; i < variantes.size(); i++) {
             Receta receta = variantes.get(i);
