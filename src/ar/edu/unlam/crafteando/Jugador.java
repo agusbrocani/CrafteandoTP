@@ -17,10 +17,10 @@ public class Jugador {
 
 	private MotorLogicoProlog motor;
 
-	public Jugador (String nombre, Inventario inventario, Recetario recetario,
+	public Jugador (String nombre, Recetario recetario,
 			/* Historial historial, */ String rutaBaseProlog) {
 		this.nombre = nombre;
-		this.inventario = inventario;
+		this.inventario = new Inventario();
 		this.recetario = recetario;
 		// this.historial = historial;
 
