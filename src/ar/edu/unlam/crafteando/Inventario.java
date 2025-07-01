@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public class Inventario {
     private final Map<String, Integer> objetos;
-    private final Map<String, MesaCrafteo> mesasPorTipo = new HashMap<>();
+    //private final Map<String, MesaCrafteo> mesasPorTipo = new HashMap<>();
 
     public Inventario() {
         objetos = new HashMap<>();
@@ -80,7 +80,7 @@ public class Inventario {
     }
     
     // ========= LÓGICA DE MESAS ========================0
-    
+    /*
     public void agregarMesa(MesaCrafteo mesa) {
         if (mesa == null) throw new IllegalArgumentException("Mesa nula");
 
@@ -98,6 +98,7 @@ public class Inventario {
     public List<String> getTiposDeMesa() {
         return new ArrayList<>(mesasPorTipo.keySet());
     }
+    */
     
 }
 
