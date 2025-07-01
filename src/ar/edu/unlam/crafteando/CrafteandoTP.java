@@ -1,5 +1,8 @@
 package ar.edu.unlam.crafteando;
 
+import java.util.List;
+import java.util.Map;
+
 import org.jpl7.Atom;
 import org.jpl7.Query;
 import org.jpl7.Term;
@@ -33,6 +36,8 @@ public class CrafteandoTP {
     	*/
     	
     	int i;
+    	
+    	// Objetos compuestos
     	ObjetoCompuesto oEspada1 = new ObjetoCompuesto("Espada");
     	ObjetoCompuesto oEspada2 = new ObjetoCompuesto("Espada");
     	ObjetoCompuesto oHojaDeHierro = new ObjetoCompuesto("Hoja de Hierro");
@@ -41,6 +46,7 @@ public class CrafteandoTP {
     	ObjetoCompuesto oHojaDeHierroDelTitanic = new ObjetoCompuesto("Hoja de hierro del Titanic");
     	ObjetoCompuesto oSubmarino = new ObjetoCompuesto("Submarino");
     	
+    	// Objetos básicos
     	ObjetoBasico oMadera = new ObjetoBasico("Madera");
     	ObjetoBasico oCuerda = new ObjetoBasico("Cuerda");
     	ObjetoBasico oHierro = new ObjetoBasico("Hierro");
@@ -78,7 +84,7 @@ public class CrafteandoTP {
     	oHojaDeHierroDelTitanic.agregar(oHierro);
     	
     	
-    	
+    	// Recetario
     	// recetas iniciales, se cargan del archivo
     	Recetario recetasBasicasCargadasDeArchivo = new Recetario();
     	Receta espada1 = new Receta(
@@ -121,7 +127,7 @@ public class CrafteandoTP {
     			1599
     			);
     	
-    	
+    	// Ingredientes recetas
     	espada1.agregarIngrediente(oHojaDeHierro, 2);
     	espada1.agregarIngrediente(oMangoDeMadera, 1);
     	espada1.agregarIngrediente(oCuerda, 1);
@@ -148,11 +154,66 @@ public class CrafteandoTP {
     	recetasBasicasCargadasDeArchivo.agregarReceta(hojaDeHierroDelTitanic);
     	recetasBasicasCargadasDeArchivo.agregarReceta(submarino);
 
-    	
-    	Jugador agustin = new Jugador(
-    				"Agustin Brocani",
+    	// Crear jugador
+    	Jugador jugador = new Jugador(
+    				"Jugadorsito",
     				recetasBasicasCargadasDeArchivo,
     				"prolog/datos.pl"
     			);
+    	
+    	try {
+            System.out.println("\n=== Pruebas de Jugador ===");
+
+            System.out.println("Inventario Inicial"); 
+            jugador.consultarInventario();
+            
+            /*
+            // 1. recolectar
+            jugador.recolectar(oHierro, 5);
+            jugador.recolectar(oMadera, 3);
+            System.out.println("Inventario despues de recolectar:"); 
+            jugador.consultarInventario();
+
+            // 2. soltar
+            jugador.soltar(oHierro, 4);
+            System.out.println("Soltaste"); 
+            System.out.println("Inventario despues de soltar:"); 
+            jugador.consultarInventario();
+
+            // 3. consultarRecetaDesdeCero y consultarReceta
+            System.out.println("\nMostrar receta completa desde cero de Espada:");
+            jugador.consultarRecetaDesdeCero(oEspada1);
+            System.out.println("\n\nMostrar receta (alias) de Espada:");
+            jugador.consultarReceta(oEspada2);
+            */
+
+            /*
+            // 4. consultarFaltantesPrimerNivel
+            System.out.println("\nFaltantes primer nivel para Espada:");
+            List<Map<ObjetoComponente, Integer>> falt1 = jugador.consultarFaltantesPrimerNivel(oEspada1);
+            System.out.println(falt1);
+
+            // 5. consultarFaltantesBasicos
+            System.out.println("\nFaltantes básicos para Espada:");
+            List<Map<ObjetoComponente, Integer>> faltB = jugador.consultarFaltantesBasicos(oEspada1);
+            System.out.println(faltB);
+
+            // 6. cuantoPuedoCraftear
+            int maxCraftear = jugador.cuantoPuedoCraftear(oEspada1, espada1);
+            System.out.println("\nPuedo craftear Espada " + maxCraftear + " veces");
+
+            // 7. craftear
+            jugador.craftear(oEspada1, espada1);
+            System.out.println("Inventario tras craftear 1 Espada:"); jugador.consultarInventario();
+
+            // 8. consultarObjetosCrafteables (vía Prolog)
+            System.out.println("\nObjetos actualmente crafteables:");
+            List<String> crafteables = jugador.consultarObjetosCrafteables();
+            System.out.println(crafteables);
+            */
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

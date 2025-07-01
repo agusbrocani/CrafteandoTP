@@ -13,16 +13,15 @@ public class Jugador {
 	private String nombre;
 	private Inventario inventario;
 	private Recetario recetario;
-	// private Historial historial;
+	//private Historial historial;
 
 	private MotorLogicoProlog motor;
 
-	public Jugador (String nombre, Recetario recetario,
-			/* Historial historial, */ String rutaBaseProlog) {
+	public Jugador (String nombre, Recetario recetario, String rutaBaseProlog) {
 		this.nombre = nombre;
 		this.inventario = new Inventario();
 		this.recetario = recetario;
-		// this.historial = historial;
+		//this.historial = new Historial();
 
 		this.motor = new MotorLogicoProlog(rutaBaseProlog);
 		if (!motor.cargarBase()) {
@@ -193,12 +192,12 @@ public class Jugador {
 		        inventario.quitar(nombre, cantidad);
 		    }
 
-		    // TODO: agregar al historial
-		    
 	    } catch (Exception ex) {
 	    	
 	        throw new RuntimeException("Error al creaftear el objeto.", ex);
 	    }
+	    
+	    //historial.registrar(crafteado, 1, ingredientesBasicos);
 	}
 	
 	
