@@ -24,11 +24,12 @@ public class Recetario {
 
     // ==== MÉTODOS PRIVADOS PARA REUTILIZAR ====
 
-    private List<Receta> buscarRecetasPorNombre(String nombreObjetoCompuesto) {
+    public List<Receta> buscarRecetasPorNombre(String nombreObjetoCompuesto) {
         return recetas.stream()
             .filter(r -> r.getNombre().equalsIgnoreCase(nombreObjetoCompuesto))
             .collect(Collectors.toList());
     }
+    
     
     public List<Receta> buscarRecetasPorNombre(String nombreObjetoCompuesto, List<String> tiposDeMesasDisponibles) {
         Set<String> tipos = tiposDeMesasDisponibles.stream()
@@ -171,4 +172,10 @@ public class Recetario {
     public void validarRecetas() {
         recetas.forEach(Receta::validar);
     }
+    
+    public boolean existeReceta(String nombreObjetoCompuesto) {
+        return recetas.stream()
+            .anyMatch(r -> r.getNombre().equalsIgnoreCase(nombreObjetoCompuesto));
+    }
+
 }
