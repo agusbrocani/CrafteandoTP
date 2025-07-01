@@ -43,20 +43,20 @@ public class Jugador {
 	}
 	
 
-	public void consultarRecetaDesdeCero(ObjetoCompuesto o) {
+	public void verRecetasDesdeCero(ObjetoCompuesto o) {
 		recetario.mostrarRecetaDesdeCero(o.getNombre());
 	}
 
 	
-	public void consultarReceta(ObjetoCompuesto o) {
-		recetario.mostrarRecetaDesdeCero(o.getNombre());
+	public void verRecetas(ObjetoCompuesto o) {
+		recetario.mostrarReceta(o.getNombre());
 	}
 	
 
 	
 	private Map<ObjetoComponente, Integer> obtenerFaltantesPorReceta(ObjetoCompuesto o, Receta receta) throws Exception{
 		
-		Map<ObjetoComponente, Integer> faltantes = new HashMap<>();
+		Map<ObjetoComponente, Integer> faltantes = new HashMap<ObjetoComponente, Integer>();
 		
 		for (Map.Entry<ObjetoComponente, Integer> entry : receta.getIngredientes().entrySet()) {
 
@@ -64,32 +64,31 @@ public class Jugador {
 
 			int cantRequerida = entry.getValue();
 			int cantDisponible = inventario.contiene(ingrediente.getNombre()) ? inventario.obtenerCantidad(ingrediente.getNombre()) : 0;
+			
 			if (cantDisponible < cantRequerida) {
 				faltantes.put(ingrediente, cantRequerida - cantDisponible);
 			}
 		}
-		
+		System.out.println(faltantes);	
 		return faltantes;
 	}
 
+	
 	public List<Map<ObjetoComponente, Integer>> consultarFaltantesPrimerNivel (ObjetoCompuesto o) throws Exception{
 
 		List<Receta> recetas;
-		Map<ObjetoComponente, Integer> faltantesReceta;// = new HashMap<ObjetoComponente, Integer>()
+		Map<ObjetoComponente, Integer> faltantesReceta = new HashMap<ObjetoComponente, Integer>();
 		List<Map<ObjetoComponente, Integer>> faltantes = new LinkedList<Map<ObjetoComponente, Integer>>();
 		
 		recetas = recetario.buscarRecetasPorNombre(o.getNombre());
 
-		for (Receta receta : recetas) {
+		for (Receta receta : recetas) {		
 			
 			faltantesReceta = obtenerFaltantesPorReceta(o, receta);
-			
 			faltantes.add(faltantesReceta);						
-		}
-				
+		}		
 		return faltantes;
 	}
-
 	
 	public List<Map<ObjetoComponente, Integer>> consultarFaltantesBasicos(ObjetoCompuesto o) throws Exception{
 		
@@ -202,7 +201,7 @@ public class Jugador {
 	
 	
 		
-	public List<String> /* List<ObjetoCompuesto> */ consultarObjetosCrafteables() {
+	public List<String> consultarObjetosCrafteables() {
 
 		// ACTUALIZAR INVENTARIO EN PROLOG
 		// limpiar todos los hechos antiguos tengo(_,_)
@@ -210,9 +209,9 @@ public class Jugador {
 
 		// cargar el inventario actual en la base en los tengo(_,_)
 		for (Map.Entry<ObjetoComponente, Integer> entry : inventario.getObjetos().entrySet()) {
-			String atomo = entry.getKey().getNombre();
+			String atomo = entry.getKey().getNombre().toLowerCase();
 			int cantidad = entry.getValue();
-			motor.agregarHecho(String.format("tengo(%s,%d)", atomo, cantidad));
+			motor.agregarHecho(String.format("tengo('%s',%d)", atomo, cantidad));
 		}
 
 		// ACTUALIZAR RECETARIO EN PROLOG
@@ -222,13 +221,13 @@ public class Jugador {
 		// para cada receta de mi recetario la desmenuzo en sus ingredientes
 		for (Receta receta : recetario.getRecetas()) {
 
-			String objeto = receta.getNombre();
+			String objeto = receta.getNombre().toLowerCase();
 
 			for (Map.Entry<ObjetoComponente, Integer> e : receta.getIngredientes().entrySet()) {
-				String ing = e.getKey().getNombre();
+				String ing = e.getKey().getNombre().toLowerCase();
 				int cantReq = e.getValue();
 
-				motor.agregarHecho(String.format("ingrediente(%s,%s,%d)", ing, objeto, cantReq));
+				motor.agregarHecho(String.format("ingrediente('%s','%s',%d)", ing, objeto, cantReq));
 			}
 		}
 
@@ -245,13 +244,5 @@ public class Jugador {
 		List<String> nombres = Arrays.stream(elems).map(Term::name).collect(Collectors.toList());
 
 		return nombres;
-		// convertir cada átomo Prolog a ObjetoCompuesto Java
-		// o sea, por cada atom hace un new ObjetoCompuesto
-		// devuelve un List<ObjetoCompuesto>
-		// requiere agregar un contructor a ObjetoCompuesto que solo setee el nombre.
-		/*
-		 * return nombres.stream() .map(ObjetoCompuesto::new)
-		 * .collect(Collectors.toList());
-		 */
 	}
 }

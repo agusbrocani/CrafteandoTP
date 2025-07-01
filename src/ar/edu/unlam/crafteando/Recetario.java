@@ -90,6 +90,36 @@ public class Recetario {
             System.out.println("Tiempo: " + receta.getTiempoEnSegundos() + " segundos");
         }
     }
+    
+    public void mostrarReceta(String nombreObjetoCompuesto) {
+        List<Receta> recetasFiltradas = buscarRecetasPorNombre(nombreObjetoCompuesto);
+
+        System.out.println("\n---------------------------------------------------");
+        System.out.println("Recetas disponibles para: " + nombreObjetoCompuesto);
+        
+        for (int i = 0; i < recetasFiltradas.size(); i++) {
+            Receta receta = recetasFiltradas.get(i);
+            System.out.println("\n=== Opción " + (i + 1) + " ===");
+
+            ObjetoComponente construido = construirObjetoDesdeReceta(receta);
+            
+            construido.mostrarConstruccion(true);
+            System.out.println("Tiempo: " + receta.getTiempoEnSegundos() + " segundos");
+        }
+    }
+    
+    public void mostrarUnaReceta(String nombreObjetoCompuesto) {
+        List<Receta> recetasFiltradas = buscarRecetasPorNombre(nombreObjetoCompuesto);
+
+        System.out.println("\n---------------------------------------------------");
+        System.out.println("Receta para: " + nombreObjetoCompuesto);
+        
+        Receta receta = recetasFiltradas.getFirst();
+        ObjetoComponente construido = construirObjetoDesdeReceta(receta);
+        
+        construido.mostrarConstruccion(true);
+        System.out.println("Tiempo: " + receta.getTiempoEnSegundos() + " segundos");
+    }
 
 
     // ==== RECETA DESDE CERO ====
@@ -121,7 +151,7 @@ public class Recetario {
 
         // Mapa para cálculo de tiempos y posible recursividad
         Map<String, Receta> recetasPorNombre = recetas.stream()
-            .collect(Collectors.toMap(Receta::getNombre, Function.identity(), (r1, _) -> r1)); // (r1, _)
+            .collect(Collectors.toMap(Receta::getNombre, Function.identity(), (r1, r2) -> r1)); // (r1, _)
 
         for (int i = 0; i < variantes.size(); i++) {
             Receta receta = variantes.get(i);
