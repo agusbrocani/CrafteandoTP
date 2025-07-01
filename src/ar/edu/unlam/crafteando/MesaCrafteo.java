@@ -3,9 +3,9 @@ package ar.edu.unlam.crafteando;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class MesaCrafteo extends ObjetoCompuesto {
-
 	private String nombre;
     private final List<Receta> recetas;
 
@@ -13,6 +13,23 @@ public class MesaCrafteo extends ObjetoCompuesto {
         super(nombre);
         this.nombre = nombre;
         this.recetas = new ArrayList<>();
+    }
+    
+    public String getNombre() {
+        return nombre;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MesaCrafteo)) return false;
+        MesaCrafteo that = (MesaCrafteo) o;
+        return Objects.equals(getNombre(), that.getNombre());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getNombre());
     }
 
     public void agregarReceta(Receta receta) {

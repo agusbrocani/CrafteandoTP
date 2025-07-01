@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 public class Inventario {
     private final Map<String, Integer> objetos;
+    //private final Map<String, MesaCrafteo> mesasPorTipo = new HashMap<>();
 
     public Inventario() {
         objetos = new HashMap<>();
@@ -17,7 +18,7 @@ public class Inventario {
     }
 
     public Map<ObjetoComponente, Integer> getObjetos() {
-        // Devolvemos un map simulado (nombre -> cantidad) usando objetos básicos dummy
+        // Map simulado
         return objetos.entrySet().stream()
             .collect(Collectors.toMap(
                 e -> new ObjetoBasico(e.getKey()), // todos como ObjetoBasico genérico
@@ -77,5 +78,27 @@ public class Inventario {
                 .toList();
         GestorJson.guardar(lista, rutaArchivo);
     }
+    
+    // ========= LÓGICA DE MESAS ========================0
+    /*
+    public void agregarMesa(MesaCrafteo mesa) {
+        if (mesa == null) throw new IllegalArgumentException("Mesa nula");
+
+        String tipo = mesa.getNombre().toLowerCase();
+        if (mesasPorTipo.containsKey(tipo)) {
+            throw new IllegalStateException("Ya existe una mesa de tipo: " + tipo);
+        }
+        mesasPorTipo.put(tipo, mesa);
+    }
+
+    public void quitarMesa(String tipo) {
+        mesasPorTipo.remove(tipo.toLowerCase());
+    }
+
+    public List<String> getTiposDeMesa() {
+        return new ArrayList<>(mesasPorTipo.keySet());
+    }
+    */
+    
 }
 
