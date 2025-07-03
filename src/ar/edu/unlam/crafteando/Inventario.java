@@ -67,7 +67,7 @@ public class Inventario {
         objetos.merge(nombre, cantidad, Integer::sum);
         
         /*
-        if (objeto instanceof MesaCrafteo mesa) {
+        if (objeto instanceof MesaCrafteo mesa) { // puede ser un flag directamente en el objeto, si es que es mesa de crafteo
             recetario.notificarNuevaMesa(mesa); // llamada directa
         } 
         */
