@@ -174,7 +174,7 @@ public class Recetario {
         }
     }
     
-    // ==== LOGICA OBSERVER PARA MESA DE CRAFTEO
+    // ==== LOGICA OBSERVER PARA MESA DE CRAFTEO ====
     
     public void notificarNuevaMesa(MesaCrafteo mesa) {
         this.agregarVariasRecetas(mesa.obtenerRecetas());
