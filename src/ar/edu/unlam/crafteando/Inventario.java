@@ -5,10 +5,17 @@ import java.util.stream.Collectors;
 
 public class Inventario {
     private final Map<String, Integer> objetos;
-    private final Map<String, MesaCrafteo> mesasPorTipo = new HashMap<>();
+    private final Recetario recetario;
+    //private final Map<String, MesaCrafteo> mesasPorTipo = new HashMap<>();
 
     public Inventario() {
-        objetos = new HashMap<>();
+        this.objetos = new HashMap<>();
+        this.recetario = new Recetario();
+    }
+    
+    public Inventario(Recetario recetario) { // Podriamos obligar a que manden un recetario si o si
+    	this.objetos = new HashMap<>();
+    	this.recetario = recetario;
     }
 
     public void ver() {
@@ -58,6 +65,12 @@ public class Inventario {
         }
 
         objetos.merge(nombre, cantidad, Integer::sum);
+        
+        /*
+        if (objeto instanceof MesaCrafteo mesa) {
+            recetario.notificarNuevaMesa(mesa); // llamada directa
+        } 
+        */
     }
 
     public Integer obtenerCantidad(String nombre) {
@@ -81,6 +94,7 @@ public class Inventario {
     
     // ========= LÓGICA DE MESAS ========================0
     
+    /*
     public void agregarMesa(MesaCrafteo mesa) {
         if (mesa == null) throw new IllegalArgumentException("Mesa nula");
 
@@ -99,5 +113,6 @@ public class Inventario {
         return new ArrayList<>(mesasPorTipo.keySet());
     }
     
+    */
 }
 

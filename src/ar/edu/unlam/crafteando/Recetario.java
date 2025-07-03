@@ -18,17 +18,32 @@ public class Recetario {
         recetas.add(receta);
     }
     
+    // Este podria ser private porque sirve unicamente para la logica del observer
+    public void agregarVariasRecetas(List<Receta> nuevasRecetas) {
+        if (nuevasRecetas == null) {
+            throw new IllegalArgumentException("La lista de recetas no puede ser nula.");
+        }
+
+        for (Receta receta : nuevasRecetas) {
+            if (receta == null) {
+                throw new IllegalArgumentException("No se puede agregar una receta nula.");
+            }
+            this.agregarReceta(receta);
+        }
+    }
+    
     public void eliminarReceta(Receta receta) {
         recetas.remove(receta);
     }
 
     // ==== MÉTODOS PRIVADOS PARA REUTILIZAR ====
 
-    private List<Receta> buscarRecetasPorNombre(String nombreObjetoCompuesto) {
+    public List<Receta> buscarRecetasPorNombre(String nombreObjetoCompuesto) {
         return recetas.stream()
             .filter(r -> r.getNombre().equalsIgnoreCase(nombreObjetoCompuesto))
             .collect(Collectors.toList());
     }
+    
     
     public List<Receta> buscarRecetasPorNombre(String nombreObjetoCompuesto, List<String> tiposDeMesasDisponibles) {
         Set<String> tipos = tiposDeMesasDisponibles.stream()
@@ -134,7 +149,36 @@ public class Recetario {
             System.out.println("Tiempo total de crafteo: " + tiempo + " segundos");
         }
     }
+    
+    public void mostrarRecetaDesdeCero(String nombreObjetoCompuesto) {
+        List<Receta> variantes = buscarRecetasPorNombre(nombreObjetoCompuesto);
 
+        if (variantes.isEmpty()) {
+            System.out.println("No hay recetas para: " + nombreObjetoCompuesto);
+            return;
+        }
+
+        Map<String, Receta> recetasPorNombre = recetas.stream()
+            .collect(Collectors.toMap(Receta::getNombre, Function.identity(), (r1,r2) -> r1));
+
+        for (int i = 0; i < variantes.size(); i++) {
+            Receta receta = variantes.get(i);
+            System.out.println("\n=== Opción " + (i + 1) + " ===");
+
+            ObjetoComponente objetoConstruido = construirObjetoDesdeReceta(receta);
+
+            objetoConstruido.mostrarConstruccion(false); // false = mostrar todos los niveles
+
+            int tiempo = receta.calcularTiempoTotal(recetasPorNombre);
+            System.out.println("Tiempo total de crafteo: " + tiempo + " segundos");
+        }
+    }
+    
+    // ==== LOGICA OBSERVER PARA MESA DE CRAFTEO
+    
+    public void notificarNuevaMesa(MesaCrafteo mesa) {
+        this.agregarVariasRecetas(mesa.obtenerRecetas());
+    }
 
 
     // ==== GETTERS ====
@@ -148,4 +192,10 @@ public class Recetario {
     public void validarRecetas() {
         recetas.forEach(Receta::validar);
     }
+    
+    public boolean existeReceta(String nombreObjetoCompuesto) {
+        return recetas.stream()
+            .anyMatch(r -> r.getNombre().equalsIgnoreCase(nombreObjetoCompuesto));
+    }
+
 }
