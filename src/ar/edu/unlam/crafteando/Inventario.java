@@ -65,11 +65,21 @@ public class Inventario {
         objetos.merge(nombre, cantidad, Integer::sum);
     }
 
+    /*
     public Integer obtenerCantidad(String nombre) {
         if (!objetos.containsKey(nombre)) {
             throw new IllegalArgumentException("El objeto no está en el inventario.");
         }
         else
+        return objetos.get(nombre);
+    }
+    */
+    
+    // LA COMENTE PORQUE NECESITO EVALUAR YO LA CANTIDAD SI NO LA TENGO, 
+    //SI ME TRA EXCEPCION ME ROMPE EL PROGRAMA
+    public Integer obtenerCantidad(String nombre) {
+
+    	// notar que el get ya devuelve null si no se encuentra la clave 
         return objetos.get(nombre);
     }
 

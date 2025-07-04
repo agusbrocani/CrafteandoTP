@@ -3,10 +3,6 @@ package ar.edu.unlam.crafteando;
 import java.util.List;
 import java.util.Map;
 
-import org.jpl7.Atom;
-import org.jpl7.Query;
-import org.jpl7.Term;
-
 public class CrafteandoTP {
 	public static void main(String[] args) {
 
@@ -26,29 +22,41 @@ public class CrafteandoTP {
 		ObjetoBasico oCuerda = new ObjetoBasico("Cuerda");
 		ObjetoBasico oHierro = new ObjetoBasico("Hierro");
 		ObjetoBasico oSustanciaQuePegaSacadaDelArbol = new ObjetoBasico("Sustancia que pega sacada del arbol");
-		
-		oEspada1.agregar(oHierro); oEspada1.agregar(oHierro);
-		oEspada1.agregar(oMadera); oEspada1.agregar(oCuerda);
 
-		
-		 oEspada1.agregar(oHierro); oEspada1.agregar(oHierro);
-		 oEspada1.agregar(oMadera); oEspada1.agregar(oCuerda);
-		 
-		 oEspada2.agregar(oHojaDeHierroDelTitanic); for (i = 0; i < 5; i++) {
-		 oEspada2.agregar(oMangoDeMadera); } oEspada2.agregar(oCuerda);
-		 
-		 for (i = 0; i < 10; i++) { oHojaDeHierro.agregar(oHierro); }
-		 
-		 for (i = 0; i < 7; i++) { oMangoDeMadera.agregar(oMadera); }
-		 
-		 for (i = 0; i < 2; i++) {
-		 oPegamento.agregar(oSustanciaQuePegaSacadaDelArbol); }
-		  
-		 for (i = 0; i < 50; i++) { oSubmarino.agregar(oHierro); }
-		 
-		 oHojaDeHierroDelTitanic.agregar(oSubmarino);
-		 oHojaDeHierroDelTitanic.agregar(oHierro);
-		 
+		oEspada1.agregar(oHierro);
+		oEspada1.agregar(oHierro);
+		oEspada1.agregar(oMadera);
+		oEspada1.agregar(oCuerda);
+
+		oEspada1.agregar(oHierro);
+		oEspada1.agregar(oHierro);
+		oEspada1.agregar(oMadera);
+		oEspada1.agregar(oCuerda);
+
+		oEspada2.agregar(oHojaDeHierroDelTitanic);
+		for (i = 0; i < 5; i++) {
+			oEspada2.agregar(oMangoDeMadera);
+		}
+		oEspada2.agregar(oCuerda);
+
+		for (i = 0; i < 10; i++) {
+			oHojaDeHierro.agregar(oHierro);
+		}
+
+		for (i = 0; i < 7; i++) {
+			oMangoDeMadera.agregar(oMadera);
+		}
+
+		for (i = 0; i < 2; i++) {
+			oPegamento.agregar(oSustanciaQuePegaSacadaDelArbol);
+		}
+
+		for (i = 0; i < 50; i++) {
+			oSubmarino.agregar(oHierro);
+		}
+
+		oHojaDeHierroDelTitanic.agregar(oSubmarino);
+		oHojaDeHierroDelTitanic.agregar(oHierro);
 
 		// Recetario inicial (se carga del archivo)
 		Recetario recetasBasicasCargadasDeArchivo = new Recetario();
@@ -84,7 +92,8 @@ public class CrafteandoTP {
 		submarino.agregarIngrediente(oHierro, 50);
 
 		// Agrego todas las recetas al Recetario Básico
-		recetasBasicasCargadasDeArchivo.agregarReceta(espada1);
+				
+		recetasBasicasCargadasDeArchivo.agregarReceta(espada1); //(!) CON ESTA RECETA PUEDO CRAFTEAR 0 EN PROLOG
 		recetasBasicasCargadasDeArchivo.agregarReceta(espada2);
 		recetasBasicasCargadasDeArchivo.agregarReceta(hojaDeHierro);
 		recetasBasicasCargadasDeArchivo.agregarReceta(mangoDeMadera);
@@ -127,7 +136,7 @@ public class CrafteandoTP {
 
 			System.out.println("\nInventario Inicial");
 			jugador.consultarInventario();
-
+/*
 			// 1. recolectar
 			// FABRICAR 2 ESPADAS EXACTAMENTE (una con basicos, otra con primer nivel)
 			jugador.recolectar("Hierro", 20);
@@ -136,16 +145,14 @@ public class CrafteandoTP {
 			jugador.recolectar("Mango de madera", 1);
 			jugador.recolectar("Hoja de hierro", 2);
 
-			
 			System.out.println("\nInventario despues de recolectar:");
 			jugador.consultarInventario();
 
-			
 			// 2. soltar
-			jugador.soltar("Hierro",6);
+			jugador.soltar("Hierro", 6);
 			System.out.println("\nInventario despues de soltar:");
 			jugador.consultarInventario();
-			
+
 			System.out.println("INVENTARIO:");
 			jugador.consultarInventario();
 			System.out.println("\n");
@@ -154,41 +161,39 @@ public class CrafteandoTP {
 			System.out.println("\nRECETA DESDE CERO");
 			jugador.verRecetasDesdeCero("Espada");
 			System.out.println("\n");
-			
+
 			System.out.println("\nRECETA PRIMER NIVEL");
 			jugador.verRecetas("Espada");
 			System.out.println("\n");
 			System.out.println("\n");
-			
-			
+
 			// 4. consultarFaltantesPrimerNivel
 			System.out.println("\nFaltantes primer nivel para Espada:");
 			List<Map<ObjetoComponente, Integer>> falt1 = jugador.consultarFaltantesPrimerNivel("Espada");
 			System.out.println(falt1);
 
-			
 			// 5. consultarFaltantesBasicos
 			System.out.println("\nFaltantes básicos para Espada:");
 			List<Map<ObjetoComponente, Integer>> faltB = jugador.consultarFaltantesBasicos("Espada");
 			System.out.println(faltB);
-			 
+			*/
 
+			jugador.recolectar("Baston", 20);
 			// 6. cuantoPuedoCraftear
 			int maxCraftear = jugador.cuantoPuedoCraftear("Espada");
 			System.out.println("\nPuedo craftear Espada " + maxCraftear + " veces");
-			
 
-			 // 7. craftear
+			// 8. consultarObjetosCrafteables (vía Prolog)
+			System.out.println("\nObjetos actualmente crafteables:");
+			List<String> crafteables = jugador.consultarObjetosCrafteables();
+			System.out.println(crafteables);
+
+			// 7. craftear
 			jugador.craftear("Espada");
 			System.out.println("INVENTARIO DESPUES DE CRAFTEAR 1 ESPADA: ");
-			 jugador.consultarInventario();
-			 
-			 
-			 // 8. consultarObjetosCrafteables (vía Prolog)
-			 System.out.println("\nObjetos actualmente crafteables:"); 
-			 List<String> crafteables = jugador.consultarObjetosCrafteables();
-			 System.out.println(crafteables);
-			 
+			jugador.consultarInventario();
+
+			jugador.getHistorial();
 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -13,7 +13,7 @@ public class Jugador {
 	private String nombre;
 	private Inventario inventario;
 	private Recetario recetario;
-	// private Historial historial;
+	private Historial historial;
 
 	private MotorLogicoProlog motor;
 
@@ -21,7 +21,7 @@ public class Jugador {
 		this.nombre = nombre;
 		this.inventario = new Inventario();
 		this.recetario = recetario;
-		// this.historial = new Historial();
+		this.historial = new Historial();
 
 		this.motor = new MotorLogicoProlog(rutaBaseProlog);
 		if (!motor.cargarBase()) {
@@ -159,7 +159,7 @@ public class Jugador {
 				cantidadMaxima = Math.min(cantidadMaxima, posibles);
 
 			} else {
-				// Es un compuesto > intentar fabricarlo recursivamente
+				// Es un compuesto >> intentar fabricarlo recursivamente
 				List<Receta> subrecetas = recetario.buscarRecetasPorNombre(nombre);
 				if (subrecetas.isEmpty()) {
 					return 0;
@@ -181,12 +181,7 @@ public class Jugador {
 		return cantidadMaxima == Integer.MAX_VALUE ? 0 : cantidadMaxima;
 	}
 
-	// public boolean craftear(String nombreObjetoCompuesto, Receta receta)
-	// OJO: TIENE SENTIDO PASARLE RECETA???
-	// SI TOTAL EL JUGADOR NO PUEDE ELEGIR PORQUE SE COMPARAN POR NOMBRE QUE ES EL
-	// MISMO QUE EL DEL OBJETO
-
-	// EN OTRAS NOTAS, ESTE METODO TOMA LA PRIMERA RECETA DE LAS QUE PUEDE HACER
+	// ESTE METODO TOMA LA PRIMERA RECETA DE LAS QUE PUEDE HACER
 	public boolean craftear(String nombreObjetoCompuesto) throws Exception {
 
 		// 1) valido que exista al menos una receta para ese nombre
@@ -207,9 +202,10 @@ public class Jugador {
 
 			for (Map.Entry<ObjetoComponente, Integer> entry : r.getIngredientes().entrySet()) {
 
-				String ingNombre = entry.getKey().getNombre();
+				String ingredienteNecesario = entry.getKey().getNombre();
 				int cantNecesaria = entry.getValue();
-				if (inventario.obtenerCantidad(ingNombre) < cantNecesaria) {
+				
+				if (!inventario.contiene(ingredienteNecesario) || inventario.obtenerCantidad(ingredienteNecesario) < cantNecesaria) {
 					puedoCraftear = false;
 					break;
 				}
@@ -245,7 +241,7 @@ public class Jugador {
 				inventario.quitar(nombreIngredienteConsumido, cantidadConsumida);
 			}
 
-			// historial.registrar(crafteado, 1, ingredientesBasicos);
+			historial.registrar(nombreObjetoCompuesto, recetaElegida.getIngredientes());
 
 			System.out.println("¡Listo! Crafteaste " + nombreObjetoCompuesto);
 			return true;
@@ -274,24 +270,13 @@ public class Jugador {
 		// Elimino hechos antiguos
 		motor.eliminarTodos("ingrediente(_,_,_)");
 
-		// Agregar todas las recetas como hechos en Prolog
-		/*
-		 * for (Receta receta : recetario.getRecetas()) {
-		 * 
-		 * String objeto = receta.getNombre().toLowerCase();
-		 * receta.getIngredientes().forEach((ingComp, cantReq) -> {
-		 * 
-		 * String ingrediente = ingComp.getNombre().toLowerCase();
-		 * motor.agregarHecho(String.format("ingrediente('%s','%s',%d)", ingrediente,
-		 * objeto, cantReq) ); }); }
-		 */
-
 		// para cada receta de mi recetario la desmenuzo en sus ingredientes
 		// Agrego todas las recetas como hechos en Prolog
 		for (Receta receta : recetario.getRecetas()) {
 
 			String objeto = receta.getNombre().toLowerCase();
 
+			int i = 0;
 			for (Map.Entry<ObjetoComponente, Integer> e : receta.getIngredientes().entrySet()) {
 				String ing = e.getKey().getNombre().toLowerCase();
 				int cantReq = e.getValue();
@@ -305,86 +290,40 @@ public class Jugador {
 		actualizarInventarioEnProlog();
 		actualizarRecetarioEnProlog();
 	}
-	
-	public List<String> consultarObjetosCrafteables() {
-		
-		System.out.println("\n\n\nANTES PROLOG");
-		motor.listarHechos("tengo/2");
-		motor.listarHechos("ingrediente/3");
-		
-        // 1) Actualizo inventario y recetario con Prolog
-        sincronizarProlog();
-        
-        System.out.println("\n\n\nDESPUES PROLOG");
-        motor.listarHechos("tengo/2");
-        motor.listarHechos("ingrediente/3");
 
-        // 2) Ejecuto la consulta
-        Query q = new Query("objetos_crafteables(L)");
-        if (!q.hasSolution()) {
-            return Collections.emptyList();
-        }
-
-        // 3) Parseo la lista de resultados
-        Term lista = q.oneSolution().get("L");
-        Term[] elems = lista.listToTermArray();
-
-        List<String> crafteables = new ArrayList<>();
-        for (Term t : elems) {
-        	crafteables.add(t.name());
-        }
-
-        return crafteables;
-    }
-	
-	
-
-	/*
 	public List<String> consultarObjetosCrafteables() {
 
-		// ACTUALIZAR INVENTARIO EN PROLOG
-		// limpiar todos los hechos antiguos tengo(_,_)
-		motor.eliminarTodos("tengo(_,_)"); // probar con el punto "tengo(_,_)."
+		//System.out.println("\n\n\nANTES PROLOG");
+		//motor.listarHechos("tengo/2");
+		//motor.listarHechos("ingrediente/3");
 
-		// cargar el inventario actual en la base en los tengo(_,_)
-		for (Map.Entry<ObjetoComponente, Integer> entry : inventario.getObjetos().entrySet()) {
-			String atomo = entry.getKey().getNombre().toLowerCase();
-			int cantidad = entry.getValue();
-			motor.agregarHecho(String.format("tengo('%s',%d)", atomo, cantidad));
-		}
+		// 1) Actualizo inventario y recetario con Prolog
+		sincronizarProlog();
 
-		// ACTUALIZAR RECETARIO EN PROLOG (necesario por las mesas de crafteo)
-		// limpiar todos los hechos antiguos ingrediente(_,_,_)
-		motor.eliminarTodos("ingrediente(_,_,_)");
+		//System.out.println("\n\n\nDESPUES PROLOG");
+		//motor.listarHechos("tengo/2");
+		//motor.listarHechos("ingrediente/3");
 
-		// para cada receta de mi recetario la desmenuzo en sus ingredientes
-		for (Receta receta : recetario.getRecetas()) {
-
-			String objeto = receta.getNombre().toLowerCase();
-
-			for (Map.Entry<ObjetoComponente, Integer> e : receta.getIngredientes().entrySet()) {
-				String ing = e.getKey().getNombre().toLowerCase();
-				int cantReq = e.getValue();
-
-				motor.agregarHecho(String.format("ingrediente('%s','%s',%d)", ing, objeto, cantReq));
-			}
-		}
-
-		// mandar la consulta a Prolog
+		// 2) Ejecuto la consulta
 		Query q = new Query("objetos_crafteables(L)");
 		if (!q.hasSolution()) {
-			//System.out.println("En este momento no puedes craftear nada :(");
 			return Collections.emptyList();
 		}
 
-		// obtener y parseo la lista que me devuelve Prolog
+		// 3) Parseo la lista de resultados
 		Term lista = q.oneSolution().get("L");
 		Term[] elems = lista.listToTermArray();
 
-		List<String> nombres = Arrays.stream(elems).map(Term::name).collect(Collectors.toList());
+		List<String> crafteables = new ArrayList<>();
+		for (Term t : elems) {
+			crafteables.add(t.name());
+		}
 
-		return nombres;
+		return crafteables;
 	}
-	*/
-	
+
+	public void getHistorial() {
+		historial.mostrarHistorial();
+	}
+
 }

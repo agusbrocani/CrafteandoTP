@@ -20,7 +20,7 @@ tengo(hierro, 6).
 tengo(madera, 5).
 
 % ==== RECETARIO ====
-% ingrediente(Ingrediente, Producto, CantidadNecesaria)
+% ingrediente(Ingrediente, Objeto, CantidadNecesaria)
 ingrediente(baston, antorcha, 2).
 ingrediente(hierro, pico, 3).
 ingrediente(madera, pico, 2).
@@ -34,11 +34,11 @@ ingrediente(baston, espada, 1).
 
 puedo_craftear(Objeto) :-
 
-    % 1 - reúno todos los pares (Ingred, CantReq) donde el SEGUNDO arg. = Objeto
-    findall((Ing, CantReq), ingrediente(Ing,Objeto,CantReq), Ingredientes),
+    % 1 - reúno todos los pares (Ingrediente, CantRequerida) donde el SEGUNDO arg. = Objeto
+    findall((Ing, CantReq), ingrediente(Ing, Objeto, CantReq), ListaIngredientes),
     
     % 2- tiene que haber por lo menos un ingrediente
-    Ingredientes \= [],
+    ListaIngredientes \= [],
     
     % y tienen que estar todos
     tengo_ingredientes(ListaIngredientes).
