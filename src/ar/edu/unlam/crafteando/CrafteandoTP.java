@@ -140,7 +140,7 @@ public class CrafteandoTP {
 			System.out.println("\nInventario despues de recolectar:");
 			jugador.consultarInventario();
 
-			/*
+			
 			// 2. soltar
 			jugador.soltar("Hierro",6);
 			System.out.println("\nInventario despues de soltar:");
@@ -182,13 +182,12 @@ public class CrafteandoTP {
 			jugador.craftear("Espada");
 			System.out.println("INVENTARIO DESPUES DE CRAFTEAR 1 ESPADA: ");
 			 jugador.consultarInventario();
-			 */
+			 
 			 
 			 // 8. consultarObjetosCrafteables (vía Prolog)
 			 System.out.println("\nObjetos actualmente crafteables:"); 
 			 List<String> crafteables = jugador.consultarObjetosCrafteables();
 			 System.out.println(crafteables);
-			 
 			 
 
 		} catch (Exception e) {
