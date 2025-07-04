@@ -37,6 +37,11 @@ class ObjetoComponenteTest {
         protected void mostrarConstruccionInterno(int cantidad, int nivel, boolean soloPrimerNivel, String prefijo, boolean esUltimo) {
             // No hace nada
         }
+        
+        @Override
+        public boolean esBasico() {
+            return false;
+        }
     }
 
     // Hijo rastreable
@@ -88,6 +93,11 @@ class ObjetoComponenteTest {
 
         public boolean ambosHijosLlamados() {
             return hijo1.fueLlamado() && hijo2.fueLlamado();
+        }
+        
+        @Override
+        public boolean esBasico() {
+            return false;
         }
     }
 
@@ -141,6 +151,11 @@ class ObjetoComponenteTest {
             protected void mostrarConstruccionInterno(int cantidad, int nivel, boolean soloPrimerNivel, String prefijo, boolean esUltimo) {
                 // no usado
             }
+            
+            @Override
+            public boolean esBasico() {
+                return false;
+            }
         };
 
         assertDoesNotThrow(() -> compuesto.mostrarConstruccion(false));
@@ -171,6 +186,11 @@ class ObjetoComponenteTest {
             protected void mostrarConstruccionInterno(int cantidad, int nivel, boolean soloPrimerNivel, String prefijo, boolean esUltimo) {
                 // se llamará igual
             }
+            
+            @Override
+            public boolean esBasico() {
+                return false;
+            }
         };
 
         ObjetoComponente compuesto = new ObjetoComponente("Jarra", 1) {
@@ -192,6 +212,11 @@ class ObjetoComponenteTest {
             @Override
             protected void mostrarConstruccionInterno(int cantidad, int nivel, boolean soloPrimerNivel, String prefijo, boolean esUltimo) {
                 // no usado
+            }
+            
+            @Override
+            public boolean esBasico() {
+                return false;
             }
         };
 

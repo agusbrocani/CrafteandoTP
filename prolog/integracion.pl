@@ -31,18 +31,18 @@ ingrediente(espada, baston, 1).
 
 % === Lógica para saber si un objeto es crafteable con inventario actual ===
 
-% puedo_craftear(+Objeto)
+% puedo_craftear(Objeto)
 puedo_craftear(Objeto) :-
     findall((Ing, CantReq), ingrediente(Objeto, Ing, CantReq), Ingredientes),
     tengo_ingredientes(Ingredientes).
 
-% tengo_ingredientes(+ListaDeIngredientes)
+% tengo_ingredientes(ListaDeIngredientes)
 tengo_ingredientes([]).
 tengo_ingredientes([(Ing, CantReq) | Resto]) :-
     tengo(Ing, CantTengo),
     CantTengo >= CantReq,
     tengo_ingredientes(Resto).
 
-% objetos_crafteables(-Lista)
+% objetos_crafteables(Lista)
 objetos_crafteables(ListaObjetosCrafteables) :-
     findall(O, (objeto_compuesto(O), puedo_craftear(O)), ListaObjetosCrafteables).

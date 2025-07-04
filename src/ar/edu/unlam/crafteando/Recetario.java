@@ -203,7 +203,7 @@ public class Recetario {
         recetas.forEach(Receta::validar);
     }
     
-    public boolean existeReceta(String nombreObjetoCompuesto) {
+    public boolean contieneReceta(String nombreObjetoCompuesto) {
         return recetas.stream()
             .anyMatch(r -> r.getNombre().equalsIgnoreCase(nombreObjetoCompuesto));
     }

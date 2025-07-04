@@ -37,22 +37,17 @@ public class Jugador {
 		inventario.quitar(o.getNombre(), cantidad);
 	}
 
-	
 	public void consultarInventario() {
 		inventario.ver();
 	}
 	
-
 	public void verRecetasDesdeCero(ObjetoCompuesto o) {
 		recetario.mostrarRecetaDesdeCero(o.getNombre());
 	}
 
-	
 	public void verRecetas(ObjetoCompuesto o) {
 		recetario.mostrarReceta(o.getNombre());
 	}
-	
-
 	
 	private Map<ObjetoComponente, Integer> obtenerFaltantesPorReceta(ObjetoCompuesto o, Receta receta) throws Exception{
 		
@@ -125,47 +120,78 @@ public class Jugador {
 	    return faltantes;
 	}
 	
-	
-	public Integer cuantoPuedoCraftear(ObjetoCompuesto o, Receta receta) throws Exception {
-	    
-		// me fijo si la receta existe en el recetario
-	    if (!recetario.getRecetas().contains(receta)) {
-	        throw new Exception("La receta proporcionada no pertenece al recetario del jugador.");
+	public int cuantoPuedoCraftear(String nombreObjetoCompuesto) {
+		
+	    List<Receta> variantes = recetario.buscarRecetasPorNombre(nombreObjetoCompuesto);
+
+	    if (variantes.isEmpty()) {
+	        throw new IllegalArgumentException("No hay recetas para: " + nombreObjetoCompuesto);
 	    }
 
-	    // obtengo  los ingredientes básicos de forma total (descompuestos)
-	    Map<ObjetoBasico, Integer> ingredientesBasicos = receta.listarIngredientesDesdeCero(o);
-
-	    int cantidadMinima = Integer.MAX_VALUE;
-
-	    for (Map.Entry<ObjetoBasico, Integer> entry : ingredientesBasicos.entrySet()) {
-	        String nombreIngrediente = entry.getKey().getNombre();
-	        int cantidadRequeridaPorUnidad = entry.getValue();
-
-	        int cantidadDisponible = inventario.contiene(nombreIngrediente)
-	                ? inventario.obtenerCantidad(nombreIngrediente)
-	                : 0;
-
-	        int unidadesPosibles = cantidadDisponible / cantidadRequeridaPorUnidad;
-
-	        cantidadMinima = Math.min(cantidadMinima, unidadesPosibles);
-
-	        if (cantidadMinima == 0) return 0;
+	    int maxCantidad = 0;
+	    for (Receta receta : variantes) {
+	    	
+	    	// creo una copia del inventario para considerar la fabricacion de objetos intermedios, de ser necesarios
+	        Inventario copia = new Inventario(this.inventario);
+	        int cantidad = calcularCuantasVecesPuedoCraftear(receta, copia);
+	        maxCantidad = Math.max(maxCantidad, cantidad);
 	    }
 
-	    return cantidadMinima == Integer.MAX_VALUE ? 0 : cantidadMinima;
+	    return maxCantidad;
 	}
 
-	
-	public void craftear(ObjetoCompuesto o, Receta receta) throws Exception{
+	private int calcularCuantasVecesPuedoCraftear(Receta receta, Inventario inventario) {
+		
+	    int cantidadMaxima = Integer.MAX_VALUE;
+
+	    for (Map.Entry<ObjetoComponente, Integer> entry : receta.getIngredientes().entrySet()) {
+	    	
+	        String nombre = entry.getKey().getNombre();
+	        int cantidadPorUnidad = entry.getValue();
+
+	        if (entry.getKey().esBasico()) {
+	            int disponibles = inventario.contiene(nombre) ? inventario.obtenerCantidad(nombre) : 0;
+	            int posibles = disponibles / cantidadPorUnidad;
+	            cantidadMaxima = Math.min(cantidadMaxima, posibles);
+	            
+	        } else {
+	            // Es un compuesto > intentar fabricarlo recursivamente
+	            List<Receta> subrecetas = recetario.buscarRecetasPorNombre(nombre);
+	            if (subrecetas.isEmpty()) {
+	            	return 0;
+	            }
+
+	            int cantidadSubmaxima = 0;
+	            for (Receta subreceta : subrecetas) {
+	            	
+	                Inventario copiaInventario = new Inventario(inventario);
+	                int subCantidad = calcularCuantasVecesPuedoCraftear(subreceta, copiaInventario);
+	                cantidadSubmaxima = Math.max(cantidadSubmaxima, subCantidad);
+	            }
+
+	            int posibles = cantidadSubmaxima / cantidadPorUnidad;
+	            cantidadMaxima = Math.min(cantidadMaxima, posibles);
+	        }
+	    }
+
+	    return cantidadMaxima == Integer.MAX_VALUE ? 0 : cantidadMaxima;
+	}
+
+	/*
+	//public boolean craftear(String nombreObjetoCompuesto, Receta receta)
+	// OJO: TIENE SENTIDO PASARLE RECETA??? 
+	// SI TOTAL EL JUGADOR NO PUEDE ELEGIR PORQUE SE COMPARAN POR NOMBRE QUE ES EL MISMO QUE EL DEL OBJETO
+	public boolean craftear(String nombreObjetoCompuesto) throws Exception{
+		
 		
 		// me fijo si la receta existe en el recetario
 	    if (!recetario.getRecetas().contains(receta)) {
 	        throw new Exception("No sabes la receta de " + o.getNombre());
 	    }
 	    
+	    
 	    // me fijo si lo puedo craftear
-	    if (cuantoPuedoCraftear(o, receta) < 1) {
+	    if (cuantoPuedoCraftear(nombreObjetoCompuesto) < 1) {
 	        System.out.println("No tienes suficientes ingredientes para craftear " + o.getNombre() + ".");
 	        return;
 	    }
@@ -198,8 +224,8 @@ public class Jugador {
 	    
 	    //historial.registrar(crafteado, 1, ingredientesBasicos);
 	}
-	
-	
+	*/
+
 		
 	public List<String> consultarObjetosCrafteables() {
 

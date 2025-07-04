@@ -10,6 +10,11 @@ public class Inventario {
     public Inventario() {
         objetos = new HashMap<>();
     }
+    
+    // Constructor copia
+    public Inventario(Inventario otro) {
+        this.objetos = new HashMap<>(otro.objetos);
+    }
 
     public void ver() {
         objetos.forEach((nombre, cantidad) ->

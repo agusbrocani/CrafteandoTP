@@ -15,7 +15,7 @@ public class CrafteandoTP {
 		// Objetos compuestos
 		ObjetoCompuesto oEspada1 = new ObjetoCompuesto("Espada");
 		ObjetoCompuesto oEspada2 = new ObjetoCompuesto("Espada");
-		ObjetoCompuesto oHojaDeHierro = new ObjetoCompuesto("Hierro");
+		ObjetoCompuesto oHojaDeHierro = new ObjetoCompuesto("Hoja de hierro");
 		ObjetoCompuesto oMangoDeMadera = new ObjetoCompuesto("Mango de madera");
 		ObjetoCompuesto oPegamento = new ObjetoCompuesto("Pegamento");
 		ObjetoCompuesto oHojaDeHierroDelTitanic = new ObjetoCompuesto("Hoja de hierro del Titanic");
@@ -55,7 +55,7 @@ public class CrafteandoTP {
 		Receta espada1 = new Receta("Espada", "Básico", 60);
 		Receta espada2 = new Receta("Espada", "Básico", 59);
 
-		Receta hojaDeHierro = new Receta("HojaDeHierro", "Básico", 50);
+		Receta hojaDeHierro = new Receta("Hoja de hierro", "Básico", 50);
 
 		Receta mangoDeMadera = new Receta("Mango de madera", "Básico", 11);
 
@@ -125,13 +125,17 @@ public class CrafteandoTP {
 		try {
 			System.out.println("\n=== Pruebas de Jugador ===");
 
-			/*
 			System.out.println("\nInventario Inicial");
 			jugador.consultarInventario();
 
 			// 1. recolectar
-			jugador.recolectar(oHierro, 5);
-			jugador.recolectar(oMadera, 3);
+			// FABRICAR 2 ESPADAS EXACTAMENTE (una con basicos, otra con primer nivel)
+			jugador.recolectar(oHierro, 20);
+			jugador.recolectar(oMadera, 7);
+			jugador.recolectar(oCuerda, 2);
+			jugador.recolectar(oMangoDeMadera, 1);
+			jugador.recolectar(oHojaDeHierro, 2);
+
 			System.out.println("\nInventario despues de recolectar:");
 			jugador.consultarInventario();
 
@@ -143,35 +147,42 @@ public class CrafteandoTP {
 			// 3. consultarRecetaDesdeCero y consultarReceta
 			System.out.println("\nMostrar receta completa desde cero de Espada:");
 			jugador.verRecetasDesdeCero(oEspada1);
+			
+			/*
 			System.out.println("\n\nMostrar receta de primer nivel de Espada:");
 			jugador.verRecetas(oEspada2);
-			
+			 */
+			/*
 			// 4. consultarFaltantesPrimerNivel
 			System.out.println("\nFaltantes primer nivel para Espada:");
 			List<Map<ObjetoComponente, Integer>> falt1 = jugador.consultarFaltantesPrimerNivel(oEspada1);
 			System.out.println(falt1);
 
+			
 			// 5. consultarFaltantesBasicos
 			System.out.println("\nFaltantes básicos para Espada:");
 			List<Map<ObjetoComponente, Integer>> faltB = jugador.consultarFaltantesBasicos(oEspada1);
 			System.out.println(faltB);
-			*/
+			 */
+			
 			
 
-			/*
 			// 6. cuantoPuedoCraftear
-			int maxCraftear = jugador.cuantoPuedoCraftear(oEspada1, espada1);
+			int maxCraftear = jugador.cuantoPuedoCraftear("espada");
 			System.out.println("\nPuedo craftear Espada " + maxCraftear + " veces");
 
+			/*
 			 // 7. craftear jugador.craftear(oEspada1, espada1);
 			 System.out.println("Inventario tras craftear 1 Espada:");
 			 jugador.consultarInventario();
 			 */
-			 
+			 /*
 			 // 8. consultarObjetosCrafteables (vía Prolog)
 			 System.out.println("\nObjetos actualmente crafteables:"); List<String>
 			 crafteables = jugador.consultarObjetosCrafteables();
 			 System.out.println(crafteables);
+			 
+			 */
 
 		} catch (Exception e) {
 			e.printStackTrace();

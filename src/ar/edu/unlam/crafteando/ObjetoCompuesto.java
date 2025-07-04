@@ -98,4 +98,10 @@ public class ObjetoCompuesto extends ObjetoComponente {
     public boolean estaVacio() {
         return objetos.isEmpty();
     }
+    
+    @Override
+    public boolean esBasico() {
+        return false;
+    }
+
 }
