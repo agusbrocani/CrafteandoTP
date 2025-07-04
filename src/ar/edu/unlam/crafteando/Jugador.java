@@ -14,7 +14,6 @@ public class Jugador {
 	private Inventario inventario;
 	private Recetario recetario;
 	private Historial historial;
-
 	private MotorLogicoProlog motor;
 
 	public Jugador(String nombre, Recetario recetario, String rutaBaseProlog) {
@@ -29,12 +28,12 @@ public class Jugador {
 		}
 	}
 
-	public void recolectar(String nombreObjetoCompuesto, int cantidad) {
-		inventario.agregar(nombreObjetoCompuesto, cantidad);
+	public void recolectar(String nombreObjeto, int cantidad) {
+		inventario.agregar(nombreObjeto, cantidad);
 	}
 
-	public void soltar(String nombreObjetoCompuesto, int cantidad) {
-		inventario.quitar(nombreObjetoCompuesto, cantidad);
+	public void soltar(String nombreObjeto, int cantidad) {
+		inventario.quitar(nombreObjeto, cantidad);
 	}
 
 	public void consultarInventario() {
