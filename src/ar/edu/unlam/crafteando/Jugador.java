@@ -29,27 +29,28 @@ public class Jugador {
 		}
 	}
 
-	public void recolectar(ObjetoComponente o, int cantidad) {
-		inventario.agregar(o.getNombre(), cantidad);
+	public void recolectar(String nombreObjetoCompuesto, int cantidad) {
+		inventario.agregar(nombreObjetoCompuesto, cantidad);
 	}
 
-	public void soltar(ObjetoComponente o, int cantidad) {
-		inventario.quitar(o.getNombre(), cantidad);
+	public void soltar(String nombreObjetoCompuesto, int cantidad) {
+		inventario.quitar(nombreObjetoCompuesto, cantidad);
 	}
 
+	
 	public void consultarInventario() {
 		inventario.ver();
 	}
 	
-	public void verRecetasDesdeCero(ObjetoCompuesto o) {
-		recetario.mostrarRecetaDesdeCero(o.getNombre());
+	public void verRecetasDesdeCero(String nombreObjetoCompuesto) {
+		recetario.mostrarRecetaDesdeCero(nombreObjetoCompuesto);
 	}
 
-	public void verRecetas(ObjetoCompuesto o) {
-		recetario.mostrarReceta(o.getNombre());
+	public void verRecetas(String nombreObjetoCompuesto) {
+		recetario.mostrarReceta(nombreObjetoCompuesto);
 	}
 	
-	private Map<ObjetoComponente, Integer> obtenerFaltantesPorReceta(ObjetoCompuesto o, Receta receta) throws Exception{
+	private Map<ObjetoComponente, Integer> obtenerFaltantesPorReceta(Receta receta) throws Exception{
 		
 		Map<ObjetoComponente, Integer> faltantes = new HashMap<ObjetoComponente, Integer>();
 		
@@ -69,25 +70,25 @@ public class Jugador {
 	}
 
 	
-	public List<Map<ObjetoComponente, Integer>> consultarFaltantesPrimerNivel (ObjetoCompuesto o) throws Exception{
+	public List<Map<ObjetoComponente, Integer>> consultarFaltantesPrimerNivel (String nombreObjetoCompuesto) throws Exception{
 
 		List<Receta> recetas;
 		Map<ObjetoComponente, Integer> faltantesReceta = new HashMap<ObjetoComponente, Integer>();
 		List<Map<ObjetoComponente, Integer>> faltantes = new LinkedList<Map<ObjetoComponente, Integer>>();
 		
-		recetas = recetario.buscarRecetasPorNombre(o.getNombre());
+		recetas = recetario.buscarRecetasPorNombre(nombreObjetoCompuesto);
 
 		for (Receta receta : recetas) {		
 			
-			faltantesReceta = obtenerFaltantesPorReceta(o, receta);
+			faltantesReceta = obtenerFaltantesPorReceta(receta);
 			faltantes.add(faltantesReceta);						
 		}		
 		return faltantes;
 	}
 	
-	public List<Map<ObjetoComponente, Integer>> consultarFaltantesBasicos(ObjetoCompuesto o) throws Exception{
+	public List<Map<ObjetoComponente, Integer>> consultarFaltantesBasicos(String nombreObjetoCompuesto) throws Exception{
 		
-	    List<Map<ObjetoBasico, Integer>> recetasDesdeCero = recetario.obtenerRecetaDesdeCero(o.getNombre());
+	    List<Map<ObjetoBasico, Integer>> recetasDesdeCero = recetario.obtenerRecetaDesdeCero(nombreObjetoCompuesto);
 	    List<Map<ObjetoComponente, Integer>> faltantesBasicos = new ArrayList<>();
 
 	    for (Map<ObjetoBasico, Integer> recetaBasica : recetasDesdeCero) {
@@ -177,54 +178,82 @@ public class Jugador {
 	    return cantidadMaxima == Integer.MAX_VALUE ? 0 : cantidadMaxima;
 	}
 
-	/*
+	
 	//public boolean craftear(String nombreObjetoCompuesto, Receta receta)
 	// OJO: TIENE SENTIDO PASARLE RECETA??? 
 	// SI TOTAL EL JUGADOR NO PUEDE ELEGIR PORQUE SE COMPARAN POR NOMBRE QUE ES EL MISMO QUE EL DEL OBJETO
-	public boolean craftear(String nombreObjetoCompuesto) throws Exception{
+	
+	// EN OTRAS NOTAS, ESTE METODO TOMA LA PRIMERA RECETA DE LAS QUE PUEDE HACER
+	public boolean craftear(String nombreObjetoCompuesto) throws Exception {
 		
-		
-		// me fijo si la receta existe en el recetario
-	    if (!recetario.getRecetas().contains(receta)) {
-	        throw new Exception("No sabes la receta de " + o.getNombre());
-	    }
-	    
-	    
-	    // me fijo si lo puedo craftear
-	    if (cuantoPuedoCraftear(nombreObjetoCompuesto) < 1) {
-	        System.out.println("No tienes suficientes ingredientes para craftear " + o.getNombre() + ".");
-	        return;
+	    // 1) valido que exista al menos una receta para ese nombre
+		// CASO EL OBJETO ES DE UNA MESA DE CRAFTEO QUE NO TENGO
+	    if (!recetario.contieneReceta(nombreObjetoCompuesto)) {
+	        throw new Exception("No sabes la receta de " + nombreObjetoCompuesto);
 	    }
 
-	    // calculo y simulo el tiempo
-	    int tiempo = receta.getTiempoEnSegundos();
-	    System.out.println("Crafteando " + o.getNombre() +
-	                       "... (tiempo de crafteo: " + tiempo + "segundos)");
+	    // 2) obtengo todas las recetas con ese nombre
+	    List<Receta> recetas = recetario.buscarRecetasPorNombre(nombreObjetoCompuesto);
+
+	    // 3) me quedo solo con las recetas para las que tengo todos los ingredientes
+	    List<Receta> recetasPosibles = new ArrayList<>();
+	    
+	    for (Receta r : recetas) {
+	    	
+	        boolean puedoCraftear = true;
+	        
+	        for (Map.Entry<ObjetoComponente, Integer> entry : r.getIngredientes().entrySet()) {
+	            
+	        	String ingNombre = entry.getKey().getNombre();
+	            int cantNecesaria = entry.getValue();
+	            if (inventario.obtenerCantidad(ingNombre) < cantNecesaria) {
+	            	puedoCraftear = false;
+	                break;
+	            }
+	        }
+	        if (puedoCraftear) {
+	        	recetasPosibles.add(r);
+	        }
+	    }
+
+	    if (recetasPosibles.isEmpty()) {
+	        System.out.println("Tienes recetas para " + nombreObjetoCompuesto +
+	                           " pero te faltan ingredientes para todas ellas.");
+	        return false;
+	    }
+
+	    // 4) Me quedo con la primera receta “crafteable”
+	    Receta recetaElegida = recetasPosibles.get(0);
+
+	    // 5) Simulo tiempo de crafteo
+	    int tiempo = recetaElegida.getTiempoEnSegundos();
+	    System.out.println("Crafteando " + nombreObjetoCompuesto + "... \nTiempo de crafteo: " + tiempo + " segundos");
 
 	    try {
-	    	// agrego el objeto crafteado al inventario
-	        ObjetoCompuesto crafteado = new ObjetoCompuesto(o.getNombre());
-	        inventario.agregar(crafteado.getNombre(), 1);
-	        System.out.println("¡Listo! Crafteaste " + o.getNombre() + "!");
+	        // 6a) agrego el objeto compuesto crafteado al inventario
+	        inventario.agregar(nombreObjetoCompuesto, 1);
+
+	        // 6b) consumo los ingredientes
+	        for (Map.Entry<ObjetoComponente, Integer> entry : recetaElegida.getIngredientes().entrySet()) {
+	           
+	        	String nombreIngredienteConsumido = entry.getKey().getNombre();
+		        int cantidadConsumida = entry.getValue();
+		        
+	        	inventario.quitar(nombreIngredienteConsumido, cantidadConsumida);
+	        }
 	        
-	        // comsumo los ingredientes
-	        Map<ObjetoBasico, Integer> ingredientesBasicos = receta.listarIngredientesDesdeCero(o);
+	        //historial.registrar(crafteado, 1, ingredientesBasicos);
 
-		    for (Map.Entry<ObjetoBasico, Integer> entry : ingredientesBasicos.entrySet()) {
-		        String nombre = entry.getKey().getNombre();
-		        int cantidad = entry.getValue();
-
-		        inventario.quitar(nombre, cantidad);
-		    }
+	        System.out.println("¡Listo! Crafteaste " + nombreObjetoCompuesto);
+	        return true;
 
 	    } catch (Exception ex) {
 	    	
-	        throw new RuntimeException("Error al creaftear el objeto.", ex);
+	        // por si algo falla al modificar inventario
+	        throw new RuntimeException("Error al craftear " + nombreObjetoCompuesto, ex);
 	    }
 	    
-	    //historial.registrar(crafteado, 1, ingredientesBasicos);
 	}
-	*/
 
 		
 	public List<String> consultarObjetosCrafteables() {

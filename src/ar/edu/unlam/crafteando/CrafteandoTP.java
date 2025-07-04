@@ -96,30 +96,30 @@ public class CrafteandoTP {
 		Jugador jugador = new Jugador("Jugadorcito", recetasBasicasCargadasDeArchivo, "prolog/integracion.pl"); //"prolog/integracion.pl"
 
 		// Inicializo inventario
-		jugador.recolectar(oHojaDeHierroDelTitanic, 1);
+		jugador.recolectar("Hoja de hierro del Titanic", 1);
 		for (i = 0; i < 5; i++) {
-			jugador.recolectar(oMangoDeMadera, 1);
+			jugador.recolectar("Mango de madera", 1);
 		}
-		jugador.recolectar(oCuerda, 1);
+		jugador.recolectar("Cuerda", 1);
 
 		for (i = 0; i < 10; i++) {
-			jugador.recolectar(oHierro, 1);
+			jugador.recolectar("Hierro", 1);
 		}
 
 		for (i = 0; i < 7; i++) {
-			jugador.recolectar(oMadera, 1);
+			jugador.recolectar("Madera", 1);
 		}
 
 		for (i = 0; i < 2; i++) {
-			jugador.recolectar(oSustanciaQuePegaSacadaDelArbol, 1);
+			jugador.recolectar("Sustancia que pega sacada del árbol", 1);
 		}
 
 		for (i = 0; i < 50; i++) {
-			jugador.recolectar(oHierro, 1);
+			jugador.recolectar("Hierro", 1);
 		}
 
-		jugador.recolectar(oSubmarino, 1);
-		jugador.recolectar(oHierro, 1);
+		jugador.recolectar("Submarino", 1);
+		jugador.recolectar("Hierro", 1);
 
 		// A JUGAR!
 		try {
@@ -130,52 +130,58 @@ public class CrafteandoTP {
 
 			// 1. recolectar
 			// FABRICAR 2 ESPADAS EXACTAMENTE (una con basicos, otra con primer nivel)
-			jugador.recolectar(oHierro, 20);
-			jugador.recolectar(oMadera, 7);
-			jugador.recolectar(oCuerda, 2);
-			jugador.recolectar(oMangoDeMadera, 1);
-			jugador.recolectar(oHojaDeHierro, 2);
+			jugador.recolectar("Hierro", 20);
+			jugador.recolectar("Madera", 7);
+			jugador.recolectar("Cuerda", 2);
+			jugador.recolectar("Mango de madera", 1);
+			jugador.recolectar("Hoja de hierro", 2);
 
+			
 			System.out.println("\nInventario despues de recolectar:");
 			jugador.consultarInventario();
 
 			// 2. soltar
-			jugador.soltar(oHierro,6);
+			jugador.soltar("Hierro",6);
 			System.out.println("\nInventario despues de soltar:");
 			jugador.consultarInventario();
+			
+			System.out.println("INVENTARIO:");
+			jugador.consultarInventario();
+			System.out.println("\n");
 
 			// 3. consultarRecetaDesdeCero y consultarReceta
-			System.out.println("\nMostrar receta completa desde cero de Espada:");
-			jugador.verRecetasDesdeCero(oEspada1);
+			System.out.println("\nRECETA DESDE CERO");
+			jugador.verRecetasDesdeCero("Espada");
+			System.out.println("\n");
 			
-			/*
-			System.out.println("\n\nMostrar receta de primer nivel de Espada:");
-			jugador.verRecetas(oEspada2);
-			 */
-			/*
+			System.out.println("\nRECETA PRIMER NIVEL");
+			jugador.verRecetas("Espada");
+			System.out.println("\n");
+			System.out.println("\n");
+			
+			
 			// 4. consultarFaltantesPrimerNivel
 			System.out.println("\nFaltantes primer nivel para Espada:");
-			List<Map<ObjetoComponente, Integer>> falt1 = jugador.consultarFaltantesPrimerNivel(oEspada1);
+			List<Map<ObjetoComponente, Integer>> falt1 = jugador.consultarFaltantesPrimerNivel("Espada");
 			System.out.println(falt1);
 
 			
 			// 5. consultarFaltantesBasicos
 			System.out.println("\nFaltantes básicos para Espada:");
-			List<Map<ObjetoComponente, Integer>> faltB = jugador.consultarFaltantesBasicos(oEspada1);
+			List<Map<ObjetoComponente, Integer>> faltB = jugador.consultarFaltantesBasicos("Espada");
 			System.out.println(faltB);
-			 */
-			
-			
+			 
 
 			// 6. cuantoPuedoCraftear
-			int maxCraftear = jugador.cuantoPuedoCraftear("espada");
+			int maxCraftear = jugador.cuantoPuedoCraftear("Espada");
 			System.out.println("\nPuedo craftear Espada " + maxCraftear + " veces");
+			
 
-			/*
-			 // 7. craftear jugador.craftear(oEspada1, espada1);
-			 System.out.println("Inventario tras craftear 1 Espada:");
+			 // 7. craftear
+			jugador.craftear("Espada");
+			System.out.println("INVENTARIO DESPUES DE CRAFTEAR 1 ESPADA: ");
 			 jugador.consultarInventario();
-			 */
+			 
 			 /*
 			 // 8. consultarObjetosCrafteables (vía Prolog)
 			 System.out.println("\nObjetos actualmente crafteables:"); List<String>
