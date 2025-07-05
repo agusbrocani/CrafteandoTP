@@ -2,8 +2,8 @@ package ar.edu.unlam.crafteando.test;
 
 import org.junit.jupiter.api.Test;
 
-import ar.edu.unlam.crafteando.ObjetoBasico;
-import ar.edu.unlam.crafteando.ObjetoComponente;
+import ar.edu.unlam.crafteando.Clases.ObjetoBasico;
+import ar.edu.unlam.crafteando.Clases.ObjetoComponente;
 
 import java.util.Map;
 

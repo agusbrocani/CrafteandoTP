@@ -1,5 +1,4 @@
-package ar.edu.unlam.crafteando;
-
+package ar.edu.unlam.crafteando.Clases;
 import org.jpl7.*;
 
 public class MotorLogicoProlog {
