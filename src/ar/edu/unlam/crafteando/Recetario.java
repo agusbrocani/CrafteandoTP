@@ -43,7 +43,7 @@ public class Recetario {
             .collect(Collectors.toList());
     }
     
-    private  ObjetoComponente construirObjetoDesdeReceta(Receta receta) {
+    public  ObjetoComponente construirObjetoDesdeReceta(Receta receta) {
         String nombre = receta.getNombre();
         ObjetoCompuesto compuesto = new ObjetoCompuesto(nombre);
 

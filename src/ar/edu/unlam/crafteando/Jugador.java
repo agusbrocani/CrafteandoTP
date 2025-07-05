@@ -28,22 +28,22 @@ public class Jugador {
 		}
 	}
 
-	public void recolectar(String nombreObjeto, int cantidad) {
-		inventario.agregar(nombreObjeto, cantidad);
+	public void recolectar(ObjetoComponente obj, int cantidad) {
+		inventario.agregar(obj, cantidad);
 	}
 
-	public void soltar(String nombreObjeto, int cantidad) {
-		inventario.quitar(nombreObjeto, cantidad);
+	public void soltar(ObjetoComponente obj, int cantidad) {
+		inventario.quitar(obj, cantidad);
 	}
 
 	public void consultarInventario() {
 		inventario.ver();
 	}
 	
-	public int cuantoHayDe(String nombreObjeto) {
+	public int cuantoHayDe(ObjetoComponente obj) {
 	    // si no existe, es porque tiene 0
-	    return inventario.contiene(nombreObjeto)
-	         ? inventario.obtenerCantidad(nombreObjeto)
+	    return inventario.contiene(obj)
+	         ? inventario.obtenerCantidad(obj)
 	         : 0;
 	}
 
@@ -64,8 +64,8 @@ public class Jugador {
 			ObjetoComponente ingrediente = entry.getKey();
 
 			int cantRequerida = entry.getValue();
-			int cantDisponible = inventario.contiene(ingrediente.getNombre())
-					? inventario.obtenerCantidad(ingrediente.getNombre())
+			int cantDisponible = inventario.contiene(ingrediente)
+					? inventario.obtenerCantidad(ingrediente)
 					: 0;
 
 			if (cantDisponible < cantRequerida) {
@@ -117,8 +117,8 @@ public class Jugador {
 			ObjetoBasico ingrediente = entry.getKey();
 			int cantidadRequerida = entry.getValue();
 
-			int cantidadDisponible = inventario.contiene(ingrediente.getNombre())
-					? inventario.obtenerCantidad(ingrediente.getNombre())
+			int cantidadDisponible = inventario.contiene(ingrediente)
+					? inventario.obtenerCantidad(ingrediente)
 					: 0;
 
 			if (cantidadDisponible < cantidadRequerida) {
@@ -156,11 +156,11 @@ public class Jugador {
 
 		for (Map.Entry<ObjetoComponente, Integer> entry : receta.getIngredientes().entrySet()) {
 
-			String nombre = entry.getKey().getNombre();
+			ObjetoComponente objeto = entry.getKey();
 			int cantidadPorUnidad = entry.getValue();
 
 			if (entry.getKey().esBasico()) {
-				int disponibles = inventario.contiene(nombre) ? inventario.obtenerCantidad(nombre) : 0;
+				int disponibles = inventario.contiene(objeto) ? inventario.obtenerCantidad(objeto) : 0;
 				int posibles = disponibles / cantidadPorUnidad;
 				cantidadMaxima = Math.min(cantidadMaxima, posibles);
 
@@ -208,7 +208,7 @@ public class Jugador {
 
 			for (Map.Entry<ObjetoComponente, Integer> entry : r.getIngredientes().entrySet()) {
 
-				String ingredienteNecesario = entry.getKey().getNombre();
+				ObjetoComponente ingredienteNecesario = entry.getKey();
 				int cantNecesaria = entry.getValue();
 				
 				if (!inventario.contiene(ingredienteNecesario) || inventario.obtenerCantidad(ingredienteNecesario) < cantNecesaria) {
@@ -234,29 +234,29 @@ public class Jugador {
 		int tiempo = recetaElegida.getTiempoEnSegundos();
 		System.out.println("Crafteando " + nombreObjetoCompuesto + "... \nTiempo de crafteo: " + tiempo + " segundos");
 
-		try {
-			// 6a) agrego el objeto compuesto crafteado al inventario
-			inventario.agregar(nombreObjetoCompuesto, 1);
+	    try {
+	        // 6a) Construyo el objeto compuesto a partir de la receta
+	        ObjetoComponente objetoConstruido = recetario.construirObjetoDesdeReceta(recetaElegida);
 
-			// 6b) consumo los ingredientes
-			for (Map.Entry<ObjetoComponente, Integer> entry : recetaElegida.getIngredientes().entrySet()) {
+	        // 6b) Lo agrego al inventario (aumenta la cantidad si ya existía)
+	        inventario.agregar(objetoConstruido, 1);
 
-				String nombreIngredienteConsumido = entry.getKey().getNombre();
-				int cantidadConsumida = entry.getValue();
+	        // 6c) Consumo los ingredientes
+	        for (Map.Entry<ObjetoComponente, Integer> entry : recetaElegida.getIngredientes().entrySet()) {
+	            ObjetoComponente ingrediente = entry.getKey();
+	            int cantidad = entry.getValue();
+	            inventario.quitar(ingrediente, cantidad);
+	        }
 
-				inventario.quitar(nombreIngredienteConsumido, cantidadConsumida);
-			}
+	        // 6d) Registro en historial
+	        historial.registrar(nombreObjetoCompuesto, recetaElegida.getIngredientes());
 
-			historial.registrar(nombreObjetoCompuesto, recetaElegida.getIngredientes());
+	        System.out.println("¡Listo! Crafteaste " + nombreObjetoCompuesto);
+	        return true;
 
-			System.out.println("¡Listo! Crafteaste " + nombreObjetoCompuesto);
-			return true;
-
-		} catch (Exception ex) {
-
-			// por si algo falla al modificar inventario
-			throw new RuntimeException("Error al craftear " + nombreObjetoCompuesto, ex);
-		}
+	    } catch (Exception ex) {
+	        throw new RuntimeException("Error al craftear " + nombreObjetoCompuesto, ex);
+	    }
 
 	}
 
