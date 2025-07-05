@@ -1,36 +1,56 @@
-% RECETARIO DEL JUGADOR
-% ingrediente(Objeto, Ing, CantReq)
-ingrediente(madera, bastón, 2).
-ingrediente(hierro, espada, 3).
-ingrediente(bastón, espada, 1).
+% ==== DECLARACIONES DINÁMICAS ====
+:- dynamic tengo/2.
+:- dynamic ingrediente/3.
+:- dynamic objeto_basico/1.
+:- dynamic objeto_compuesto/1.
 
-% OBJETOS BASICOS
+% ==== OBJETOS BÁSICOS ====
 objeto_basico(madera).
 objeto_basico(hierro).
+objeto_basico(carbon).
+objeto_basico(baston).
 
-% OBJETOS COMPUESTOS (CRAFTEABLES)
+% ==== OBJETOS COMPUESTOS ====
 objeto_compuesto(antorcha).
 objeto_compuesto(pico).
+objeto_compuesto(espada).
 
-% INVENTARIO DEL JUGADOR
+% ==== INVENTARIO ====
 tengo(hierro, 6).
 tengo(madera, 5).
-tengo(carbon, 2).
 
+% ==== RECETARIO ====
+% ingrediente(Ingrediente, Objeto, CantidadNecesaria)
+ingrediente(baston, antorcha, 2).
+ingrediente(hierro, pico, 3).
+ingrediente(madera, pico, 2).
+ingrediente(hierro, espada, 3).
+ingrediente(baston, espada, 1).
 
-% Para ver si puedo craftear un Objeto tengo que tener todos los ingredientes en cantidad suficiente
-puedo_craftear(Objeto):-
-    findall((Ing, CantReq), ingrediente(Objeto, Ing, CantReq), Ingredientes),
-    tengo_ingredientes(Ingredientes).
+% ==== REGLAS ====
 
-% para chequear si tengo los ingredientes
+% puedo_craftear(ObjetoCompuesto)
+%   true si existe al menos un ingrediente para Objeto y lo tienes en cantidad suficiente
+
+puedo_craftear(Objeto) :-
+
+    % 1 - reúno todos los pares (Ingrediente, CantRequerida) donde el SEGUNDO arg. = Objeto
+    findall((Ing, CantReq), ingrediente(Ing, Objeto, CantReq), ListaIngredientes),
+    
+    % 2- tiene que haber por lo menos un ingrediente
+    ListaIngredientes \= [],
+    
+    % y tienen que estar todos
+    tengo_ingredientes(ListaIngredientes).
+
+% tengo_ingredientes(ListaIngrediente)
+
 tengo_ingredientes([]).
-tengo_ingredientes([(Ing, CantReq)|T]):-
-    tengo(Ing, CantTengo),
+tengo_ingredientes([(Ing,CantReq)|Resto]) :-
+    tengo(Ing,CantTengo),
     CantTengo >= CantReq,
-    tengo_ingredientes(T).
+    tengo_ingredientes(Resto).
 
-% Crafteables = que se pueden fabricar con el inventario actual
-% = lista de todos los productos crafteables
-objetos_crafteables(ListaObjetosCrafteables):-
-    findall(O, (objeto_compuesto(O), puedo_craftear(O)), ListaObjetosCrafteables).
+% objetos_crafteables(-Lista)
+objetos_crafteables(Lista) :-
+    findall( O, (objeto_compuesto(O), puedo_craftear(O)), Lista).
