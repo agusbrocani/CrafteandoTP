@@ -7,9 +7,6 @@ import org.jpl7.Query;
 import org.jpl7.Term;
 
 import ar.edu.unlam.crafteando.Clases.*;
-import ar.edu.unlam.crafteando.Jugador.*;
-import java.util.stream.Collectors;
-
 
 public class Jugador {
 

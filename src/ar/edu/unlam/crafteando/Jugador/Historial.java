@@ -17,13 +17,6 @@ public class Historial {
 		RegistroCrafteo nuevo = new RegistroCrafteo(nombreObjetoCrafteado, ingredientesUsados, LocalDateTime.now());
 		registros.add(nuevo);
 	}
-	
-	/*
-	public void registrar(ObjetoCompuesto objeto, int cantidad, Map<ObjetoComponente, Integer> ingredientesUsados) {
-		RegistroCrafteo nuevo = new RegistroCrafteo(objeto, cantidad, ingredientesUsados, LocalDateTime.now());
-		registros.add(nuevo);
-	}
-	*/
 
 	public List<RegistroCrafteo> getRegistros() {
 		return new ArrayList<>(registros);
