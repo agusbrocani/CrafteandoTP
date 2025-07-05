@@ -52,4 +52,30 @@ public class GestorJson {
             return null;
         }
     }
+    
+    private static List<Receta> leerRecetasComoLista(String ruta) {
+        try (FileReader reader = new FileReader(Paths.get(ruta).toFile())) {
+            Type tipo = new TypeToken<List<Receta>>() {}.getType();
+            return gson.fromJson(reader, tipo);
+        } catch (IOException e) {
+            System.err.println("Error al leer recetas: " + e.getMessage());
+            return Collections.emptyList();
+        }
+    }
+    
+    private static Map<ObjetoComponente, Integer> leerInventarioComoMapa(String ruta) {
+        try (FileReader reader = new FileReader(Paths.get(ruta).toFile())) {
+            Type tipo = new TypeToken<List<EntradaInventario>>() {}.getType();
+            List<EntradaInventario> lista = gson.fromJson(reader, tipo);
+            Map<ObjetoComponente, Integer> mapa = new HashMap<>();
+            for (EntradaInventario entrada : lista) {
+                mapa.put(new ObjetoComponente(entrada.nombre), entrada.cantidad);
+            }
+            return mapa;
+        } catch (IOException e) {
+            System.err.println("Error al leer inventario: " + e.getMessage());
+            return Collections.emptyMap();
+        }
+    }
 }
+
