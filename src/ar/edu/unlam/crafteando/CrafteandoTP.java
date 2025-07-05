@@ -1,106 +1,239 @@
 package ar.edu.unlam.crafteando;
 
-import org.jpl7.Atom;
-import org.jpl7.Query;
-import org.jpl7.Term;
+import java.util.List;
+import java.util.Map;
 
 public class CrafteandoTP {
+
+
     public static void main(String[] args) {
-    	String ruta = "prolog/datos.pl";
-    	Query cargar = new Query("consult", new Term[]{new Atom(ruta)});
-    	// 1- Internamente se hace un -> consult('datos.pl'). => CARGA EL ARCHIVO
-    	// Lo tiene guardado en el motor de Prolog embebido que maneja JPL
-    	
-    	// 2- Lo cargo efectivamente?
-    	if (!cargar.hasSolution()) {
-    	    System.err.println("NO se pudo cargar el archivo '" + ruta + "'");
-    	    return;
-    	}
-    	
-    	// Agregar nuevo hecho
-    	Query agregar = new Query("assertz(es_padre(juan, lucas))");
-    	agregar.hasSolution(); // Devuelve true si fue exitoso
+        // Rutas
+		GestorJson jsonMng;
+        String pathInventario = "archivo/Inventario.json";
+        String pathRecetas = "archivo/Recetas.json";
+        String pathProlog = "prolog/datos.pl"; 
 
-    	// Eliminar un hecho específico
-    	Query eliminar = new Query("retract(es_padre(juan, pedro))");
-    	eliminar.hasSolution(); // Elimina si existe
+        // Leer Inventario
+	
+        Map<ObjetoComponente, Integer> objetos = jsonMng.leerInventarioComoMapa(pathInventario);
+        Inventario inventario = new Inventario(objetos);
 
-    	// Eliminar todos los es_padre
-    	Query limpiar = new Query("retractall(es_padre(_, _))");
-    	limpiar.hasSolution();
-
-        // Cargar datos desde archivos
-        Persona persona = cargarPersona("archivos/persona.json");
-        Inventario inventario = cargarInventario("archivos/Inventario.json");
-        Recetario recetario = cargarRecetario("archivos/Recetas.json");
+        // Leer Recetas
+        List<Receta> recetas = jsonMng.leerRecetasComoLista(pathRecetas);
+        Recetario recetario = new Recetario(recetas);
 
         // Crear jugador
-        Jugador jugador = new Jugador(persona.getNombre(), inventario, recetario, "prolog/datos.pl");
+        Jugador jugador = new Jugador("beta", inventario, recetario, pathProlog);
 
-        // Mostrar recetas disponibles
-        System.out.println("\n Recetas disponibles:");
-        for (Receta receta : recetario.getRecetas()) {
-            System.out.println(" " + receta.getNombreObjeto());
+        // Inventario inicial
+        System.out.println("===== INVENTARIO INICIAL =====");
+        jugador.consultarInventario();
+
+        // Objetos a craftear
+        List<String> objetosACraftear = List.of("Antorcha", "Bastón", "Espada de Hierro");
+
+        System.out.println("\n===== CRAFTEANDO OBJETOS =====");
+        for (String nombre : objetosACraftear) {
+            boolean exito = jugador.craftear(nombre);
+			if(exito)
+				System.out.println("Error al craftear "+nombre);
         }
 
-        // Mostrar inventario final
-        System.out.println("\n Inventario final:");
-        mostrarInventario(jugador.getInventario());
+        // Inventario final
+        System.out.println("\n===== INVENTARIO FINAL =====");
+        jugador.consultarInventario();
 
-        // Guardar inventario actualizado
-        guardarInventario(jugador.getInventario(), "archivos/Inventario.json");
-    }
+		int i;
 
-    private static Persona cargarPersona(String path) {
-        Persona persona = GestorJson.leer(path, Persona.class);
-        System.out.println(" Bienvenido, " + persona.getNombre());
-        return persona;
-    }
+		// Objetos compuestos
+		ObjetoCompuesto oEspada1 = new ObjetoCompuesto("Espada");
+		ObjetoCompuesto oEspada2 = new ObjetoCompuesto("Espada");
+		ObjetoCompuesto oHojaDeHierro = new ObjetoCompuesto("Hoja de hierro");
+		ObjetoCompuesto oMangoDeMadera = new ObjetoCompuesto("Mango de madera");
+		ObjetoCompuesto oPegamento = new ObjetoCompuesto("Pegamento");
+		ObjetoCompuesto oHojaDeHierroDelTitanic = new ObjetoCompuesto("Hoja de hierro del Titanic");
+		ObjetoCompuesto oSubmarino = new ObjetoCompuesto("Submarino");
 
-    private static Inventario cargarInventario(String path) {
-        List<EntradaInventario> entradas = Arrays.asList(
-            GestorJson.leer(path, EntradaInventario[].class)
-        );
-        Inventario inventario = new Inventario();
-        for (EntradaInventario entrada : entradas) {
-            ObjetoBasico objeto = new ObjetoBasico(entrada.getNombre());
-            inventario.agregar(objeto, entrada.getCantidad());
-        }
-        return inventario;
-    }
+		// Objetos básicos
+		ObjetoBasico oMadera = new ObjetoBasico("Madera");
+		ObjetoBasico oCuerda = new ObjetoBasico("Cuerda");
+		ObjetoBasico oHierro = new ObjetoBasico("Hierro");
+		ObjetoBasico oSustanciaQuePegaSacadaDelArbol = new ObjetoBasico("Sustancia que pega sacada del arbol");
 
-    private static Recetario cargarRecetario(String path) {
-    List<Receta> recetasJson = Arrays.asList(
-        GestorJson.leer(path, Receta[].class)
-    );
-    Recetario recetario = new Recetario();
-    for (Receta rj : recetasJson) {
-        for (Map.Entry<String, Integer> ing : rj.ingredientes.entrySet()) {
-            ObjetoComponente comp = crearComponente(ing.getKey());
-            rj.agregarIngrediente(comp, ing.getValue());
-        }
-        recetario.agregarReceta(rj);
-    }
-    return recetario;
-}
+		oEspada1.agregar(oHierro);
+		oEspada1.agregar(oHierro);
+		oEspada1.agregar(oMadera);
+		oEspada1.agregar(oCuerda);
 
-    private static void mostrarInventario(Inventario inventario) {
-        for (Map.Entry<ObjetoComponente, Integer> entry : inventario.getContenido().entrySet()) {
-            System.out.println(" " + entry.getKey().getNombre() + ": " + entry.getValue());
-        }
-    }
+		oEspada1.agregar(oHierro);
+		oEspada1.agregar(oHierro);
+		oEspada1.agregar(oMadera);
+		oEspada1.agregar(oCuerda);
 
-    private static void guardarInventario(Inventario inventario, String path) {
-        List<EntradaInventario> inventarioJson = inventario.getContenido().entrySet().stream()
-            .map(entry -> new EntradaInventario(entry.getKey().getNombre(), entry.getValue()))
-            .collect(Collectors.toList());
-        GestorJson.guardar(inventarioJson, path);
-        System.out.println("\n Inventario guardado en: " + path);
-    }
+		oEspada2.agregar(oHojaDeHierroDelTitanic);
+		for (i = 0; i < 5; i++) {
+			oEspada2.agregar(oMangoDeMadera);
+		}
+		oEspada2.agregar(oCuerda);
 
-    private static ObjetoComponente crearComponente(String nombre) {
-        // En este ejemplo asumimos que todo es ObjetoBasico, pero podÃ©s extender esto
-        return new ObjetoBasico(nombre);
-    }
+		for (i = 0; i < 10; i++) {
+			oHojaDeHierro.agregar(oHierro);
+		}
 
+		for (i = 0; i < 7; i++) {
+			oMangoDeMadera.agregar(oMadera);
+		}
+
+		for (i = 0; i < 2; i++) {
+			oPegamento.agregar(oSustanciaQuePegaSacadaDelArbol);
+		}
+
+		for (i = 0; i < 50; i++) {
+			oSubmarino.agregar(oHierro);
+		}
+
+		oHojaDeHierroDelTitanic.agregar(oSubmarino);
+		oHojaDeHierroDelTitanic.agregar(oHierro);
+
+		// Recetario inicial (se carga del archivo)
+		Recetario recetasBasicasCargadasDeArchivo = new Recetario();
+		Receta espada1 = new Receta("Espada", "Básico", 60);
+		Receta espada2 = new Receta("Espada", "Básico", 59);
+
+		Receta hojaDeHierro = new Receta("Hoja de hierro", "Básico", 50);
+
+		Receta mangoDeMadera = new Receta("Mango de madera", "Básico", 11);
+
+		Receta pegamento = new Receta("Pegamento", "Básico", 25);
+
+		Receta hojaDeHierroDelTitanic = new Receta("Hoja de hierro del Titanic", "Básico", 250);
+
+		Receta submarino = new Receta("Submarino", "Básico", 1599);
+
+		// Completar las recetas con sus ingredientes
+		espada1.agregarIngrediente(oHojaDeHierro, 2);
+		espada1.agregarIngrediente(oMangoDeMadera, 1);
+		espada1.agregarIngrediente(oCuerda, 1);
+
+		espada2.agregarIngrediente(oHojaDeHierroDelTitanic, 1);
+		espada2.agregarIngrediente(oMangoDeMadera, 5);
+		espada2.agregarIngrediente(oCuerda, 1);
+
+		hojaDeHierro.agregarIngrediente(oHierro, 10);
+		mangoDeMadera.agregarIngrediente(oMadera, 7);
+		pegamento.agregarIngrediente(oSustanciaQuePegaSacadaDelArbol, 2);
+
+		hojaDeHierroDelTitanic.agregarIngrediente(oHierro, 1);
+		hojaDeHierroDelTitanic.agregarIngrediente(oSubmarino, 1);
+
+		submarino.agregarIngrediente(oHierro, 50);
+
+		// Agrego todas las recetas al Recetario Básico
+				
+		recetasBasicasCargadasDeArchivo.agregarReceta(espada1); //(!) CON ESTA RECETA PUEDO CRAFTEAR 0 EN PROLOG
+		recetasBasicasCargadasDeArchivo.agregarReceta(espada2);
+		recetasBasicasCargadasDeArchivo.agregarReceta(hojaDeHierro);
+		recetasBasicasCargadasDeArchivo.agregarReceta(mangoDeMadera);
+		recetasBasicasCargadasDeArchivo.agregarReceta(pegamento);
+		recetasBasicasCargadasDeArchivo.agregarReceta(hojaDeHierroDelTitanic);
+		recetasBasicasCargadasDeArchivo.agregarReceta(submarino);
+
+		// Creo jugador
+		Jugador jugador = new Jugador("Jugadorcito", recetasBasicasCargadasDeArchivo, "prolog/integracion.pl");
+
+		// Inicializo inventario
+		jugador.recolectar("Hoja de hierro del Titanic", 1);
+		for (i = 0; i < 5; i++) {
+			jugador.recolectar("Mango de madera", 1);
+		}
+		jugador.recolectar("Cuerda", 1);
+
+		for (i = 0; i < 10; i++) {
+			jugador.recolectar("Hierro", 1);
+		}
+
+		for (i = 0; i < 7; i++) {
+			jugador.recolectar("Madera", 1);
+		}
+
+		for (i = 0; i < 2; i++) {
+			jugador.recolectar("Sustancia que pega sacada del arbol", 1);
+		}
+
+		for (i = 0; i < 50; i++) {
+			jugador.recolectar("Hierro", 1);
+		}
+
+		jugador.recolectar("Submarino", 1);
+		jugador.recolectar("Hierro", 1);
+
+		// A JUGAR!
+		try {
+			System.out.println("\n=== Pruebas de Jugador ===");
+
+			System.out.println("\nInventario Inicial");
+			jugador.consultarInventario();
+
+			// 1. recolectar
+			// FABRICAR 2 ESPADAS EXACTAMENTE (una con basicos, otra con primer nivel)
+			jugador.recolectar("Hierro", 20);
+			jugador.recolectar("Madera", 7);
+			jugador.recolectar("Cuerda", 2);
+			jugador.recolectar("Mango de madera", 1);
+			jugador.recolectar("Hoja de hierro", 2);
+
+			System.out.println("\nInventario despues de recolectar:");
+			jugador.consultarInventario();
+
+			// 2. soltar
+			jugador.soltar("Hierro", 6);
+			System.out.println("\nInventario despues de soltar:");
+			jugador.consultarInventario();
+
+			System.out.println("INVENTARIO:");
+			jugador.consultarInventario();
+			System.out.println("\n");
+
+			// 3. consultarRecetaDesdeCero y consultarReceta
+			System.out.println("\nRECETA DESDE CERO");
+			jugador.verRecetasDesdeCero("Espada");
+			System.out.println("\n");
+
+			System.out.println("\nRECETA PRIMER NIVEL");
+			jugador.verRecetas("Espada");
+			System.out.println("\n");
+			System.out.println("\n");
+
+			// 4. consultarFaltantesPrimerNivel
+			System.out.println("\nFaltantes primer nivel para Espada:");
+			List<Map<ObjetoComponente, Integer>> falt1 = jugador.consultarFaltantesPrimerNivel("Espada");
+			System.out.println(falt1);
+
+			// 5. consultarFaltantesBasicos
+			System.out.println("\nFaltantes básicos para Espada:");
+			List<Map<ObjetoComponente, Integer>> faltB = jugador.consultarFaltantesBasicos("Espada");
+			System.out.println(faltB);
+			
+
+			jugador.recolectar("Baston", 20);
+			// 6. cuantoPuedoCraftear
+			int maxCraftear = jugador.cuantoPuedoCraftear("Espada");
+			System.out.println("\nPuedo craftear Espada " + maxCraftear + " veces");
+
+			// 8. consultarObjetosCrafteables (vía Prolog)
+			System.out.println("\nObjetos actualmente crafteables:");
+			List<String> crafteables = jugador.consultarObjetosCrafteables();
+			System.out.println(crafteables);
+
+			// 7. craftear
+			jugador.craftear("Espada");
+			System.out.println("INVENTARIO DESPUES DE CRAFTEAR 1 ESPADA: ");
+			jugador.consultarInventario();
+
+			jugador.getHistorial();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
