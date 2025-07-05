@@ -1,4 +1,4 @@
-package ar.edu.unlam.crafteando;
+package ar.edu.unlam.crafteando.Clases;
 
 public class Persona {
     private String nombre;

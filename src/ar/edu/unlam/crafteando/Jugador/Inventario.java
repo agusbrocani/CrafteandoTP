@@ -1,7 +1,8 @@
-package ar.edu.unlam.crafteando;
+package ar.edu.unlam.crafteando.Jugador;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import ar.edu.unlam.crafteando.Clases.*;
 
 public class Inventario {
     private final Map<ObjetoComponente, Integer> objetos;

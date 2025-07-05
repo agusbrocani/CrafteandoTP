@@ -1,9 +1,10 @@
-package ar.edu.unlam.crafteando;
+package ar.edu.unlam.crafteando.Clases;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import ar.edu.unlam.crafteando.Jugador.*;
 
 public class MesaCrafteo extends ObjetoCompuesto {
 	private String nombre;

@@ -1,4 +1,4 @@
-package ar.edu.unlam.crafteando;
+package ar.edu.unlam.crafteando.Clases;
 
 public class Constant {
     public static final String EXCEPCION_CANTIDAD_NEGATIVA = "La cantidad es menor a cero.";

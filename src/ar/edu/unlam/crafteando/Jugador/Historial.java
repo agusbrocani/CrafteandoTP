@@ -1,9 +1,10 @@
-package ar.edu.unlam.crafteando;
+package ar.edu.unlam.crafteando.Jugador;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import ar.edu.unlam.crafteando.Clases.*;
 
 public class Historial {
 	private List<RegistroCrafteo> registros;

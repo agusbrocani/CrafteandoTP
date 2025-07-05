@@ -1,6 +1,7 @@
 package ar.edu.unlam.crafteando.test;
 
-import ar.edu.unlam.crafteando.*;
+import ar.edu.unlam.crafteando.Clases.*;
+import ar.edu.unlam.crafteando.Jugador.*;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 

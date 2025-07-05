@@ -8,9 +8,9 @@ import java.util.List;
 
 import org.junit.Test;
 
-import ar.edu.unlam.crafteando.MesaCrafteo;
-import ar.edu.unlam.crafteando.Receta;
-import ar.edu.unlam.crafteando.Recetario;
+import ar.edu.unlam.crafteando.Clases.MesaCrafteo;
+import ar.edu.unlam.crafteando.Clases.Receta;
+import ar.edu.unlam.crafteando.Jugador.Recetario;
 
 public class MesaCrafteoTest {
 

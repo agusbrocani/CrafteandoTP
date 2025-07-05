@@ -4,10 +4,10 @@ import static org.junit.Assert.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.io.TempDir;
 
-import ar.edu.unlam.crafteando.*;
 import java.io.IOException;
 import java.nio.file.Path;
-
+import ar.edu.unlam.crafteando.Clases.*;
+import ar.edu.unlam.crafteando.Jugador.Inventario;
 
 public class InventarioTest {
     private Inventario inventario;

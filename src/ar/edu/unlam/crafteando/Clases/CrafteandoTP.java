@@ -1,7 +1,8 @@
-package ar.edu.unlam.crafteando;
+package ar.edu.unlam.crafteando.Clases;
 
 import java.util.List;
 import java.util.Map;
+import ar.edu.unlam.crafteando.Jugador.*;
 
 public class CrafteandoTP {
 	public static void main(String[] args) {
