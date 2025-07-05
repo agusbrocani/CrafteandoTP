@@ -58,4 +58,10 @@ public class ObjetoBasico extends ObjetoComponente {
     public boolean estaVacio() {
         return false;
     }
+    
+    @Override
+    public boolean esBasico() {
+        return true;
+    }
+
 }

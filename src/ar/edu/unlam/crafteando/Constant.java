@@ -11,4 +11,6 @@ public class Constant {
     public static final String EXCEPCION_RECETA_SIN_INGREDIENTES = "Debe tener al menos un ingrediente.";
     public static final String EXCEPCION_NOMBRE_INVALIDO = "El nombre no puede ser nulo ni vacío.";
     public static final String EXCEPCION_CANTIDAD_INSUFICIENTE = "La cantidad a remover supera la cantidad disponible.";
+    public static final String PATH_PROLOG_INTEGRACION = "prolog/integracion.pl";
+    public static final String PATH_PROLOG_INTEGRACION_TEST = "prolog/integracionTest.pl";
 }
