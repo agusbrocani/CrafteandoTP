@@ -21,6 +21,7 @@ public class CrafteandoTP {
 		ObjetoBasico oMadera = new ObjetoBasico("Madera");
 		ObjetoBasico oCuerda = new ObjetoBasico("Cuerda");
 		ObjetoBasico oHierro = new ObjetoBasico("Hierro");
+		ObjetoBasico oBaston = new ObjetoBasico("Bastón");
 		ObjetoBasico oSustanciaQuePegaSacadaDelArbol = new ObjetoBasico("Sustancia que pega sacada del arbol");
 
 		oEspada1.agregar(oHierro);
@@ -105,30 +106,30 @@ public class CrafteandoTP {
 		Jugador jugador = new Jugador("Jugadorcito", recetasBasicasCargadasDeArchivo, "prolog/integracion.pl");
 
 		// Inicializo inventario
-		jugador.recolectar("Hoja de hierro del Titanic", 1);
+		jugador.recolectar(oHojaDeHierroDelTitanic, 1);
 		for (i = 0; i < 5; i++) {
-			jugador.recolectar("Mango de madera", 1);
+			jugador.recolectar(oMangoDeMadera, 1);
 		}
-		jugador.recolectar("Cuerda", 1);
+		jugador.recolectar(oCuerda, 1);
 
 		for (i = 0; i < 10; i++) {
-			jugador.recolectar("Hierro", 1);
+			jugador.recolectar(oHierro, 1);
 		}
 
 		for (i = 0; i < 7; i++) {
-			jugador.recolectar("Madera", 1);
+			jugador.recolectar(oMadera, 1);
 		}
 
 		for (i = 0; i < 2; i++) {
-			jugador.recolectar("Sustancia que pega sacada del arbol", 1);
+			jugador.recolectar(oSustanciaQuePegaSacadaDelArbol, 1);
 		}
 
 		for (i = 0; i < 50; i++) {
-			jugador.recolectar("Hierro", 1);
+			jugador.recolectar(oHierro, 1);
 		}
 
-		jugador.recolectar("Submarino", 1);
-		jugador.recolectar("Hierro", 1);
+		jugador.recolectar(oSubmarino, 1);
+		jugador.recolectar(oHierro, 1);
 
 		// A JUGAR!
 		try {
@@ -139,17 +140,17 @@ public class CrafteandoTP {
 
 			// 1. recolectar
 			// FABRICAR 2 ESPADAS EXACTAMENTE (una con basicos, otra con primer nivel)
-			jugador.recolectar("Hierro", 20);
-			jugador.recolectar("Madera", 7);
-			jugador.recolectar("Cuerda", 2);
-			jugador.recolectar("Mango de madera", 1);
-			jugador.recolectar("Hoja de hierro", 2);
+			jugador.recolectar(oHierro, 20);
+			jugador.recolectar(oMadera, 7);
+			jugador.recolectar(oCuerda, 2);
+			jugador.recolectar(oMangoDeMadera, 1);
+			jugador.recolectar(oHojaDeHierro, 2);
 
 			System.out.println("\nInventario despues de recolectar:");
 			jugador.consultarInventario();
 
 			// 2. soltar
-			jugador.soltar("Hierro", 6);
+			jugador.soltar(oHierro, 6);
 			System.out.println("\nInventario despues de soltar:");
 			jugador.consultarInventario();
 
@@ -178,7 +179,7 @@ public class CrafteandoTP {
 			System.out.println(faltB);
 			
 
-			jugador.recolectar("Baston", 20);
+			jugador.recolectar(oBaston, 20);
 			// 6. cuantoPuedoCraftear
 			int maxCraftear = jugador.cuantoPuedoCraftear("Espada");
 			System.out.println("\nPuedo craftear Espada " + maxCraftear + " veces");
