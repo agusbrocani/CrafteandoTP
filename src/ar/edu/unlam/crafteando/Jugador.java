@@ -39,6 +39,13 @@ public class Jugador {
 	public void consultarInventario() {
 		inventario.ver();
 	}
+	
+	public int cuantoHayDe(String nombreObjeto) {
+	    // si no existe, es porque tiene 0
+	    return inventario.contiene(nombreObjeto)
+	         ? inventario.obtenerCantidad(nombreObjeto)
+	         : 0;
+	}
 
 	public void verRecetasDesdeCero(String nombreObjetoCompuesto) {
 		recetario.mostrarRecetaDesdeCero(nombreObjetoCompuesto);

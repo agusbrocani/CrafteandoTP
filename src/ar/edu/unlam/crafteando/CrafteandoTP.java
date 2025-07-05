@@ -136,7 +136,7 @@ public class CrafteandoTP {
 
 			System.out.println("\nInventario Inicial");
 			jugador.consultarInventario();
-/*
+
 			// 1. recolectar
 			// FABRICAR 2 ESPADAS EXACTAMENTE (una con basicos, otra con primer nivel)
 			jugador.recolectar("Hierro", 20);
@@ -176,7 +176,7 @@ public class CrafteandoTP {
 			System.out.println("\nFaltantes básicos para Espada:");
 			List<Map<ObjetoComponente, Integer>> faltB = jugador.consultarFaltantesBasicos("Espada");
 			System.out.println(faltB);
-			*/
+			
 
 			jugador.recolectar("Baston", 20);
 			// 6. cuantoPuedoCraftear
