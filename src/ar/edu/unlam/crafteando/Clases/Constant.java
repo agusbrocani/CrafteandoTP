@@ -13,4 +13,9 @@ public class Constant {
     public static final String EXCEPCION_CANTIDAD_INSUFICIENTE = "La cantidad a remover supera la cantidad disponible.";
     public static final String PATH_PROLOG_INTEGRACION = "prolog/integracion.pl";
     public static final String PATH_PROLOG_INTEGRACION_TEST = "prolog/integracionTest.pl";
+    
+    public static final String ANSI_BOLD = "\033[1m";
+    public static final String ANSI_RESET = "\033[0m";
+    public static final String ANSI_GREEN = "\033[32m";
+    public static final String ANSI_RED = "\033[31m";
 }

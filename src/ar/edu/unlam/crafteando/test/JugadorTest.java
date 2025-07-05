@@ -54,6 +54,7 @@ class JugadorTest {
     @Test
     void testConsultarFaltantesPrimerNivelFogata_conFaltantes() throws Exception {
         // Sin nada en inventario → faltan 4 de Madera y 1 de Antorcha
+    	System.out.println(Constant.ANSI_BOLD + "\nTEST mostrar faltantes 1er Nivel Fogata" + Constant.ANSI_RESET);
         List<Map<ObjetoComponente, Integer>> falt = jugador.consultarFaltantesPrimerNivel("Fogata");
         assertEquals(1, falt.size());
         Map<ObjetoComponente, Integer> mapa = falt.get(0);
@@ -64,7 +65,8 @@ class JugadorTest {
     
     @Test
     void testConsultarFaltantesPrimerNivelFogata_sinFaltantes() throws Exception {
-        // Proveemos exactamente lo necesario
+    	System.out.println(Constant.ANSI_BOLD + "\nTEST no hay faltantes 1er Nivel para Fogata" + Constant.ANSI_RESET);
+    	// Proveemos exactamente lo necesario
         jugador.recolectar(madera, 4);
         jugador.recolectar(antorcha, 1);
 
@@ -78,6 +80,7 @@ class JugadorTest {
 
     @Test
     void testConsultarFaltantesBasicosFogata_conFaltantes() throws Exception {
+    	System.out.println(Constant.ANSI_BOLD + "\nTEST hay faltantes BÁSICOS para Fogata" + Constant.ANSI_RESET);
         // Desde cero, faltan 5 de Madera y 1 de Carbon
         List<Map<ObjetoComponente, Integer>> faltB = jugador.consultarFaltantesBasicos("Fogata");
         assertEquals(1, faltB.size());
@@ -88,6 +91,7 @@ class JugadorTest {
 
     @Test
     void testConsultarFaltantesBasicosFogata_sinFaltantes() throws Exception {
+    	System.out.println(Constant.ANSI_BOLD + "\nTEST no hay faltantes BÁSICOS para Fogata" + Constant.ANSI_RESET);
         // Proveemos todo lo necesario para fogata + antorcha
         jugador.recolectar(madera, 5);
         jugador.recolectar(carbon, 1);
@@ -101,23 +105,27 @@ class JugadorTest {
 
     @Test
     void testCuantoPuedoCraftearFogata_sinRecursos() {
+    	System.out.println(Constant.ANSI_BOLD + "\nTEST cuántas fogatas puedo craftear - no hay recursos" + Constant.ANSI_RESET);
         // Sin inventario porque no recoelcto nada -> 0 fogatas posibles
         assertEquals(0, jugador.cuantoPuedoCraftear("Fogata"));
     }
 
     @Test
     void testCuantoPuedoCraftearFogata_conRecursos() {
+    	System.out.println(Constant.ANSI_BOLD + "\nTEST cuántas fogatas puedo craftear - hay recursos" + Constant.ANSI_RESET);
         // Proveemos madera y carbon suficientes
         jugador.recolectar(madera, 10);
         jugador.recolectar(carbon, 3);
         // Con 10 madera y 3 carbon, lógica recursiva da 2 fogatas
         assertEquals(2, jugador.cuantoPuedoCraftear("Fogata"));
+        System.out.println("Puedes craftear " + jugador.cuantoPuedoCraftear("Fogata") + " Fogata(s)");
     }
 
     // --- craftear ---
 
     @Test
     void testCraftearAntorcha_sinRecursos() throws Exception {
+    	System.out.println(Constant.ANSI_BOLD + "\nTEST Crafteo Antorcha --> faltan ingredientes" + Constant.ANSI_RESET);
         // Sin ingredientes → no se puede craftear
         assertFalse(jugador.craftear("Antorcha"));
     }
@@ -125,7 +133,7 @@ class JugadorTest {
     
     @Test
     void testCraftearAntorcha_conRecursos() throws Exception {
-
+    	System.out.println(Constant.ANSI_BOLD + "\nTEST Crafteo Antorcha --> OK" + Constant.ANSI_RESET);
         jugador.recolectar(carbon, 1);
         jugador.recolectar(madera, 1);
 
@@ -142,10 +150,12 @@ class JugadorTest {
 
     @Test
     void testConsultarObjetosCrafteables() {
-    	
+    	System.out.println(Constant.ANSI_BOLD + "\nTEST Consultar objetos crafteables" + Constant.ANSI_RESET);
         List<String> objs = jugador.consultarObjetosCrafteables();
         assertTrue(objs.contains("antorcha"));
         assertTrue(objs.contains("fogata"));
         assertEquals(2, objs.size());
+        
+        System.out.println(objs);
     }
 }

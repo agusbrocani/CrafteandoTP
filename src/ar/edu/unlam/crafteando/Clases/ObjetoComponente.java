@@ -16,6 +16,11 @@ public abstract class ObjetoComponente {
         this.nombre = nombre;
         this.cantidad = cantidad;
     }
+    
+    @Override
+    public String toString() {
+        return this.getNombre();
+    }
 
     public String getNombre() {
         return nombre;
