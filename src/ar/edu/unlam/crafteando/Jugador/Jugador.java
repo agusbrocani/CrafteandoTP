@@ -2,6 +2,8 @@ package ar.edu.unlam.crafteando.Jugador;
 
 import java.util.*;
 //import org.jpl7.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.jpl7.Query;
 import org.jpl7.Term;
@@ -9,7 +11,6 @@ import org.jpl7.Term;
 import ar.edu.unlam.crafteando.Clases.*;
 
 public class Jugador {
-
 	private String nombre;
 	private Inventario inventario;
 	private Recetario recetario;
@@ -88,7 +89,7 @@ public class Jugador {
 	        Map<ObjetoComponente, Integer> faltantesReceta = obtenerFaltantesPorReceta(receta);
 	        faltantes.add(faltantesReceta);
 
-	        System.out.println("  Variante #" + variante++ + ":");
+	        System.out.println("  Variante #" + variante++ + " (tiempo: " + receta.getTiempoEnSegundos() + " segundos):");
 	        if (faltantesReceta.isEmpty()) {
 	        	System.out.println(Constant.ANSI_GREEN + "    ✔️" + Constant.ANSI_RESET + " Todos los ingredientes disponibles.");
 	        } else {
@@ -103,29 +104,43 @@ public class Jugador {
 	public List<Map<ObjetoComponente, Integer>> consultarFaltantesBasicos(String nombreObjetoCompuesto)
 	        throws Exception {
 
-	    List<Map<ObjetoBasico, Integer>> recetasDesdeCero = recetario.obtenerRecetaDesdeCero(nombreObjetoCompuesto);
+	    List<Receta> recetas = recetario.buscarRecetasPorNombre(nombreObjetoCompuesto);
 	    List<Map<ObjetoComponente, Integer>> faltantesBasicos = new ArrayList<>();
 
 	    System.out.println("Faltantes BÁSICOS para " + nombreObjetoCompuesto + ":");
-	    Map<ObjetoComponente, Integer> faltantesReceta = null;
-	    int variante = 1;
-	    for (Map<ObjetoBasico, Integer> recetaBasica : recetasDesdeCero) {
-	        faltantesReceta = obtenerFaltantesBasicosPorReceta(recetaBasica);
-	        faltantesBasicos.add(faltantesReceta);
-	    }
 
+	    // Para cálculo del tiempo total
+	    Map<String, Receta> recetasPorNombre = recetario.getRecetas().stream()
+	        .collect(Collectors.toMap(Receta::getNombre, Function.identity(), (r1, r2) -> r1));
+
+	    int variante = 1;
+	    for (Receta receta : recetas) {
+	        // Obtener los ingredientes básicos desde la receta
+	        ObjetoComponente objeto = recetario.construirObjetoDesdeReceta(receta);
+	        Map<ObjetoBasico, Integer> recetaBasica = receta.listarIngredientesDesdeCero((ObjetoCompuesto) objeto);
+	        Map<ObjetoComponente, Integer> faltantesReceta = obtenerFaltantesBasicosPorReceta(recetaBasica);
+	        faltantesBasicos.add(faltantesReceta);
+
+	        // Mostrar info
 	        System.out.println("  Variante #" + variante++ + ":");
+	        int tiempo = receta.calcularTiempoTotal(recetasPorNombre);
+	        System.out.println("    ⏱️ Tiempo total de crafteo: " + tiempo + " segundos");
+
 	        if (faltantesReceta.isEmpty()) {
 	            System.out.println(Constant.ANSI_GREEN + "    ✔️" + Constant.ANSI_RESET + " Todos los ingredientes básicos disponibles.");
 	        } else {
 	            for (Map.Entry<ObjetoComponente, Integer> entry : faltantesReceta.entrySet()) {
-	                System.out.println(Constant.ANSI_RED +"    ❌ "+ Constant.ANSI_RESET +  entry.getKey().getNombre() + " → faltan " + entry.getValue());
+	                System.out.println(Constant.ANSI_RED + "    ❌ " + Constant.ANSI_RESET
+	                    + entry.getKey().getNombre() + " → faltan " + entry.getValue());
 	            }
-	            System.out.println("----------------------------------------------------\n");
-	        
+	        }
+
+	        System.out.println("----------------------------------------------------\n");
 	    }
+
 	    return faltantesBasicos;
 	}
+
 
 	private Map<ObjetoComponente, Integer> obtenerFaltantesBasicosPorReceta(Map<ObjetoBasico, Integer> recetaBasica) {
 
@@ -157,6 +172,7 @@ public class Jugador {
 		}
 
 		int maxCantidad = 0;
+		int tiempo = 0;
 		for (Receta receta : variantes) {
 
 			// creo una copia del inventario para considerar la fabricacion de objetos
@@ -164,10 +180,16 @@ public class Jugador {
 			Inventario copia = new Inventario(this.inventario);
 			int cantidad = calcularCuantasVecesPuedoCraftear(receta, copia);
 			maxCantidad = Math.max(maxCantidad, cantidad);
+			tiempo = receta.getTiempoEnSegundos();
 		}		
 
 	    if (maxCantidad == 0) {
 	        System.out.println(Constant.ANSI_RED +"❌ "+ Constant.ANSI_RESET +"No podés craftear ninguna unidad de \"" + nombreObjetoCompuesto + "\" con los recursos actuales.");
+	    }
+	    else {
+	    	tiempo *= maxCantidad;
+	    	 System.out.println(Constant.ANSI_GREEN +"✔️ "+ Constant.ANSI_RESET +"Podés craftear " + maxCantidad + " " + nombreObjetoCompuesto + " con los recursos actuales.");
+	    	 System.out.println("⏲️ Tiempo de crafteo: " + tiempo + " segundos");
 	    }
 		
 		return maxCantidad;
