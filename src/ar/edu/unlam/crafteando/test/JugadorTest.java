@@ -16,6 +16,7 @@ class JugadorTest {
     private ObjetoBasico carbon;
     private ObjetoCompuesto antorcha;
     private ObjetoCompuesto baston;
+
     
     @BeforeEach
     void setUp() throws Exception {
@@ -26,17 +27,17 @@ class JugadorTest {
         carbon = new ObjetoBasico("Carbon");
         madera = new ObjetoBasico("Madera");
 
-        // Objeto compuesto: Basto (para tener otras recetas posibles)
+        // Objeto compuesto: Baston (para tener otras recetas posibles)
         baston = new ObjetoCompuesto("Baston");
         Receta recetaBaston = new Receta("Baston", "Básico", 2);
         recetaBaston.agregarIngrediente(madera, 2);
         recetario.agregarReceta(recetaBaston);
-
+        
         // Objeto compuesto: Antorcha
         antorcha = new ObjetoCompuesto("Antorcha");
         Receta recetaAntorcha = new Receta("Antorcha", "Básico", 5);
         recetaAntorcha.agregarIngrediente(carbon, 1);
-        recetaAntorcha.agregarIngrediente(madera, 1);
+        recetaAntorcha.agregarIngrediente(baston, 1);
         recetario.agregarReceta(recetaAntorcha);
 
         // Objeto compuesto: Fogata (requiere 4 Madera y 1 Antorcha)
@@ -85,7 +86,7 @@ class JugadorTest {
         List<Map<ObjetoComponente, Integer>> faltB = jugador.consultarFaltantesBasicos("Fogata");
         assertEquals(1, faltB.size());
         Map<ObjetoComponente, Integer> mapa = faltB.get(0);
-        assertEquals(5, mapa.get(new ObjetoBasico("Madera")));
+        assertEquals(6, mapa.get(new ObjetoBasico("Madera")));
         assertEquals(1, mapa.get(new ObjetoBasico("Carbon")));
     }
 
@@ -93,7 +94,7 @@ class JugadorTest {
     void testConsultarFaltantesBasicosFogata_sinFaltantes() throws Exception {
     	System.out.println(Constant.ANSI_BOLD + "\nTEST no hay faltantes BÁSICOS para Fogata" + Constant.ANSI_RESET);
         // Proveemos todo lo necesario para fogata + antorcha
-        jugador.recolectar(madera, 5);
+        jugador.recolectar(madera, 6);
         jugador.recolectar(carbon, 1);
 
         List<Map<ObjetoComponente, Integer>> faltB = jugador.consultarFaltantesBasicos("Fogata");
@@ -118,7 +119,6 @@ class JugadorTest {
         jugador.recolectar(carbon, 3);
         // Con 10 madera y 3 carbon, lógica recursiva da 2 fogatas
         assertEquals(2, jugador.cuantoPuedoCraftear("Fogata"));
-        System.out.println("Puedes craftear " + jugador.cuantoPuedoCraftear("Fogata") + " Fogata(s)");
     }
 
     // --- craftear ---
@@ -135,13 +135,13 @@ class JugadorTest {
     void testCraftearAntorcha_conRecursos() throws Exception {
     	System.out.println(Constant.ANSI_BOLD + "\nTEST Crafteo Antorcha --> OK" + Constant.ANSI_RESET);
         jugador.recolectar(carbon, 1);
-        jugador.recolectar(madera, 1);
+        jugador.recolectar(baston, 1);
 
         assertTrue(jugador.craftear("Antorcha"));
 
         assertEquals(1, jugador.cuantoHayDe(antorcha));
         assertEquals(0, jugador.cuantoHayDe(carbon));
-        assertEquals(0, jugador.cuantoHayDe(madera));
+        assertEquals(0, jugador.cuantoHayDe(baston));
     }
 
      
