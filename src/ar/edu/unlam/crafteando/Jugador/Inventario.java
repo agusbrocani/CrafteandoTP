@@ -6,13 +6,11 @@ import ar.edu.unlam.crafteando.Clases.*;
 
 public class Inventario {
     private final Map<ObjetoComponente, Integer> objetos;
-    //private final Map<String, MesaCrafteo> mesasPorTipo = new HashMap<>();
 
     public Inventario() {
         objetos = new HashMap<>();
     }
 
-    
     // hace la copia
     public Inventario(Inventario otro) {
         this.objetos = new HashMap<>();
@@ -60,6 +58,13 @@ public class Inventario {
 
         objetos.merge(objeto, cantidad, Integer::sum);
     }
+    
+    public void agregar(MesaCrafteo mesa) {
+        objetos.merge(mesa, 1, Integer::sum);
+        
+        //notificar al recetario
+        //recetario.notificarNuevaMesa(mesa);
+    }
 
     public Integer obtenerCantidad(ObjetoComponente objeto) {
         if (!objetos.containsKey(objeto)) {
@@ -78,27 +83,6 @@ public class Inventario {
                 .toList();
         GestorJson.guardar(lista, rutaArchivo);
     }
-    
-    // ========= LÓGICA DE MESAS ========================0
-    /*
-    public void agregarMesa(MesaCrafteo mesa) {
-        if (mesa == null) throw new IllegalArgumentException("Mesa nula");
-
-        String tipo = mesa.getNombre().toLowerCase();
-        if (mesasPorTipo.containsKey(tipo)) {
-            throw new IllegalStateException("Ya existe una mesa de tipo: " + tipo);
-        }
-        mesasPorTipo.put(tipo, mesa);
-    }
-
-    public void quitarMesa(String tipo) {
-        mesasPorTipo.remove(tipo.toLowerCase());
-    }
-
-    public List<String> getTiposDeMesa() {
-        return new ArrayList<>(mesasPorTipo.keySet());
-    }
-    */
     
 }
 
