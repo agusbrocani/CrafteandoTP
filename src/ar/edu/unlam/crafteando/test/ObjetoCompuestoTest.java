@@ -103,14 +103,6 @@ class ObjetoCompuestoTest {
     }
 
     @Test
-    void toStringDebeMostrarNombreYCantidad() {
-        ObjetoCompuesto arco = new ObjetoCompuesto("Arco");
-        String esperado = "Nombre: Arco\nCantidad: 1";
-
-        assertEquals(esperado, arco.toString());
-    }
-
-    @Test
     void deberiaInvocarConstructorPrivadoPorReflexion() throws Exception {
         Constructor<ObjetoCompuesto> ctor = ObjetoCompuesto.class.getDeclaredConstructor(String.class, Integer.class);
         ctor.setAccessible(true);

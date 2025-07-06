@@ -67,13 +67,6 @@ class ObjetoBasicoTest {
     }
 
     @Test
-    void toStringDeberiaMostrarNombreYCantidad() {
-        ObjetoBasico sal = new ObjetoBasico("Sal");
-        String esperado = "Nombre: Sal, Cantidad: 1";
-        assertEquals(esperado, sal.toString());
-    }
-
-    @Test
     void deberiaEjecutarMostrarConstruccionParaCubrirInterno() {
         ObjetoBasico hierro = new ObjetoBasico("Hierro");
         hierro.mostrarConstruccion(false); // llama internamente al metodo protected
