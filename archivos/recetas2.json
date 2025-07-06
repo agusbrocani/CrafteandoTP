@@ -1,0 +1,118 @@
+{
+  "recetas": [
+    {
+      "nombre": "Antorcha",
+      "tipoDeMesaCrafteo": "Basico",
+      "tiempoConstruccion": 5,
+      "ingredientes": [
+        { "tipo": "Basico", "nombre": "Carbon", "cantidad": 1 },
+        { "tipo": "Basico", "nombre": "Madera", "cantidad": 1 }
+      ]
+    },
+    {
+      "nombre": "Baston",
+      "tipoDeMesaCrafteo": "Basico",
+      "tiempoConstruccion": 2,
+      "ingredientes": [
+        { "tipo": "Basico", "nombre": "Madera", "cantidad": 2 }
+      ]
+    },
+    {
+      "nombre": "Espada de Hierro",
+      "tipoDeMesaCrafteo": "Herreria",
+      "tiempoConstruccion": 15,
+      "ingredientes": [
+        { "tipo": "Basico", "nombre": "Hierro", "cantidad": 2 },
+        { "tipo": "Compuesto", "nombre": "Baston", "cantidad": 1 }
+      ]
+    },
+    {
+      "nombre": "Pico de Madera",
+      "tipoDeMesaCrafteo": "Carpinteria",
+      "tiempoConstruccion": 10,
+      "ingredientes": [
+        { "tipo": "Basico", "nombre": "Madera", "cantidad": 3 },
+        { "tipo": "Compuesto", "nombre": "Baston", "cantidad": 2 }
+      ]
+    },
+    {
+      "nombre": "Pico de Piedra",
+      "tipoDeMesaCrafteo": "Carpinteria",
+      "tiempoConstruccion": 12,
+      "ingredientes": [
+        { "tipo": "Basico", "nombre": "Piedra", "cantidad": 3 },
+        { "tipo": "Compuesto", "nombre": "Baston", "cantidad": 2 }
+      ]
+    },
+    {
+      "nombre": "Pala de Hierro",
+      "tipoDeMesaCrafteo": "Herreria",
+      "tiempoConstruccion": 10,
+      "ingredientes": [
+        { "tipo": "Basico", "nombre": "Hierro", "cantidad": 1 },
+        { "tipo": "Compuesto", "nombre": "Baston", "cantidad": 2 }
+      ]
+    },
+    {
+      "nombre": "Hacha de Hierro",
+      "tipoDeMesaCrafteo": "Herreria",
+      "tiempoConstruccion": 15,
+      "ingredientes": [
+        { "tipo": "Basico", "nombre": "Hierro", "cantidad": 3 },
+        { "tipo": "Compuesto", "nombre": "Baston", "cantidad": 2 }
+      ]
+    },
+    {
+      "nombre": "Horno",
+      "tipoDeMesaCrafteo": "Carpinteria",
+      "tiempoConstruccion": 12,
+      "ingredientes": [
+        { "tipo": "Basico", "nombre": "Piedra", "cantidad": 8 }
+      ]
+    },
+    {
+      "nombre": "Puerta de Madera",
+      "tipoDeMesaCrafteo": "Carpinteria",
+      "tiempoConstruccion": 10,
+      "ingredientes": [
+        { "tipo": "Basico", "nombre": "Madera", "cantidad": 6 }
+      ]
+    },
+    {
+      "nombre": "Cama",
+      "tipoDeMesaCrafteo": "Carpinteria",
+      "tiempoConstruccion": 20,
+      "ingredientes": [
+        { "tipo": "Basico", "nombre": "Madera", "cantidad": 3 },
+        { "tipo": "Basico", "nombre": "Lana", "cantidad": 3 }
+      ]
+    },
+    {
+      "nombre": "Fogata",
+      "tipoDeMesaCrafteo": "Basico",
+      "tiempoConstruccion": 10,
+      "ingredientes": [
+        { "tipo": "Basico", "nombre": "Madera", "cantidad": 4 },
+        { "tipo": "Compuesto", "nombre": "Antorcha", "cantidad": 1 }
+      ]
+    },
+    {
+      "nombre": "Mesa de Carpinteria",
+      "tipoDeMesaCrafteo": "Basico",
+      "tiempoConstruccion": 15,
+      "ingredientes": [
+        { "tipo": "Basico", "nombre": "Madera", "cantidad": 6 },
+        { "tipo": "Basico", "nombre": "Piedra", "cantidad": 2 }
+      ]
+    },
+    {
+      "nombre": "Mesa de Herreria",
+      "tipoDeMesaCrafteo": "Basico",
+      "tiempoConstruccion": 20,
+      "ingredientes": [
+        { "tipo": "Basico", "nombre": "Hierro", "cantidad": 4 },
+        { "tipo": "Basico", "nombre": "Madera", "cantidad": 2 }
+      ]
+    }
+  ]
+}
