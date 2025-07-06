@@ -2,8 +2,8 @@ package ar.edu.unlam.crafteando.test;
 
 import org.junit.jupiter.api.Test;
 
-import ar.edu.unlam.crafteando.ObjetoBasico;
-import ar.edu.unlam.crafteando.ObjetoComponente;
+import ar.edu.unlam.crafteando.Clases.ObjetoBasico;
+import ar.edu.unlam.crafteando.Clases.ObjetoComponente;
 
 import java.util.Map;
 
@@ -64,13 +64,6 @@ class ObjetoBasicoTest {
     void noDeberiaSerIgualAOtroTipoDeObjeto() {
         ObjetoBasico a = new ObjetoBasico("Madera");
         assertNotEquals("una cadena", a);
-    }
-
-    @Test
-    void toStringDeberiaMostrarNombreYCantidad() {
-        ObjetoBasico sal = new ObjetoBasico("Sal");
-        String esperado = "Nombre: Sal, Cantidad: 1";
-        assertEquals(esperado, sal.toString());
     }
 
     @Test

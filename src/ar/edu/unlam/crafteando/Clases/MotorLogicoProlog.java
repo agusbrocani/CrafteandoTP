@@ -1,5 +1,4 @@
-package ar.edu.unlam.crafteando;
-
+package ar.edu.unlam.crafteando.Clases;
 import org.jpl7.*;
 
 public class MotorLogicoProlog {
@@ -15,16 +14,21 @@ public class MotorLogicoProlog {
     }
 
     public boolean agregarHecho(String hecho) {
-        return new Query("assertz(" + hecho + ")").hasSolution();
+        return new Query("assertz(" + hecho + ").").hasSolution();
     }
 
     public boolean eliminarHecho(String hecho) {
-        return new Query("retract(" + hecho + ")").hasSolution();
+        return new Query("retract(" + hecho + ").").hasSolution();
     }
 
     public boolean eliminarTodos(String patron) {
-        return new Query("retractall(" + patron + ")").hasSolution();
+        return new Query("retractall(" + patron + ").").hasSolution();
     }
+    
+    public void listarHechos(String predicado) {
+    	  // para imprimir por consola los hechos
+    	  new Query("listing(" + predicado + ").").hasSolution();
+    	}
 
     public void consultar(String consulta, String variable) {
         Query q = new Query(consulta);

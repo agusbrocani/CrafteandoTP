@@ -1,5 +1,4 @@
-package ar.edu.unlam.crafteando;
-
+package ar.edu.unlam.crafteando.Clases;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,10 +37,11 @@ public class ObjetoBasico extends ObjetoComponente {
         return Objects.hash(getNombre());
     }
 
-    @Override
-    public String toString() {
-        return "Nombre: " + this.getNombre() + ", Cantidad: " + this.getCantidad();
-    }
+//    @Override
+//    public String toString() {
+//        return "Nombre: " + this.getNombre() + ", Cantidad: " + this.getCantidad();
+//    }
+    
 
     @Override
     protected void mostrarConstruccionInterno(int cantidad, int nivel, boolean soloPrimerNivel, String prefijo, boolean esUltimo) {
@@ -58,4 +58,12 @@ public class ObjetoBasico extends ObjetoComponente {
     public boolean estaVacio() {
         return false;
     }
+    
+    @Override
+    public boolean esBasico() {
+        return true;
+    }
+    
+
+
 }

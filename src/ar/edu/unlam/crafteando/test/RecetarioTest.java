@@ -5,7 +5,8 @@ import static org.junit.Assert.*;
 import java.util.*;
 
 import org.junit.jupiter.api.*;
-import ar.edu.unlam.crafteando.*;
+import ar.edu.unlam.crafteando.Clases.*;
+import ar.edu.unlam.crafteando.Jugador.Recetario;
 
 public class RecetarioTest {
     

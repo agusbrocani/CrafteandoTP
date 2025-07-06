@@ -1,5 +1,4 @@
-package ar.edu.unlam.crafteando;
-
+package ar.edu.unlam.crafteando.Clases;
 import com.google.gson.Gson;
 import java.io.FileWriter;
 import java.io.FileReader;

@@ -1,4 +1,4 @@
-package ar.edu.unlam.crafteando;
+package ar.edu.unlam.crafteando.Clases;
 
 import java.util.Map;
 
@@ -15,6 +15,11 @@ public abstract class ObjetoComponente {
         }
         this.nombre = nombre;
         this.cantidad = cantidad;
+    }
+    
+    @Override
+    public String toString() {
+        return this.getNombre();
     }
 
     public String getNombre() {
@@ -45,4 +50,7 @@ public abstract class ObjetoComponente {
             entry.getKey().mostrarConstruccionInterno(entry.getValue(), 1, soloPrimerNivel, "", ultimo);
         }
     }
+    
+    public abstract boolean esBasico();
+    // No estoy preguntando que tipo es (instanceof), estoy preguntando su comportamiento (polimorfismo, POO)
 }
