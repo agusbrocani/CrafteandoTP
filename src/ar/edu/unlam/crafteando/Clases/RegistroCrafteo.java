@@ -1,4 +1,4 @@
-package ar.edu.unlam.crafteando;
+package ar.edu.unlam.crafteando.Clases;
 
 import java.time.LocalDateTime;
 import java.util.Map;

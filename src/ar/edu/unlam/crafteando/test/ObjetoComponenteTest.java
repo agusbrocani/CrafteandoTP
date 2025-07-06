@@ -1,12 +1,11 @@
 package ar.edu.unlam.crafteando.test;
 
-import ar.edu.unlam.crafteando.*;
+import ar.edu.unlam.crafteando.Clases.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.*;
 

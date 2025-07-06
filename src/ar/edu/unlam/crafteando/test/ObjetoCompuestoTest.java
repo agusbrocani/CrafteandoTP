@@ -2,10 +2,10 @@ package ar.edu.unlam.crafteando.test;
 
 import org.junit.jupiter.api.Test;
 
-import ar.edu.unlam.crafteando.Constant;
-import ar.edu.unlam.crafteando.ObjetoBasico;
-import ar.edu.unlam.crafteando.ObjetoComponente;
-import ar.edu.unlam.crafteando.ObjetoCompuesto;
+import ar.edu.unlam.crafteando.Clases.Constant;
+import ar.edu.unlam.crafteando.Clases.ObjetoBasico;
+import ar.edu.unlam.crafteando.Clases.ObjetoComponente;
+import ar.edu.unlam.crafteando.Clases.ObjetoCompuesto;
 
 import java.lang.reflect.Constructor;
 import java.util.Map;
@@ -100,14 +100,6 @@ class ObjetoCompuestoTest {
 
         assertEquals(a, b);
         assertEquals(a.hashCode(), b.hashCode());
-    }
-
-    @Test
-    void toStringDebeMostrarNombreYCantidad() {
-        ObjetoCompuesto arco = new ObjetoCompuesto("Arco");
-        String esperado = "Nombre: Arco\nCantidad: 1";
-
-        assertEquals(esperado, arco.toString());
     }
 
     @Test

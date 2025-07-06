@@ -1,8 +1,9 @@
-package ar.edu.unlam.crafteando;
+package ar.edu.unlam.crafteando.Jugador;
 
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import ar.edu.unlam.crafteando.Clases.*;
 
 public class Recetario {
     private final List<Receta> recetas;
@@ -43,7 +44,7 @@ public class Recetario {
             .collect(Collectors.toList());
     }
     
-    private  ObjetoComponente construirObjetoDesdeReceta(Receta receta) {
+    public  ObjetoComponente construirObjetoDesdeReceta(Receta receta) {
         String nombre = receta.getNombre();
         ObjetoCompuesto compuesto = new ObjetoCompuesto(nombre);
 
