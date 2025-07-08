@@ -2,6 +2,8 @@ package ar.edu.unlam.crafteando.Clases;
 
 import java.util.Map;
 
+import ar.edu.unlam.crafteando.Jugador.Recetario;
+
 public abstract class ObjetoComponente {
     private final String nombre;
     private final Integer cantidad;
@@ -53,4 +55,8 @@ public abstract class ObjetoComponente {
     
     public abstract boolean esBasico();
     // No estoy preguntando que tipo es (instanceof), estoy preguntando su comportamiento (polimorfismo, POO)
+    
+    public void desbloquearSiEsMesa(Recetario recetario) {
+        // No hace nada por defecto -> metodo polimorfico
+    }
 }

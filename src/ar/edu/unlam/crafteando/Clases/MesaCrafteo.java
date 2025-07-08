@@ -19,21 +19,11 @@ public class MesaCrafteo extends ObjetoCompuesto {
     public String getNombre() {
         return nombre;
     }
-    
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MesaCrafteo)) return false;
-        MesaCrafteo that = (MesaCrafteo) o;
-        return Objects.equals(getNombre(), that.getNombre());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getNombre());
-    }
 
     public void agregarReceta(Receta receta) {
+    	if (receta == null) {
+            throw new IllegalArgumentException("No se puede agregar una receta nula.");
+        }
         recetas.add(receta);
     }
     
@@ -59,5 +49,28 @@ public class MesaCrafteo extends ObjetoCompuesto {
         for (Receta receta : recetas) {
             recetario.agregarReceta(receta);
         }
+    }
+    
+    @Override
+    public void desbloquearSiEsMesa(Recetario recetario) {
+        this.desbloquearRecetasEn(recetario);
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+    	if (this == o) {
+    		return true;
+    	}
+        if (o == null || getClass() != o.getClass()) {
+        	return false;
+        }
+
+        MesaCrafteo that = (MesaCrafteo) o;
+        return Objects.equals(nombre, that.nombre);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getNombre());
     }
 }
