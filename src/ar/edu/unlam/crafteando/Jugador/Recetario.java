@@ -46,7 +46,14 @@ public class Recetario {
     
     public  ObjetoComponente construirObjetoDesdeReceta(Receta receta) {
         String nombre = receta.getNombre();
-        ObjetoCompuesto compuesto = new ObjetoCompuesto(nombre);
+        String tipo = receta.getTipo();
+        ObjetoCompuesto compuesto;
+        
+        if (tipo.equals("Mesa")) {
+            compuesto = new MesaCrafteo(nombre);
+        } else {
+            compuesto = new ObjetoCompuesto(nombre);
+        }
 
         receta.getIngredientes().forEach((ingrediente, cantidad) -> {
             ObjetoComponente subobjeto;
@@ -94,10 +101,6 @@ public class Recetario {
     
     public void mostrarReceta(String nombreObjetoCompuesto) {
         List<Receta> recetasFiltradas = buscarRecetasPorNombre(nombreObjetoCompuesto);
-
-        System.out.println("\n---------------------------------------------------");
-        System.out.println("Recetas disponibles para: " + nombreObjetoCompuesto);
-        
         for (int i = 0; i < recetasFiltradas.size(); i++) {
             Receta receta = recetasFiltradas.get(i);
             System.out.println("\n=== Opción " + (i + 1) + " ===");

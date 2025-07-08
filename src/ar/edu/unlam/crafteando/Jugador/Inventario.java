@@ -35,12 +35,14 @@ public class Inventario {
 
     public void quitar(ObjetoComponente objeto, int cantidad) {
         if (!objetos.containsKey(objeto)) {
-            throw new IllegalArgumentException("El objeto no está en el inventario.");
+        	System.out.println("El objeto no está en el inventario.");
+        	return;
         }
 
         int cantidadActual = objetos.get(objeto);
         if (cantidad > cantidadActual) {
-            throw new IllegalArgumentException("Cantidad insuficiente. Actual: " + cantidadActual + ", Solicitada: " + cantidad);
+            System.out.println("Cantidad insuficiente. Actual: " + cantidadActual + ", Solicitada: " + cantidad);
+            return;
         }
 
         int nuevaCantidad = cantidadActual - cantidad;
@@ -53,7 +55,8 @@ public class Inventario {
 
     public void agregar(ObjetoComponente objeto, int cantidad) {
         if (cantidad <= 0) {
-            throw new IllegalArgumentException("Cantidad debe ser mayor a cero.");
+        	System.out.println("Cantidad debe ser mayor a cero.");
+        	return;
         }
 
         objetos.merge(objeto, cantidad, Integer::sum);
@@ -61,14 +64,12 @@ public class Inventario {
     
     public void agregar(MesaCrafteo mesa) {
         objetos.merge(mesa, 1, Integer::sum);
-        
-        //notificar al recetario
-        //recetario.notificarNuevaMesa(mesa);
     }
 
     public Integer obtenerCantidad(ObjetoComponente objeto) {
         if (!objetos.containsKey(objeto)) {
-            throw new IllegalArgumentException("El objeto no está en el inventario.");
+        	System.out.println("El objeto no está en el inventario.");
+        	return 0;
         }
         return objetos.get(objeto);
     }

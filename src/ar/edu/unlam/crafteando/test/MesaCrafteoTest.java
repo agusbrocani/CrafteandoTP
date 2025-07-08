@@ -1,83 +1,93 @@
 package ar.edu.unlam.crafteando.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.Test;
-
-import ar.edu.unlam.crafteando.Clases.MesaCrafteo;
-import ar.edu.unlam.crafteando.Clases.Receta;
+import ar.edu.unlam.crafteando.Clases.*;
 import ar.edu.unlam.crafteando.Jugador.Recetario;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 public class MesaCrafteoTest {
 
-    @Test
-    public void agregarUnaReceta() {
-        MesaCrafteo mesa = new MesaCrafteo("Mesa básica");
-        Receta receta = new Receta("Receta1", "Espada", 10);
-        mesa.agregarReceta(receta);
+    private Recetario recetario;
+    private Receta recetaEspada;
 
-        List<Receta> recetas = mesa.obtenerRecetas();
-        assertEquals(1, recetas.size());
-        assertTrue(recetas.contains(receta));
+    @BeforeEach
+    void setUp() {
+        recetario = new Recetario();
+
+        // Ingredientes básicos
+        ObjetoBasico hierro = new ObjetoBasico("Hierro");
+        ObjetoBasico baston = new ObjetoBasico("Bastón");
+
+        // Receta que será desbloqueada por la mesa
+        recetaEspada = new Receta("Espada de Hierro", "Herrería", 15);
+        recetaEspada.agregarIngrediente(hierro, 2);
+        recetaEspada.agregarIngrediente(baston, 1);
     }
 
     @Test
-    public void agregarVariasRecetas() {
-        MesaCrafteo mesa = new MesaCrafteo("Mesa básica");
-        Receta r1 = new Receta("Receta1", "Espada", 10);
-        Receta r2 = new Receta("Receta2", "Arco", 15);
-        mesa.agregarVariasRecetas(Arrays.asList(r1, r2));
+    void unaMesaDebeDesbloquearSusRecetasEnElRecetario() {
+        // Creo la mesa y le agrego una receta
+        MesaCrafteo mesa = new MesaCrafteo("Mesa de Herrería");
+        mesa.agregarReceta(recetaEspada);
 
-        List<Receta> recetas = mesa.obtenerRecetas();
-        assertEquals(2, recetas.size());
-        assertTrue(recetas.contains(r1));
-        assertTrue(recetas.contains(r2));
-    }
+        // Ejecutamos la llamada polimórfica
+        mesa.desbloquearSiEsMesa(recetario);
 
-    @Test
-    public void desbloquearRecetasEnRecetario() {
-        MesaCrafteo mesa = new MesaCrafteo("Mesa");
-        Receta receta = new Receta("Receta1", "Espada", 10);
-        mesa.agregarReceta(receta);
-
-        Recetario recetario = new Recetario();
-        mesa.desbloquearRecetasEn(recetario);
-
-        assertTrue(recetario.getRecetas().contains(receta));
+        // Verificamos que la receta ahora esté en el recetario
+        List<Receta> recetasEncontradas = recetario.buscarRecetasPorNombre("Espada de Hierro");
+        assertEquals(1, recetasEncontradas.size());
+        assertEquals("Espada de Hierro", recetasEncontradas.get(0).getNombre());
     }
     
     @Test
-    public void agregarVariasRecetas_correctamente() {
-        MesaCrafteo mesa = new MesaCrafteo("Mesa básica");
+    void unaMesaDebePoderAgregarMultiplesRecetas() {
+        MesaCrafteo mesa = new MesaCrafteo("Mesa de Carpintería");
 
-        Receta r1 = new Receta("R1", "Espada", 5);
-        Receta r2 = new Receta("R2", "Escudo", 8);
+        Receta receta1 = new Receta("Puerta", "Carpintería", 10);
+        receta1.agregarIngrediente(new ObjetoBasico("Madera"), 6);
 
-        List<Receta> nuevas = Arrays.asList(r1, r2);
-        mesa.agregarVariasRecetas(nuevas);
+        Receta receta2 = new Receta("Cama", "Carpintería", 15);
+        receta2.agregarIngrediente(new ObjetoBasico("Madera"), 3);
+        receta2.agregarIngrediente(new ObjetoBasico("Lana"), 3);
 
-        assertEquals(2, mesa.obtenerRecetas().size());
-        assertTrue(mesa.obtenerRecetas().contains(r1));
-        assertTrue(mesa.obtenerRecetas().contains(r2));
+        mesa.agregarVariasRecetas(List.of(receta1, receta2));
+
+        List<Receta> recetas = mesa.obtenerRecetas();
+        assertEquals(2, recetas.size());
+        assertTrue(recetas.contains(receta1));
+        assertTrue(recetas.contains(receta2));
     }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void agregarVariasRecetas_lanzaExcepcionSiListaEsNull() {
-        MesaCrafteo mesa = new MesaCrafteo("Mesa básica");
-        mesa.agregarVariasRecetas(null);
+    
+    @Test
+    void noDebePoderAgregarUnaRecetaNula() {
+        MesaCrafteo mesa = new MesaCrafteo("Mesa de Carpintería");
+        assertThrows(IllegalArgumentException.class, () -> mesa.agregarReceta(null));
     }
+    
+    @Test
+    void noDebePoderAgregarUnaListaDeRecetasNula() {
+        MesaCrafteo mesa = new MesaCrafteo("Mesa de Carpintería");
+        assertThrows(IllegalArgumentException.class, () -> mesa.agregarVariasRecetas(null));
+    }
+    
+    @Test
+    void dosMesasConElMismoNombreSonIguales() {
+        MesaCrafteo mesa1 = new MesaCrafteo("Mesa de Herrería");
+        MesaCrafteo mesa2 = new MesaCrafteo("Mesa de Herrería");
 
-    @Test(expected = IllegalArgumentException.class)
-    public void agregarVariasRecetas_lanzaExcepcionSiContieneNull() {
-        MesaCrafteo mesa = new MesaCrafteo("Mesa básica");
+        assertEquals(mesa1, mesa2);
+    }
+    
+    @Test
+    void hashCodeDebeSerIgualSiNombreEsIgual() {
+        MesaCrafteo mesa1 = new MesaCrafteo("Mesa de Carpintería");
+        MesaCrafteo mesa2 = new MesaCrafteo("Mesa de Carpintería");
 
-        Receta r1 = new Receta("R1", "Espada", 5);
-        List<Receta> nuevas = Arrays.asList(r1, null);
-
-        mesa.agregarVariasRecetas(nuevas);
+        assertEquals(mesa1.hashCode(), mesa2.hashCode());
     }
 }
