@@ -25,10 +25,10 @@ public class CrafteandoTP {
         jugador.consultarInventario();
 
         // 4. Recolectar manualmente para simular parte del caso original
-        jugador.recolectar(new ObjetoBasico("Hierro"), 20);
+        jugador.recolectar(new ObjetoBasico("Hierro"), 1);
         jugador.recolectar(new ObjetoBasico("Madera"), 7);
         jugador.recolectar(new ObjetoBasico("Cuerda"), 2);
-        jugador.recolectar(new ObjetoCompuesto("Mango de Madera"), 1);
+        jugador.recolectar(new ObjetoCompuesto("Baston"), 1);
         jugador.recolectar(new ObjetoCompuesto("Hoja de hierro"), 2);
 
         System.out.println("\nInventario despues de recolectar:");
@@ -74,7 +74,7 @@ public class CrafteandoTP {
         ObjetoCompuesto espada = new ObjetoCompuesto("Espada de Hierro");
 
         if (jugador.cuantoHayDe(espada) > 0) {
-            System.out.println("✅ La espada está en el inventario con cantidad: " + jugador.cuantoHayDe(espada));
+            System.out.println("La espada está en el inventario con cantidad: " + jugador.cuantoHayDe(espada));
         } else {
             System.out.println("❌ No se encontró la espada de hierro en el inventario");
         }
