@@ -11,8 +11,8 @@ public class CrafteandoTP {
 
     public static void main(String[] args) throws Exception {
         // 1. Leer los archivos JSON
-        RecetaLectura recetasLeidas = GestorJson.leer("archivos/recetas2.json", RecetaLectura.class);
-        ObjetoLectura inventarioLeido = GestorJson.leer("archivos/inventario2.json", ObjetoLectura.class);
+        RecetaLectura recetasLeidas = GestorJson.leer("archivos/recetas.json", RecetaLectura.class);
+        ObjetoLectura inventarioLeido = GestorJson.leer("archivos/inventario.json", ObjetoLectura.class);
 
         // 2. Cargar recetas e inventario
         Recetario recetario = new CargadorDeRecetas().cargar(recetasLeidas);
@@ -69,8 +69,20 @@ public class CrafteandoTP {
         jugador.craftear("Espada de Hierro");
         System.out.println("\nINVENTARIO DESPUES DE CRAFTEAR 1 ESPADA DE HIERRO:");
         jugador.consultarInventario();
+        
+        System.out.println("\n=== Chequeo directo ===");
+        ObjetoCompuesto espada = new ObjetoCompuesto("Espada de Hierro");
+
+        if (jugador.cuantoHayDe(espada) > 0) {
+            System.out.println("✅ La espada está en el inventario con cantidad: " + jugador.cuantoHayDe(espada));
+        } else {
+            System.out.println("❌ No se encontró la espada de hierro en el inventario");
+        }
 
         // 11. Historial
         jugador.getHistorial();
+        
+        //12. Guardar Inventario
+        jugador.guardarInventario("archivos/Inventario-out-test.json");
     }
 }

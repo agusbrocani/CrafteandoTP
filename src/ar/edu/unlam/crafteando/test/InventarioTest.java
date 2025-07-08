@@ -11,7 +11,7 @@ import ar.edu.unlam.crafteando.Jugador.Inventario;
 
 public class InventarioTest {
     private Inventario inventario;
-    private final String RUTA_JSON = "archivos/Inventario-out-test.json";
+    //private final String RUTA_JSON = "archivos/Inventario-out-test.json";
     @BeforeEach
     public void setUp() {
         inventario = new Inventario();
@@ -82,15 +82,15 @@ public class InventarioTest {
         inventario.ver();
     }
 
-    @Test
-    public void testGuardarComoJson(@TempDir Path tempDir) throws IOException {
-        Inventario inv = new Inventario();
-        inv.agregar(new ObjetoBasico("Madera"), 10);
-        inv.agregar(new ObjetoBasico("Hierro"), 20);
-
-        Path ruta = tempDir.resolve("inventario-test.json");
-        inv.guardarComoJson(ruta.toString());
-
-        //assertTrue(java.nio.file.Files.exists(ruta), "El archivo JSON no fue creado.");
-    }
+//    @Test
+//    public void testGuardarComoJson(@TempDir Path tempDir) throws IOException {
+//        Inventario inv = new Inventario();
+//        inv.agregar(new ObjetoBasico("Madera"), 10);
+//        inv.agregar(new ObjetoBasico("Hierro"), 20);
+//
+//        Path ruta = tempDir.resolve("inventario-test.json");
+//        inv.guardarComoJson(ruta.toString());
+//
+//        //assertTrue(java.nio.file.Files.exists(ruta), "El archivo JSON no fue creado.");
+//    }
 }

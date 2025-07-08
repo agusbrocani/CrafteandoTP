@@ -101,10 +101,6 @@ public class Recetario {
     
     public void mostrarReceta(String nombreObjetoCompuesto) {
         List<Receta> recetasFiltradas = buscarRecetasPorNombre(nombreObjetoCompuesto);
-
-        System.out.println("\n---------------------------------------------------");
-        System.out.println("Recetas disponibles para: " + nombreObjetoCompuesto);
-        
         for (int i = 0; i < recetasFiltradas.size(); i++) {
             Receta receta = recetasFiltradas.get(i);
             System.out.println("\n=== Opción " + (i + 1) + " ===");
