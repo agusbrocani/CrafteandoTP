@@ -43,7 +43,6 @@ public class MesaCrafteo extends ObjetoCompuesto {
     public List<Receta> obtenerRecetas() {
         return Collections.unmodifiableList(recetas);
     }
-
     
     public void desbloquearRecetasEn(Recetario recetario) {
         for (Receta receta : recetas) {

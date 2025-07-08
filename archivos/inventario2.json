@@ -1,0 +1,49 @@
+{
+  "objetos": [
+    {
+      "tipo": "Basico",
+      "nombre": "Madera",
+      "cantidad": 70
+    },
+    {
+      "tipo": "Basico",
+      "nombre": "Hierro",
+      "cantidad": 40
+    },
+    {
+      "tipo": "Basico",
+      "nombre": "Carbon",
+      "cantidad": 60
+    },
+    {
+      "tipo": "Basico",
+      "nombre": "Piedra",
+      "cantidad": 80
+    },
+    {
+      "tipo": "Basico",
+      "nombre": "Lana",
+      "cantidad": 20
+    },
+    {
+      "tipo": "Basico",
+      "nombre": "Arena",
+      "cantidad": 20
+    },
+    {
+      "tipo": "Basico",
+      "nombre": "Diamante",
+      "cantidad": 10
+    },
+    {
+      "tipo": "Basico",
+      "nombre": "Huevo",
+      "cantidad": 20
+    },
+    {
+      "tipo": "Basico",
+      "nombre": "Trigo",
+      "cantidad": 50
+    }
+  ]
+}
