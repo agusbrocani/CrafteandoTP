@@ -285,6 +285,9 @@ public class Jugador {
 
 	        // 6b) Lo agrego al inventario (aumenta la cantidad si ya existía)
 	        inventario.agregar(objetoConstruido, 1);
+	        
+	        // 6b1) Si es una mesa el objeto construido se desbloquean las recetas
+	        objetoConstruido.desbloquearSiEsMesa(recetario);
 
 	        // 6c) Consumo los ingredientes
 	        for (Map.Entry<ObjetoComponente, Integer> entry : recetaElegida.getIngredientes().entrySet()) {
