@@ -280,24 +280,26 @@ public class Jugador {
 		System.out.println("🔨 Crafteando " + nombreObjetoCompuesto + "... \n⏲️ Tiempo de crafteo: " + tiempo + " segundos");
 
 	    try {
-	        // 6a) Construyo el objeto compuesto a partir de la receta
-	        ObjetoComponente objetoConstruido = recetario.construirObjetoDesdeReceta(recetaElegida);
-
-	        // 6b) Lo agrego al inventario (aumenta la cantidad si ya existía)
-	        inventario.agregar(objetoConstruido, 1);
+	    	// 6a) Consumo los ingredientes antes de construir
+	    	for (Map.Entry<ObjetoComponente, Integer> entry : recetaElegida.getIngredientes().entrySet()) {
+	    	    ObjetoComponente ingrediente = entry.getKey();
+	    	    int cantidad = entry.getValue();
+	    	    inventario.quitar(ingrediente, cantidad);
+	    	}
+	    	// 6b) Construyo el objeto (ya estoy seguro que tenía todo)
+	    	ObjetoComponente objetoConstruido = recetario.construirObjetoDesdeReceta(recetaElegida);
 	        
-	        // 6b1) Si es una mesa el objeto construido se desbloquean las recetas
+	    	// 6b1) Si es una mesa el objeto construido se desbloquean las recetas
 	        objetoConstruido.desbloquearSiEsMesa(recetario);
 
-	        // 6c) Consumo los ingredientes
-	        for (Map.Entry<ObjetoComponente, Integer> entry : recetaElegida.getIngredientes().entrySet()) {
-	            ObjetoComponente ingrediente = entry.getKey();
-	            int cantidad = entry.getValue();
-	            inventario.quitar(ingrediente, cantidad);
-	        }
+	    	// 6c) Lo agrego al inventario
+	    	inventario.agregar(objetoConstruido, 1);
 
-	        // 6d) Registro en historial
-	        historial.registrar(nombreObjetoCompuesto, recetaElegida.getIngredientes());
+	    	// 6d) Desbloquea si es mesa
+	    	objetoConstruido.desbloquearSiEsMesa(recetario);
+
+	    	// 6e) Registro en historial
+	    	historial.registrar(nombreObjetoCompuesto, recetaElegida.getIngredientes());
 
 	        System.out.println(Constant.ANSI_GREEN + "✔️ " + Constant.ANSI_RESET +"¡Listo! Crafteaste " + nombreObjetoCompuesto);
 	        return true;
@@ -347,16 +349,8 @@ public class Jugador {
 
 	public List<String> consultarObjetosCrafteables() {
 
-		//System.out.println("\n\n\nANTES PROLOG");
-		//motor.listarHechos("tengo/2");
-		//motor.listarHechos("ingrediente/3");
-
 		// 1) Actualizo inventario y recetario con Prolog
 		sincronizarProlog();
-
-		//System.out.println("\n\n\nDESPUES PROLOG");
-		//motor.listarHechos("tengo/2");
-		//motor.listarHechos("ingrediente/3");
 
 		// 2) Ejecuto la consulta
 		Query q = new Query("objetos_crafteables(L)");
@@ -378,6 +372,11 @@ public class Jugador {
 
 	public void getHistorial() {
 		historial.mostrarHistorial();
+	}
+	
+	public void guardarInventario(String ruta)
+	{
+		inventario.guardarComoJson(ruta);
 	}
 
 }
